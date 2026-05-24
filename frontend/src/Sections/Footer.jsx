@@ -1,197 +1,238 @@
-import './Footer.css'
+import "./Footer.css"
 
 import {
-  FaFacebookF,
-  FaInstagram,
-  FaTwitter,
-  FaYoutube,
-  FaMapMarkerAlt,
-  FaPhoneAlt,
-  FaEnvelope
-} from 'react-icons/fa'
+FaFacebookF,
+FaInstagram,
+FaTwitter,
+FaYoutube,
+FaMapMarkerAlt,
+FaPhoneAlt,
+FaEnvelope
+}
+from "react-icons/fa"
 
 export default function Footer(){
 
-  return(
+return(
 
-    <footer className="footer">
+<footer className="footer">
 
-      <div className="footer-overlay"></div>
+<div className="footer-overlay"></div>
 
-      <div className="footer-container">
+<div className="footer-container">
 
-        {/* LEFT */}
+{/* LEFT */}
 
-        <div className="footer-about">
+<div className="footer-about">
 
-          <h1>
-            S&S ONE FAMILY FOUNDATION
-          </h1>
+<h1>
 
-          <p>
+S&S ONE FAMILY FOUNDATION
 
-            Building hope, restoring dignity and
-            transforming communities through education,
-            healthcare, empowerment and humanitarian support.
+</h1>
 
-          </p>
+<p>
 
-          <div className="social-icons">
+Building hope, restoring dignity and
+transforming communities through education,
+healthcare, empowerment and humanitarian support.
 
-            <a href="#">
-              <FaFacebookF />
-            </a>
+</p>
 
-            <a href="#">
-              <FaInstagram />
-            </a>
+<div className="social-icons">
 
-            <a href="#">
-              <FaTwitter />
-            </a>
+<a
+href="https://www.facebook.com/"
+target="_blank"
+rel="noopener noreferrer"
+>
 
-            <a href="#">
-              <FaYoutube />
-            </a>
+<FaFacebookF/>
 
-          </div>
+</a>
 
-        </div>
+<a
+href="https://www.instagram.com/ssonefamilyfoundation1/"
+target="_blank"
+rel="noopener noreferrer"
+>
 
-        {/* QUICK LINKS */}
+<FaInstagram/>
 
-        <div className="footer-links">
+</a>
 
-          <h2>
-            Quick Links
-          </h2>
+<a
+href="https://x.com/SsOnefamily"
+target="_blank"
+rel="noopener noreferrer"
+>
 
-          <a href="#">
-            Home
-          </a>
+<FaTwitter/>
 
-          <a href="#">
-            About Us
-          </a>
+</a>
 
-          <a href="#">
-            Programs
-          </a>
+<a
+href="https://www.youtube.com/@SsOnefamilyFoundation"
+target="_blank"
+rel="noopener noreferrer"
+>
 
-          <a href="#">
-            Gallery
-          </a>
+<FaYoutube/>
 
-          <a href="#">
-            Volunteer
-          </a>
+</a>
 
-          <a href="#">
-            Contact
-          </a>
+</div>
 
-        </div>
+</div>
 
-        {/* PROGRAMS */}
+{/* QUICK LINKS */}
 
-        <div className="footer-links">
+<div className="footer-links">
 
-          <h2>
-            Our Programs
-          </h2>
+<h2>
 
-          <a href="#">
-            Child Support
-          </a>
+Quick Links
 
-          <a href="#">
-            Education
-          </a>
+</h2>
 
-          <a href="#">
-            Community Outreach
-          </a>
+<a href="/">
+Home
+</a>
 
-          <a href="#">
-            Health Support
-          </a>
+<a href="/about">
+About Us
+</a>
 
-          <a href="#">
-            Youth Empowerment
-          </a>
+<a href="/programs">
+Programs
+</a>
 
-        </div>
+<a href="/gallery">
+Gallery
+</a>
 
-        {/* CONTACT */}
+<a href="/volunteer">
+Volunteer
+</a>
 
-        <div className="footer-contact">
+<a href="/contact">
+Contact
+</a>
 
-          <h2>
-            Contact Info
-          </h2>
+</div>
 
-          <div className="contact-item">
+{/* PROGRAMS */}
 
-            <FaMapMarkerAlt />
+<div className="footer-links">
 
-            <p>
-              Kampala, Uganda
-            </p>
+<h2>
 
-          </div>
+Our Programs
 
-          <div className="contact-item">
+</h2>
 
-            <FaPhoneAlt />
+<a href="#">
+Child Support
+</a>
 
-            <p>
-              +256 700 000000
-            </p>
+<a href="#">
+Education
+</a>
 
-          </div>
+<a href="#">
+Community Outreach
+</a>
 
-          <div className="contact-item">
+<a href="#">
+Health Support
+</a>
 
-            <FaEnvelope />
+<a href="#">
+Youth Empowerment
+</a>
 
-            <p>
-              info@ssonefamilyfoundation.org
-            </p>
+</div>
 
-          </div>
+{/* CONTACT */}
 
-          <div className="newsletter">
+<div className="footer-contact">
 
-            <input
-              type="email"
-              placeholder="Enter your email"
-            />
+<h2>
 
-            <button>
-              Subscribe
-            </button>
+Contact Info
 
-          </div>
+</h2>
 
-        </div>
+<div className="contact-item">
 
-      </div>
+<FaMapMarkerAlt/>
 
-      {/* BOTTOM */}
+<p>
 
-      <div className="footer-bottom">
+Kampala, Uganda
 
-        <p>
+</p>
 
-          © 2026 S&S One Family Foundation.
-          All Rights Reserved.
+</div>
 
-        </p>
+<div className="contact-item">
 
-      </div>
+<FaPhoneAlt/>
 
-    </footer>
+<p>
 
-  )
++256 700 000000
+
+</p>
+
+</div>
+
+<div className="contact-item">
+
+<FaEnvelope/>
+
+<p>
+
+info@ssonefamilyfoundation.org
+
+</p>
+
+</div>
+
+<div className="newsletter">
+
+<input
+type="email"
+placeholder="Enter your email"
+/>
+
+<button>
+
+Subscribe
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+{/* BOTTOM */}
+
+<div className="footer-bottom">
+
+<p>
+
+© 2026 S&S One Family Foundation.
+All Rights Reserved.
+
+</p>
+
+</div>
+
+</footer>
+
+)
 
 }
