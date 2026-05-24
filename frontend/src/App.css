@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  overflow-x:hidden;
+  background:#F8F6F2;
+  color:#222;
+}
+
+/* LOGO COLOR SYSTEM */
+
+:root{
+
+  --navy:#0B2C5D;
+
+  --gold:#D89B2B;
+
+  --green:#5BA829;
+
+  --purple:#8A1365;
+
+  --blue:#1D4FB5;
+
+  --white:#FFFFFF;
+
+  --background:#F8F6F2;
+
+  --light-gold:#f5e2b7;
+
+  --light-blue:#dce7ff;
+
+  --light-green:#e4f4d8;
+
+  --light-purple:#f2d7eb;
+
+}
+
+section{
+  position:relative;
+}

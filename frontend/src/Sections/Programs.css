@@ -1,0 +1,487 @@
+/* ========================= */
+/* PROGRAMS */
+/* ========================= */
+
+.programs{
+
+position:relative;
+
+width:100%;
+
+min-height:100vh;
+
+padding:140px 7%;
+
+overflow:hidden;
+
+display:flex;
+
+justify-content:center;
+
+}
+
+
+
+/* ========================= */
+/* BACKGROUND */
+/* ========================= */
+
+.program-bg{
+
+position:absolute;
+
+inset:0;
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+z-index:1;
+
+/* clearer image */
+
+filter:
+brightness(.48)
+contrast(1.08)
+saturate(1.05);
+
+transform:scale(1.02);
+
+}
+
+
+.overlay{
+
+position:absolute;
+
+inset:0;
+
+z-index:2;
+
+/* lighter overlay */
+
+background:
+
+linear-gradient(
+
+180deg,
+
+rgba(8,18,38,.28),
+
+rgba(8,18,38,.42),
+
+rgba(8,18,38,.58)
+
+);
+
+}
+
+
+
+/* CONTENT */
+
+.programs-container{
+
+position:relative;
+
+z-index:10;
+
+max-width:1600px;
+
+width:100%;
+
+}
+
+
+
+/* ========================= */
+/* HEADER */
+/* ========================= */
+
+.programs-header{
+
+text-align:center;
+
+margin-bottom:120px;
+
+}
+
+
+
+.programs-header span{
+
+display:block;
+
+font-size:18px;
+
+letter-spacing:6px;
+
+text-transform:uppercase;
+
+font-weight:600;
+
+color:#ffffff;
+
+}
+
+
+
+.programs-header span::after{
+
+content:"";
+
+display:block;
+
+width:190px;
+
+height:3px;
+
+margin:28px auto;
+
+background:#E4BA62;
+
+}
+
+
+
+.programs-header h1{
+
+font-size:72px;
+
+font-weight:300;
+
+line-height:1.08;
+
+text-transform:uppercase;
+
+color:#ffffff !important;
+
+margin-bottom:28px;
+
+text-shadow:
+
+0 0 40px rgba(0,0,0,.95),
+
+0 10px 60px rgba(0,0,0,.8);
+
+}
+
+
+
+.programs-header p{
+
+max-width:760px;
+
+margin:auto;
+
+font-size:22px;
+
+line-height:2;
+
+color:
+
+rgba(
+255,
+255,
+255,
+.96
+);
+
+text-shadow:
+
+0 4px 20px
+rgba(
+0,
+0,
+0,
+.95
+);
+
+}
+
+
+
+/* ========================= */
+/* GRID */
+/* ========================= */
+
+.program-grid{
+
+display:grid;
+
+grid-template-columns:
+
+repeat(3,1fr);
+
+column-gap:90px;
+
+row-gap:130px;
+
+}
+
+
+
+/* ========================= */
+/* PROGRAM */
+/* ========================= */
+
+.program-card{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+text-align:center;
+
+padding:0;
+
+background:none !important;
+
+box-shadow:none !important;
+
+border:none !important;
+
+}
+
+
+
+/* remove accidental extra styles */
+
+.program-card::before,
+.program-card::after{
+
+display:none !important;
+
+}
+
+
+
+/* ========================= */
+/* ICON */
+/* ========================= */
+
+.program-icon{
+
+font-size:88px;
+
+color:#F0C668 !important;
+
+margin-bottom:34px;
+
+filter:
+
+drop-shadow(
+0 10px 30px
+rgba(
+0,
+0,
+0,
+.75
+));
+
+}
+
+
+
+/* ========================= */
+/* TITLES */
+/* ========================= */
+
+.program-card h2{
+
+font-size:34px;
+
+font-weight:300;
+
+line-height:1.4;
+
+letter-spacing:2px;
+
+color:#ffffff !important;
+
+margin-bottom:32px;
+
+text-transform:uppercase;
+
+text-shadow:
+
+0 5px 25px
+rgba(
+0,
+0,
+0,
+.95
+);
+
+}
+
+
+
+/* ========================= */
+/* TEXT */
+/* ========================= */
+
+.program-card p{
+
+max-width:420px;
+
+font-size:20px;
+
+line-height:2.15;
+
+color:
+
+rgba(
+255,
+255,
+255,
+.92
+) !important;
+
+margin-bottom:44px;
+
+text-shadow:
+
+0 4px 18px
+rgba(
+0,
+0,
+0,
+.95
+);
+
+}
+
+
+
+/* BUTTON */
+
+.program-card button{
+
+width:180px;
+
+height:58px;
+
+border:none;
+
+background:#E4BA62;
+
+color:white;
+
+font-size:13px;
+
+letter-spacing:3px;
+
+text-transform:uppercase;
+
+cursor:pointer;
+
+transition:.35s;
+
+}
+
+
+
+.program-card button:hover{
+
+transform:
+
+translateY(-4px);
+
+background:#f0ca77;
+
+}
+
+
+
+/* TABLET */
+
+@media(max-width:1100px){
+
+.program-grid{
+
+grid-template-columns:
+
+1fr 1fr;
+
+row-gap:100px;
+
+}
+
+.programs-header h1{
+
+font-size:54px;
+
+}
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.programs{
+
+padding:90px 24px;
+
+}
+
+
+
+.program-grid{
+
+grid-template-columns:1fr;
+
+row-gap:90px;
+
+}
+
+
+
+.programs-header h1{
+
+font-size:40px;
+
+}
+
+
+
+.programs-header p{
+
+font-size:18px;
+
+}
+
+
+
+.program-card h2{
+
+font-size:24px;
+
+}
+
+
+
+.program-icon{
+
+font-size:62px;
+
+}
+
+
+
+.program-card button{
+
+width:170px;
+
+height:54px;
+
+}
+
+}
