@@ -181,7 +181,7 @@ Kampala, Uganda
 
 <p>
 
-+256 700 000000
++256 746340871
 
 </p>
 
@@ -193,7 +193,7 @@ Kampala, Uganda
 
 <p>
 
-info@ssonefamilyfoundation.org
+ssonefamilyfoundation1@gmail.com
 
 </p>
 
