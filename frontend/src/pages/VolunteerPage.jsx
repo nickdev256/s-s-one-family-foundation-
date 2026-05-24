@@ -203,7 +203,7 @@ Need To Communicate?
 
 <p>
 
-hello@yourorganisation.org
+ssonefamilyfoundation1@gmail.com
 
 </p>
 
@@ -216,7 +216,7 @@ hello@yourorganisation.org
 
 <p>
 
-+256 XXX XXX XXX
++256 74634871
 
 </p>
 
@@ -229,7 +229,7 @@ hello@yourorganisation.org
 
 <p>
 
-+256 XXX XXX XXX
++256 756478200
 
 </p>
 
