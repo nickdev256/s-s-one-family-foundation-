@@ -324,13 +324,19 @@ Donate
 
 </div>
 
-
-
-<div className="mobile-menu">
+<div
+className="mobile-menu"
+onClick={()=>
+document
+.querySelector(".nav-links")
+.classList.toggle("show")
+}
+>
 
 <FaBars/>
 
 </div>
+
 
 </motion.nav>
 
