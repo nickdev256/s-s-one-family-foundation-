@@ -39,38 +39,88 @@ export default function GalleryManager() {
   }, []);
 
   async function loadGallery() {
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
+    setError("");
 
-      const res = await fetch(
-        `${API}/api/gallery`
+    console.log(
+      "Fetching gallery from:",
+      `${API}/api/gallery`
+    );
+
+    const response = await fetch(
+      `${API}/api/gallery`
+    );
+
+    console.log(
+      "Response status:",
+      response.status
+    );
+
+    if (!response.ok) {
+      const text =
+        await response.text();
+
+      console.error(
+        "Server response:",
+        text
       );
 
-      const data = await res.json();
-
-      if (data.success) {
-        setPhotos(
-          data.gallery.filter(
-            (item) =>
-              item.type === "image"
-          )
-        );
-
-        setVideos(
-          data.gallery.filter(
-            (item) =>
-              item.type === "video"
-          )
-        );
-      }
-    } catch (err) {
-      setError(
-        "Failed to load gallery."
+      throw new Error(
+        `Server returned ${response.status}`
       );
-    } finally {
-      setLoading(false);
     }
+
+    const data =
+      await response.json();
+
+    console.log(
+      "Gallery data:",
+      data
+    );
+
+    if (!data.success) {
+      throw new Error(
+        data.message ||
+          "Gallery fetch failed"
+      );
+    }
+
+    const gallery =
+      data.gallery || [];
+
+    setPhotos(
+      gallery.filter(
+        item =>
+          item.type === "image"
+      )
+    );
+
+    setVideos(
+      gallery.filter(
+        item =>
+          item.type === "video"
+      )
+    );
+
+  } catch (err) {
+
+    console.error(
+      "Gallery Error:",
+      err
+    );
+
+    setError(
+      err.message ||
+      "Failed to load gallery"
+    );
+
+  } finally {
+
+    setLoading(false);
+
   }
+}
 
   async function uploadFiles(
     files,
