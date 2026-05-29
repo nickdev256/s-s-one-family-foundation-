@@ -1,4 +1,4 @@
-import "./CMSPage.css";
+import "./CMS.css";
 
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
