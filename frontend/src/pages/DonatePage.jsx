@@ -1,65 +1,109 @@
-
 import "./DonatePage.css";
 import { useState } from "react";
 
 import {
+  FaHeart,
   FaHandsHelping,
   FaUsers,
-  FaCheck,
+  FaMobileAlt,
+  FaCreditCard,
+  FaCheckCircle,
 } from "react-icons/fa";
 
-export default function DonatePage() {
+const DONATION_TYPES = [
+  {
+    id: "general",
+    title: "General Fund",
+    description:
+      "Support our overall mission and ongoing community projects.",
+    icon: <FaHandsHelping />,
+  },
+  {
+    id: "children",
+    title: "Care For Children",
+    description:
+      "Help vulnerable children access education, food and healthcare.",
+    icon: <FaUsers />,
+  },
+];
 
+const PRESET_AMOUNTS = [10000, 25000, 50000, 100000, 250000];
+
+export default function DonatePage() {
   const [step, setStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
 
-  const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  const [donationType, setDonationType] =
-    useState("General Fund");
+  const [formData, setFormData] = useState({
+    donationType: "general",
 
-  const [amount, setAmount] = useState(100);
+    amount: 100000,
 
-  const [monthly, setMonthly] = useState(false);
+    customAmount: "",
 
-  const [payment, setPayment] =
-    useState("Credit Card");
+    recurring: false,
 
-  const [form, setForm] = useState({
+    paymentMethod: "MTN",
+
     firstName: "",
     lastName: "",
     email: "",
-    comment: "",
-  });
-
-  const [paymentData, setPaymentData] = useState({
-    cardNumber: "",
-    expiry: "",
-    cvv: "",
-    paypalEmail: "",
     phone: "",
+
+    message: "",
   });
 
-  const amounts = [10, 25, 50, 100, 250];
+  const updateField = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
-  function update(e) {
+  const validateStep3 = () => {
+    const newErrors = {};
 
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+    }
 
-  }
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    }
 
-  async function donate() {
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    }
 
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const nextStep = () => {
+    if (step === 3) {
+      if (!validateStep3()) return;
+    }
+
+    setStep(step + 1);
+  };
+
+  const prevStep = () => {
+    setStep(step - 1);
+  };
+
+  const submitDonation = async () => {
     try {
-
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/donations",
+        "http://localhost:5000/api/donations/create",
         {
           method: "POST",
 
@@ -68,548 +112,406 @@ export default function DonatePage() {
           },
 
           body: JSON.stringify({
-            donationType,
-            amount,
-            monthly,
-            payment,
-            form,
-            paymentData,
+            ...formData,
           }),
         }
       );
 
       const data = await response.json();
 
-      setLoading(false);
-
-      if (data.success) {
-
-        setSuccess(true);
-
-        alert(data.message);
-
-      } else {
-
-        alert(data.message);
-
+      if (!response.ok) {
+        throw new Error(data.message);
       }
 
+      setStep(5);
     } catch (error) {
-
-      console.log(error);
-
+      alert(error.message);
+    } finally {
       setLoading(false);
-
-      alert("Payment failed");
-
     }
+  };
 
-  }
+  const finalAmount =
+    formData.customAmount !== ""
+      ? Number(formData.customAmount)
+      : formData.amount;
 
   return (
     <div className="donate-page">
-
       {/* HERO */}
-      <section className="donate-hero">
 
-        <div className="hero-overlay" />
+      <section className="donate-hero">
+        <div className="overlay" />
 
         <div className="hero-content">
+          <span className="badge">
+            <FaHeart />
+            Make A Difference
+          </span>
 
-          <h1>Donate Now</h1>
+          <h1>Transform Lives Through Giving</h1>
 
           <p>
-            Your support transforms lives
-            through education, healthcare
-            and community empowerment.
+            Every contribution helps us provide
+            education, healthcare and hope to
+            vulnerable communities.
           </p>
-
         </div>
-
       </section>
 
-      <section className="donate-container">
+      {/* MAIN CARD */}
+
+      <div className="donation-wrapper">
+        {/* PROGRESS */}
+
+        <div className="progress-bar">
+          {[1, 2, 3, 4].map((item) => (
+            <div
+              key={item}
+              className={
+                step >= item
+                  ? "progress-step active"
+                  : "progress-step"
+              }
+            >
+              {item}
+            </div>
+          ))}
+        </div>
 
         {/* STEP 1 */}
+
         {step === 1 && (
-
           <>
-
-            <div className="donate-heading">
-
-              <span>MAKE AN IMPACT</span>
-
-              <h2>CHOOSE DONATION TYPE</h2>
-
-              <div className="divider">
-                <div />
-                ♡
-                <div />
-              </div>
+            <div className="section-header">
+              <h2>Select Donation Cause</h2>
 
               <p>
-                Choose where your support
-                creates the greatest impact.
+                Choose where you would like your
+                donation to make an impact.
               </p>
-
             </div>
 
-            <div className="option-grid">
-
-              {[
-                {
-                  title: "General Fund",
-                  icon: <FaHandsHelping />,
-                  text: "Support our overall mission.",
-                },
-
-                {
-                  title: "Care For Children",
-                  icon: <FaUsers />,
-                  text: "Support vulnerable children.",
-                },
-
-              ].map((card) => (
-
+            <div className="cause-grid">
+              {DONATION_TYPES.map((item) => (
                 <button
-                  key={card.title}
-
+                  key={item.id}
                   className={
-                    donationType === card.title
-                      ? "donation-card active"
-                      : "donation-card"
+                    formData.donationType === item.id
+                      ? "cause-card active"
+                      : "cause-card"
                   }
-
                   onClick={() =>
-                    setDonationType(card.title)
+                    updateField(
+                      "donationType",
+                      item.id
+                    )
                   }
                 >
-
-                  {donationType === card.title && (
-
-                    <div className="selected">
-                      <FaCheck />
-                    </div>
-
-                  )}
-
-                  <div className="icon">
-                    {card.icon}
+                  <div className="cause-icon">
+                    {item.icon}
                   </div>
 
-                  <h3>{card.title}</h3>
+                  <h3>{item.title}</h3>
 
-                  <div className="small-line" />
-
-                  <p>{card.text}</p>
-
+                  <p>{item.description}</p>
                 </button>
-
               ))}
-
             </div>
 
-            <div className="donate-action">
-
-              <button
-                onClick={() => setStep(2)}
-              >
-                CONTINUE →
-              </button>
-
-            </div>
-
+            <button
+              className="primary-btn"
+              onClick={nextStep}
+            >
+              Continue
+            </button>
           </>
-
         )}
 
         {/* STEP 2 */}
+
         {step === 2 && (
-
           <>
-
-            <h2>CHOOSE AMOUNT</h2>
+            <div className="section-header">
+              <h2>Select Amount</h2>
+            </div>
 
             <div className="amount-grid">
-
-              {amounts.map((item) => (
-
-                <div
-                  key={item}
-
+              {PRESET_AMOUNTS.map((amount) => (
+                <button
+                  key={amount}
                   className={
-                    amount === item
+                    formData.amount === amount
                       ? "amount-card active"
                       : "amount-card"
                   }
-
                   onClick={() =>
-                    setAmount(item)
+                    updateField(
+                      "amount",
+                      amount
+                    )
                   }
                 >
-                  ${item}
-                </div>
-
+                  UGX {amount.toLocaleString()}
+                </button>
               ))}
-
             </div>
 
-            <label className="monthly">
+            <input
+              type="number"
+              placeholder="Custom Amount"
+              value={formData.customAmount}
+              onChange={(e) =>
+                updateField(
+                  "customAmount",
+                  e.target.value
+                )
+              }
+            />
 
+            <label className="checkbox">
               <input
                 type="checkbox"
-
-                checked={monthly}
-
+                checked={formData.recurring}
                 onChange={() =>
-                  setMonthly(!monthly)
+                  updateField(
+                    "recurring",
+                    !formData.recurring
+                  )
                 }
               />
 
               Monthly Donation
-
             </label>
 
-            <div className="nav">
-
+            <div className="buttons">
               <button
-                onClick={() => setStep(1)}
+                className="secondary-btn"
+                onClick={prevStep}
               >
-                BACK
+                Back
               </button>
 
               <button
-                onClick={() => setStep(3)}
-                className="continue"
+                className="primary-btn"
+                onClick={nextStep}
               >
-                CONTINUE
+                Continue
               </button>
-
             </div>
-
           </>
-
         )}
 
         {/* STEP 3 */}
+
         {step === 3 && (
-
           <>
+            <div className="section-header">
+              <h2>Your Information</h2>
+            </div>
 
-            <h2>YOUR DETAILS</h2>
-
-            <form className="donor-form">
-
+            <div className="form-grid">
               <input
-                name="firstName"
                 placeholder="First Name"
-                onChange={update}
+                value={formData.firstName}
+                onChange={(e) =>
+                  updateField(
+                    "firstName",
+                    e.target.value
+                  )
+                }
               />
 
               <input
-                name="lastName"
                 placeholder="Last Name"
-                onChange={update}
+                value={formData.lastName}
+                onChange={(e) =>
+                  updateField(
+                    "lastName",
+                    e.target.value
+                  )
+                }
               />
 
               <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                onChange={update}
+                placeholder="Email Address"
+                value={formData.email}
+                onChange={(e) =>
+                  updateField(
+                    "email",
+                    e.target.value
+                  )
+                }
+              />
+
+              <input
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={(e) =>
+                  updateField(
+                    "phone",
+                    e.target.value
+                  )
+                }
               />
 
               <textarea
-                name="comment"
                 placeholder="Message"
-                onChange={update}
+                value={formData.message}
+                onChange={(e) =>
+                  updateField(
+                    "message",
+                    e.target.value
+                  )
+                }
               />
-
-            </form>
-
-            <div className="nav">
-
-              <button
-                onClick={() => setStep(2)}
-              >
-                BACK
-              </button>
-
-              <button
-                onClick={() => setStep(4)}
-                className="continue"
-              >
-                CONTINUE
-              </button>
-
             </div>
 
-          </>
+            <div className="buttons">
+              <button
+                className="secondary-btn"
+                onClick={prevStep}
+              >
+                Back
+              </button>
 
+              <button
+                className="primary-btn"
+                onClick={nextStep}
+              >
+                Continue
+              </button>
+            </div>
+          </>
         )}
 
         {/* STEP 4 */}
+
         {step === 4 && (
-
           <>
-
-            <h2>PAYMENT METHOD</h2>
+            <div className="section-header">
+              <h2>Payment Method</h2>
+            </div>
 
             <div className="payment-grid">
-
-              {[
-                "Credit Card",
-                "PayPal",
-                "MTN Mobile Money",
-                "Airtel Money",
-              ].map((method) => (
-
-                <button
-                  key={method}
-
-                  className={
-                    payment === method
-                      ? "active"
-                      : ""
-                  }
-
-                  onClick={() =>
-                    setPayment(method)
-                  }
-                >
-                  {method}
-                </button>
-
-              ))}
-
-            </div>
-
-            {/* CARD */}
-            {payment === "Credit Card" && (
-
-              <div className="payment-form">
-
-                <h3>Credit / Debit Card</h3>
-
-                <input
-                  placeholder="Card Number"
-
-                  value={paymentData.cardNumber}
-
-                  onChange={(e) =>
-                    setPaymentData({
-                      ...paymentData,
-                      cardNumber: e.target.value,
-                    })
-                  }
-                />
-
-                <div className="row">
-
-                  <input
-                    placeholder="MM/YY"
-
-                    value={paymentData.expiry}
-
-                    onChange={(e) =>
-                      setPaymentData({
-                        ...paymentData,
-                        expiry: e.target.value,
-                      })
-                    }
-                  />
-
-                  <input
-                    placeholder="CVV"
-
-                    type="password"
-
-                    value={paymentData.cvv}
-
-                    onChange={(e) =>
-                      setPaymentData({
-                        ...paymentData,
-                        cvv: e.target.value,
-                      })
-                    }
-                  />
-
-                </div>
-
-              </div>
-
-            )}
-
-            {/* PAYPAL */}
-            {payment === "PayPal" && (
-
-              <div className="payment-form">
-
-                <h3>PayPal Checkout</h3>
-
-                <input
-                  placeholder="PayPal Email"
-
-                  value={paymentData.paypalEmail}
-
-                  onChange={(e) =>
-                    setPaymentData({
-                      ...paymentData,
-                      paypalEmail: e.target.value,
-                    })
-                  }
-                />
-
-              </div>
-
-            )}
-
-            {/* MTN */}
-            {payment === "MTN Mobile Money" && (
-
-              <div className="payment-form">
-
-                <h3>MTN Mobile Money</h3>
-
-                <input
-                  placeholder="MTN Phone Number"
-
-                  value={paymentData.phone}
-
-                  onChange={(e) =>
-                    setPaymentData({
-                      ...paymentData,
-                      phone: e.target.value,
-                    })
-                  }
-                />
-
-              </div>
-
-            )}
-
-            {/* AIRTEL */}
-            {payment === "Airtel Money" && (
-
-              <div className="payment-form">
-
-                <h3>Airtel Money</h3>
-
-                <input
-                  placeholder="Airtel Phone Number"
-
-                  value={paymentData.phone}
-
-                  onChange={(e) =>
-                    setPaymentData({
-                      ...paymentData,
-                      phone: e.target.value,
-                    })
-                  }
-                />
-
-              </div>
-
-            )}
-
-            <div className="nav">
-
               <button
-                onClick={() => setStep(3)}
+                className={
+                  formData.paymentMethod === "MTN"
+                    ? "payment-card active"
+                    : "payment-card"
+                }
+                onClick={() =>
+                  updateField(
+                    "paymentMethod",
+                    "MTN"
+                  )
+                }
               >
-                BACK
+                <FaMobileAlt />
+                MTN MoMo
               </button>
 
               <button
-                onClick={() => setStep(5)}
-                className="continue"
+                className={
+                  formData.paymentMethod === "AIRTEL"
+                    ? "payment-card active"
+                    : "payment-card"
+                }
+                onClick={() =>
+                  updateField(
+                    "paymentMethod",
+                    "AIRTEL"
+                  )
+                }
               >
-                CONTINUE
+                <FaMobileAlt />
+                Airtel Money
               </button>
 
+              <button
+                className={
+                  formData.paymentMethod === "CARD"
+                    ? "payment-card active"
+                    : "payment-card"
+                }
+                onClick={() =>
+                  updateField(
+                    "paymentMethod",
+                    "CARD"
+                  )
+                }
+              >
+                <FaCreditCard />
+                Bank Card
+              </button>
             </div>
 
-          </>
-
-        )}
-
-        {/* STEP 5 */}
-        {step === 5 && (
-
-          <>
-
-            <h2>DONATION SUMMARY</h2>
-
-            <div className="summary">
+            <div className="summary-card">
+              <h3>Donation Summary</h3>
 
               <p>
-                Donation
-                <span>{donationType}</span>
+                Amount:
+                <strong>
+                  UGX{" "}
+                  {finalAmount.toLocaleString()}
+                </strong>
               </p>
 
               <p>
-                Amount
-                <span>${amount}</span>
-              </p>
-
-              <p>
-                Frequency
-                <span>
-                  {monthly
+                Frequency:
+                <strong>
+                  {formData.recurring
                     ? "Monthly"
                     : "One Time"}
-                </span>
+                </strong>
               </p>
 
               <p>
-                Payment
-                <span>{payment}</span>
+                Payment:
+                <strong>
+                  {formData.paymentMethod}
+                </strong>
               </p>
-
             </div>
 
-            <div className="nav">
-
+            <div className="buttons">
               <button
-                onClick={() => setStep(4)}
+                className="secondary-btn"
+                onClick={prevStep}
               >
-                BACK
+                Back
               </button>
 
               <button
-                className="continue"
-
-                onClick={donate}
-
+                className="primary-btn"
                 disabled={loading}
+                onClick={submitDonation}
               >
-
                 {loading
-                  ? "PROCESSING..."
-                  : "DONATE NOW"}
-
+                  ? "Processing..."
+                  : "Donate Now"}
               </button>
-
             </div>
-
-            {success && (
-
-              <div className="success-message">
-
-                <h3>
-                  Donation Submitted Successfully ❤️
-                </h3>
-
-              </div>
-
-            )}
-
           </>
-
         )}
 
-      </section>
+        {/* SUCCESS */}
 
+        {step === 5 && (
+          <div className="success-screen">
+            <FaCheckCircle />
+
+            <h2>
+              Donation Submitted Successfully
+            </h2>
+
+            <p>
+              Thank you for supporting our
+              mission.
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
