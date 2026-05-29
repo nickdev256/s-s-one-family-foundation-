@@ -13,8 +13,7 @@ import {
 } from "react-icons/fa";
 
 const API =
-  import.meta.env.VITE_API_URL ||
-  "http://localhost:5000";
+  "https://s-s-one-family-foundation.onrender.com";
 
 export default function GalleryManager() {
   const [loading, setLoading] = useState(true);
