@@ -1,23 +1,20 @@
+import "./Navbar.css"
 
-import "./Navbar.css";
 
-import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion"
+
+import { Link, useNavigate } from "react-router-dom"
 
 import {
   FaBars,
   FaChevronDown,
-  FaSearch,
-  FaTimes
-} from "react-icons/fa";
+  FaSearch
+} from "react-icons/fa"
 
-import {
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import { useEffect, useRef, useState } from "react"
 
-import logo from "../assets/image/logo.jpg";
+import logo from "../assets/image/logo.jpg"
+
 
 const SEARCH_DATA = [
   { name: "Home", path: "/" },
@@ -34,268 +31,141 @@ const SEARCH_DATA = [
   { name: "Partner", path: "/partner" },
   { name: "Contact", path: "/contact" },
   { name: "Gallery", path: "/gallery" }
-];
+]
 
 export default function Navbar() {
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const timer = useRef(null)
 
-  const timer = useRef(null);
+  const [openSearch, setOpenSearch] = useState(false)
+  const [query, setQuery] = useState("")
+  const searchRef = useRef(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [scrolled, setScrolled] = useState(false)
 
-  const searchRef = useRef(null);
+  const filteredResults = SEARCH_DATA.filter(item =>
+  item.name.toLowerCase().includes(query.toLowerCase())
+  
+)
 
-  const [mobileMenu, setMobileMenu] = useState(false);
-
-  const [openSearch, setOpenSearch] = useState(false);
-
-  const [query, setQuery] = useState("");
-
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const [scrolled, setScrolled] = useState(false);
-
-  const filteredResults =
-    SEARCH_DATA.filter(item =>
-      item.name
-        .toLowerCase()
-        .includes(query.toLowerCase())
-    );
-
-  useEffect(() => {
-
-    function handleClickOutside(e) {
-
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(e.target)
-      ) {
-        setOpenSearch(false);
-      }
-
+  // CLOSE SEARCH WHEN CLICKING OUTSIDE
+useEffect(() => {
+  function handleClickOutside(e) {
+    if (searchRef.current && !searchRef.current.contains(e.target)) {
+      setOpenSearch(false)
     }
+  }
 
-    document.addEventListener(
-      "mousedown",
-      handleClickOutside
-    );
+  document.addEventListener("mousedown", handleClickOutside)
 
-    return () =>
-      document.removeEventListener(
-        "mousedown",
-        handleClickOutside
-      );
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside)
+  }
+}, [])
 
-  }, []);
+// NAVBAR SCROLL EFFECT
+useEffect(() => {
+  const handleScroll = () => {
+    if (window.scrollY > 20) {
+      setScrolled(true)
+    } else {
+      setScrolled(false)
+    }
+  }
 
-  useEffect(() => {
+  window.addEventListener("scroll", handleScroll)
 
-    const handleScroll = () => {
+  return () => window.removeEventListener("scroll", handleScroll)
+}, [])
 
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
 
-    };
+     
 
-    window.addEventListener(
-      "scroll",
-      handleScroll
-    );
-
-    return () =>
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
-
-  }, []);
-
-  useEffect(() => {
-
-    const handleEsc = (e) => {
-
-      if (e.key === "Escape") {
-        setOpenSearch(false);
-        setMobileMenu(false);
-      }
-
-    };
-
-    window.addEventListener(
-      "keydown",
-      handleEsc
-    );
-
-    return () =>
-      window.removeEventListener(
-        "keydown",
-        handleEsc
-      );
-
-  }, []);
 
   function startPress() {
-
     timer.current = setTimeout(() => {
-
-      navigate("/admin");
-
-    }, 2000);
-
+      navigate("/admin")
+    }, 2000)
   }
 
   function endPress() {
-
-    clearTimeout(timer.current);
-
+    clearTimeout(timer.current)
   }
 
   return (
     <>
 
+      {/* SEARCH OVERLAY */}
       {openSearch && (
+  <div className="search-overlay">
+    <div className="search-box" ref={searchRef}>
 
-        <div className="search-overlay">
+      <input
+        type="text"
+        placeholder="Search pages..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        autoFocus
 
-          <div
-            className="search-box"
-            ref={searchRef}
-          >
+onKeyDown={(e) => {
+  if (!filteredResults.length) return
 
-            <input
-              type="text"
-              placeholder="Search pages..."
-              value={query}
-              autoFocus
-              onChange={(e) =>
-                setQuery(e.target.value)
-              }
-              onKeyDown={(e) => {
+  if (e.key === "ArrowDown") {
+    e.preventDefault()
+    setActiveIndex((prev) =>
+      prev < filteredResults.length - 1 ? prev + 1 : 0
+    )
+  }
 
-                if (
-                  !filteredResults.length
-                ) return;
+  if (e.key === "ArrowUp") {
+    e.preventDefault()
+    setActiveIndex((prev) =>
+      prev > 0 ? prev - 1 : filteredResults.length - 1
+    )
+  }
 
-                if (
-                  e.key === "ArrowDown"
-                ) {
+  if (e.key === "Enter") {
+    e.preventDefault()
+    const selected = filteredResults[activeIndex]
+    if (selected) {
+      navigate(selected.path)
+      setOpenSearch(false)
+      setQuery("")
+    }
+  }
+}}
 
-                  e.preventDefault();
+      />
 
-                  setActiveIndex(prev =>
-                    prev <
-                    filteredResults.length - 1
-                      ? prev + 1
-                      : 0
-                  );
-
-                }
-
-                if (
-                  e.key === "ArrowUp"
-                ) {
-
-                  e.preventDefault();
-
-                  setActiveIndex(prev =>
-                    prev > 0
-                      ? prev - 1
-                      : filteredResults.length - 1
-                  );
-
-                }
-
-                if (
-                  e.key === "Enter"
-                ) {
-
-                  e.preventDefault();
-
-                  const selected =
-                    filteredResults[
-                      activeIndex
-                    ];
-
-                  if (selected) {
-
-                    navigate(
-                      selected.path
-                    );
-
-                    setOpenSearch(false);
-
-                    setQuery("");
-
-                  }
-
-                }
-
-              }}
-            />
-
-            {query.length > 0 && (
-
-              <div className="search-results">
-
-                {filteredResults.length > 0 ? (
-
-                  filteredResults.map(
-                    (item, index) => (
-
-                      <div
-                        key={index}
-                        className={`search-item ${
-                          activeIndex ===
-                          index
-                            ? "active"
-                            : ""
-                        }`}
-                        onClick={() => {
-
-                          navigate(
-                            item.path
-                          );
-
-                          setQuery("");
-
-                          setOpenSearch(
-                            false
-                          );
-
-                        }}
-                      >
-                        {item.name}
-                      </div>
-
-                    )
-                  )
-
-                ) : (
-
-                  <div className="search-item">
-                    No results found
-                  </div>
-
-                )}
-
+      {query.length > 0 && (
+        <div className="search-results">
+          {filteredResults.length > 0 ? (
+            filteredResults.map((item, index) => (
+              <div
+                key={index}
+               className={`search-item ${activeIndex === index ? "active" : ""}`}
+                onClick={() => {
+                  setOpenSearch(false)
+                  setQuery("")
+                  navigate(item.path)
+                }}
+              >
+                {item.name}
               </div>
-
-            )}
-
-          </div>
-
+            ))
+          ) : (
+            <div className="search-item">No results found</div>
+          )}
         </div>
-
       )}
 
+    </div>
+  </div>
+)}
+
       <motion.nav
-        className={`navbar ${
-          scrolled
-            ? "scrolled"
-            : ""
-        }`}
+  className={`navbar ${scrolled ? "scrolled" : ""}`}
         initial={{
           y: -100,
           opacity: 0
@@ -305,10 +175,11 @@ export default function Navbar() {
           opacity: 1
         }}
         transition={{
-          duration: 0.8
+          duration: 1
         }}
       >
 
+        {/* LOGO */}
         <Link
           to="/"
           className="logo"
@@ -318,176 +189,97 @@ export default function Navbar() {
           onTouchStart={startPress}
           onTouchEnd={endPress}
         >
-
           <img
             src={logo}
             alt="S&S One Family Foundation"
           />
 
           <div className="logo-text">
-
-            <h1>
-              S&S
-            </h1>
-
-            <span>
-              ONE FAMILY
-            </span>
-
+            <h1>S&S</h1>
+            <span>ONE FAMILY</span>
           </div>
-
         </Link>
 
-        <div
-          className={`nav-links ${
-            mobileMenu
-              ? "show"
-              : ""
-          }`}
-        >
+        {/* NAVIGATION */}
+        <div className="nav-links">
 
           <div className="nav-item">
-            <Link to="/">
-              HOME
-            </Link>
+            <Link to="/">HOME</Link>
           </div>
 
           <div className="nav-item">
-
             <Link to="/about">
-              WHO WE ARE
-              <FaChevronDown />
+              WHO WE ARE <FaChevronDown />
             </Link>
 
             <div className="dropdown">
-              <Link to="/about">
-                Who We Are
-              </Link>
-              <Link to="/team">
-                Our Team
-              </Link>
-              <Link to="/about#mission">
-                Mission
-              </Link>
-              <Link to="/about#vision">
-                Vision
-              </Link>
-              <Link to="/about#values">
-                Values
-              </Link>
+              <Link to="/about">Who We Are</Link>
+              <Link to="/team">Our Team</Link>
+              <Link to="/about#mission">Mission</Link>
+              <Link to="/about#vision">Vision</Link>
+              <Link to="/about#values">Values</Link>
             </div>
-
           </div>
 
           <div className="nav-item">
-
             <Link to="/programs">
-              WHAT WE DO
-              <FaChevronDown />
+              WHAT WE DO <FaChevronDown />
             </Link>
 
             <div className="dropdown">
-              <Link to="/programs">
-                All Programs
-              </Link>
-              <Link to="/programs#education">
-                Education
-              </Link>
-              <Link to="/programs#health">
-                Health
-              </Link>
-              <Link to="/programs#child">
-                Child Protection
-              </Link>
-              <Link to="/programs#youth">
-                Youth Empowerment
-              </Link>
-              <Link to="/programs#community">
-                Community Development
-              </Link>
+              <Link to="/programs">All Programs</Link>
+              <Link to="/programs#education">Education</Link>
+              <Link to="/programs#health">Health</Link>
+              <Link to="/programs#child">Child Protection</Link>
+              <Link to="/programs#youth">Youth Empowerment</Link>
+              <Link to="/programs#community">Community Development</Link>
             </div>
-
           </div>
 
           <div className="nav-item">
-
             <Link to="/work">
-              GET INVOLVED
-              <FaChevronDown />
+              GET INVOLVED <FaChevronDown />
             </Link>
 
             <div className="dropdown">
-              <Link to="/volunteer">
-                Volunteer
-              </Link>
-              <Link to="/donate">
-                Donate
-              </Link>
-              <Link to="/partner">
-                Partner
-              </Link>
-              <Link to="/contact">
-                Contact
-              </Link>
+              <Link to="/volunteer">Volunteer</Link>
+              <Link to="/donate">Donate</Link>
+              <Link to="/partner">Partner</Link>
+              <Link to="/contact">Contact</Link>
             </div>
-
           </div>
 
           <div className="nav-item">
-            <Link to="/gallery">
-              GALLERY
-            </Link>
+            <Link to="/gallery">GALLERY</Link>
           </div>
 
           <div className="nav-item">
-            <Link to="/contact">
-              CONTACT
-            </Link>
+            <Link to="/contact">CONTACT</Link>
           </div>
 
         </div>
 
+        {/* NAV ACTIONS */}
         <div className="nav-actions">
 
           <button
             className="search-btn"
             onClick={() => {
-              setOpenSearch(true);
-              setActiveIndex(0);
-            }}
+  setOpenSearch(true)
+  setActiveIndex(0)
+}}
           >
             <FaSearch />
           </button>
 
-          <Link
-            to="/donate"
-            className="donate-btn"
-          >
+          <Link to="/donate" className="donate-btn">
             Donate
           </Link>
 
         </div>
 
-        <button
-          className="mobile-menu"
-          onClick={() =>
-            setMobileMenu(
-              !mobileMenu
-            )
-          }
-        >
-
-          {mobileMenu ? (
-            <FaTimes />
-          ) : (
-            <FaBars />
-          )}
-
-        </button>
-
       </motion.nav>
 
     </>
-  );
+  )
 }
-
