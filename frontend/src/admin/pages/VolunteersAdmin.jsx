@@ -1,484 +1,355 @@
-import "./Volunteers.css"
+import "./Volunteers.css";
 
 import {
+  FaSearch,
+  FaCheck,
+  FaTimes,
+  FaEye,
+  FaUsers,
+  FaUserCheck,
+  FaSpinner
+} from "react-icons/fa";
 
-FaSearch,
-FaCheck,
-FaTimes,
-FaEye,
-FaUsers,
-FaUserCheck
+import { useState, useEffect } from "react";
 
-}
+import AdminLayout from "../layout/AdminLayout";
 
-from "react-icons/fa"
+export default function Volunteers() {
 
-import {
+  const [search, setSearch] = useState("");
 
-useState
+  const [loading, setLoading] = useState(true);
 
-}
+  const [volunteers, setVolunteers] = useState([]);
 
-from "react"
+  useEffect(() => {
+    loadVolunteers();
+  }, []);
 
-import AdminLayout from "../layout/AdminLayout"
+  async function loadVolunteers() {
+    try {
 
+      setLoading(true);
 
+      const response = await fetch(
+        "http://localhost:5000/api/volunteers"
+      );
 
-export default function Volunteers(){
+      const data = await response.json();
 
-const [
+      if (data.success) {
+        setVolunteers(data.volunteers);
+      }
 
-search,
-setSearch
+    } catch (error) {
 
-]=useState("")
+      console.error(error);
 
+    } finally {
 
+      setLoading(false);
 
-const [
+    }
+  }
 
-volunteers,
-setVolunteers
+  async function approve(id) {
 
-]=useState([
+    try {
 
-{
+      await fetch(
+        `http://localhost:5000/api/volunteers/${id}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            status: "Approved"
+          })
+        }
+      );
 
-id:1,
+      loadVolunteers();
 
-name:"Sarah Namuli",
+    } catch (error) {
 
-email:"sarah@gmail.com",
+      console.error(error);
 
-program:"Education",
+    }
+  }
 
-status:"Pending"
+  async function reject(id) {
 
-},
+    try {
 
-{
+      await fetch(
+        `http://localhost:5000/api/volunteers/${id}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            status: "Rejected"
+          })
+        }
+      );
 
-id:2,
+      loadVolunteers();
 
-name:"David Musa",
+    } catch (error) {
 
-email:"david@gmail.com",
+      console.error(error);
 
-program:"Youth",
+    }
+  }
 
-status:"Approved"
+  function view(item) {
 
-},
+    alert(`
+Name: ${item.name}
 
-{
+Email: ${item.email}
 
-id:3,
-
-name:"Jane Amina",
-
-email:"jane@gmail.com",
-
-program:"Health",
-
-status:"Pending"
-
-}
-
-])
-
-
-
-function approve(id){
-
-setVolunteers(
-
-volunteers.map(item=>
-
-item.id===id
-
-?
-
-{
-
-...item,
-
-status:"Approved"
-
-}
-
-:
-
-item
-
-)
-
-)
-
-}
-
-
-
-function reject(id){
-
-setVolunteers(
-
-volunteers.map(item=>
-
-item.id===id
-
-?
-
-{
-
-...item,
-
-status:"Rejected"
-
-}
-
-:
-
-item
-
-)
-
-)
-
-}
-
-
-
-function view(item){
-
-alert(
-
-`${item.name}
-
-${item.email}
+Phone: ${item.phone || "N/A"}
 
 Program: ${item.program}
 
-Status: ${item.status}`
+Status: ${item.status}
+    `);
 
-)
+  }
 
-}
+  const filtered = volunteers.filter(item =>
+    item.name
+      ?.toLowerCase()
+      .includes(search.toLowerCase())
+  );
 
+  return (
+    <AdminLayout>
 
+      <div className="volunteers-page">
 
-const filtered=
+        <div className="page-header">
 
-volunteers.filter(item=>
+          <div>
 
-item.name
+            <span>
+              VOLUNTEER MANAGEMENT
+            </span>
 
-.toLowerCase()
+            <h1>
+              Volunteer Applications
+            </h1>
 
-.includes(
+            <p>
+              Review and manage volunteer requests.
+            </p>
 
-search.toLowerCase()
+          </div>
 
-)
+        </div>
 
-)
+        <div className="stats">
 
+          <div className="stat">
 
+            <FaUsers />
 
-return(
+            <div>
 
-<AdminLayout>
+              <h3>
+                {volunteers.length}
+              </h3>
 
-<div className="volunteers-page">
+              <p>
+                Applications
+              </p>
 
+            </div>
 
-<div className="page-header">
+          </div>
 
-<div>
+          <div className="stat">
 
-<span>
+            <FaUserCheck />
 
-VOLUNTEER MANAGEMENT
+            <div>
 
-</span>
+              <h3>
+                {
+                  volunteers.filter(
+                    v => v.status === "Approved"
+                  ).length
+                }
+              </h3>
 
-<h1>
+              <p>
+                Approved
+              </p>
 
-Volunteer Applications
+            </div>
 
-</h1>
+          </div>
 
-<p>
+        </div>
 
-Review and manage volunteer requests.
+        <div className="search-box">
 
-</p>
+          <FaSearch />
 
-</div>
+          <input
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+            placeholder="Search volunteer..."
+          />
 
-</div>
+        </div>
 
+        {loading ? (
 
+          <div className="loading-box">
 
-<div className="stats">
+            <FaSpinner className="spin" />
 
-<div className="stat">
+            <h3>
+              Loading Volunteers...
+            </h3>
 
-<FaUsers/>
+          </div>
 
-<div>
+        ) : (
 
-<h3>
+          <div className="table-card">
 
-{volunteers.length}
+            <table className="admin-table">
 
-</h3>
+              <thead>
 
-<p>
+                <tr>
 
-Applications
+                  <th>Name</th>
 
-</p>
+                  <th>Email</th>
 
-</div>
+                  <th>Program</th>
 
-</div>
+                  <th>Status</th>
 
+                  <th>Actions</th>
 
+                </tr>
 
-<div className="stat">
+              </thead>
 
-<FaUserCheck/>
+              <tbody>
 
-<div>
+                {filtered.length === 0 ? (
 
-<h3>
+                  <tr>
 
-{
+                    <td
+                      colSpan="5"
+                      style={{
+                        textAlign: "center",
+                        padding: "40px"
+                      }}
+                    >
+                      No volunteers found
+                    </td>
 
-volunteers.filter(
+                  </tr>
 
-v=>
+                ) : (
 
-v.status==="Approved"
+                  filtered.map(item => (
 
-).length
+                    <tr key={item.id}>
 
-}
+                      <td>
+                        {item.name}
+                      </td>
 
-</h3>
+                      <td>
+                        {item.email}
+                      </td>
 
-<p>
+                      <td>
+                        {item.program}
+                      </td>
 
-Approved
+                      <td>
 
-</p>
+                        <span
+                          className={
+                            item.status?.toLowerCase()
+                          }
+                        >
+                          {item.status}
+                        </span>
 
-</div>
+                      </td>
 
-</div>
+                      <td>
 
-</div>
+                        <div className="actions">
 
+                          <button
+                            className="view"
+                            onClick={() =>
+                              view(item)
+                            }
+                          >
+                            <FaEye />
+                          </button>
 
+                          <button
+                            className="approve"
+                            disabled={
+                              item.status === "Approved"
+                            }
+                            onClick={() =>
+                              approve(item.id)
+                            }
+                          >
+                            <FaCheck />
+                          </button>
 
-<div className="search-box">
+                          <button
+                            className="reject"
+                            disabled={
+                              item.status === "Rejected"
+                            }
+                            onClick={() =>
+                              reject(item.id)
+                            }
+                          >
+                            <FaTimes />
+                          </button>
 
-<FaSearch/>
+                        </div>
 
-<input
+                      </td>
 
-value={search}
+                    </tr>
 
-onChange={(e)=>
+                  ))
 
-setSearch(
-e.target.value
-)
+                )}
 
-}
+              </tbody>
 
-placeholder="Search volunteer"
+            </table>
 
-/>
+          </div>
 
-</div>
+        )}
 
+      </div>
 
-
-<div className="table-card">
-
-<table className="admin-table">
-
-<thead>
-
-<tr>
-
-<th>
-
-Name
-
-</th>
-
-<th>
-
-Email
-
-</th>
-
-<th>
-
-Program
-
-</th>
-
-<th>
-
-Status
-
-</th>
-
-<th>
-
-Actions
-
-</th>
-
-</tr>
-
-</thead>
-
-
-
-<tbody>
-
-{
-
-filtered.map(item=>(
-
-<tr
-key={item.id}
->
-
-<td>
-
-{item.name}
-
-</td>
-
-<td>
-
-{item.email}
-
-</td>
-
-<td>
-
-{item.program}
-
-</td>
-
-<td>
-
-<span
-
-className={
-
-item.status
-.toLowerCase()
-
-}
-
->
-
-{item.status}
-
-</span>
-
-</td>
-
-<td>
-
-<div className="actions">
-
-<button
-
-className="view"
-
-onClick={()=>
-
-view(
-item
-)
-
-}
-
->
-
-<FaEye/>
-
-</button>
-
-
-
-<button
-
-className="approve"
-
-onClick={()=>
-
-approve(
-item.id
-)
-
-}
-
->
-
-<FaCheck/>
-
-</button>
-
-
-
-<button
-
-className="reject"
-
-onClick={()=>
-
-reject(
-item.id
-)
-
-}
-
->
-
-<FaTimes/>
-
-</button>
-
-</div>
-
-</td>
-
-</tr>
-
-))
-
-}
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</AdminLayout>
-
-)
-
+    </AdminLayout>
+  );
 }

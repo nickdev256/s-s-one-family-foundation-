@@ -1,210 +1,203 @@
-import "./Reports.css"
+import "./Reports.css";
 
-import AdminLayout from "../layout/AdminLayout"
+import { useEffect, useState } from "react";
+
+import AdminLayout from "../layout/AdminLayout";
 
 import {
+  FaDonate,
+  FaUsers,
+  FaBook,
+  FaHandshake,
+  FaDownload,
+  FaChartBar,
+  FaSpinner
+} from "react-icons/fa";
 
-FaDonate,
-FaUsers,
-FaBook,
-FaHandshake,
-FaDownload,
-FaChartBar
+export default function Reports() {
 
-}
+  const [loading, setLoading] = useState(true);
 
-from "react-icons/fa"
+  const [reports, setReports] = useState([]);
 
+  useEffect(() => {
+    loadReports();
+  }, []);
 
+  async function loadReports() {
+    try {
 
-export default function Reports(){
+      const response = await fetch(
+        "http://localhost:5000/api/reports"
+      );
 
-const reports=[
+      const data = await response.json();
 
-{
+      if (data.success) {
 
-title:"Donations Report",
+        setReports([
+          {
+            title: "Donations Report",
+            icon: <FaDonate />,
+            total: `UGX ${Number(
+              data.reports.donations
+            ).toLocaleString()}`,
+            progress: "82%"
+          },
 
-icon:<FaDonate/>,
+          {
+            title: "Volunteer Report",
+            icon: <FaUsers />,
+            total: data.reports.volunteers,
+            progress: "71%"
+          },
 
-total:"UGX 25M",
+          {
+            title: "Programs Report",
+            icon: <FaBook />,
+            total: data.reports.programs,
+            progress: "89%"
+          },
 
-progress:"82%"
+          {
+            title: "Partnership Report",
+            icon: <FaHandshake />,
+            total: data.reports.partners,
+            progress: "64%"
+          }
+        ]);
+      }
 
-},
+    } catch (error) {
 
-{
+      console.error(error);
 
-title:"Volunteer Report",
+    } finally {
 
-icon:<FaUsers/>,
+      setLoading(false);
 
-total:"286",
+    }
+  }
 
-progress:"71%"
+  function downloadReport(type) {
 
-},
+    alert(`${type} export coming soon`);
 
-{
+  }
 
-title:"Programs Report",
+  function generateReport(type) {
 
-icon:<FaBook/>,
+    alert(`${type} report generated`);
 
-total:"12",
+  }
 
-progress:"89%"
+  if (loading) {
+    return (
+      <AdminLayout>
 
-},
+        <div className="loading-box">
 
-{
+          <FaSpinner className="spin" />
 
-title:"Partnership Report",
+          <h2>Loading Reports...</h2>
 
-icon:<FaHandshake/>,
+        </div>
 
-total:"18",
+      </AdminLayout>
+    );
+  }
 
-progress:"64%"
+  return (
+    <AdminLayout>
 
-}
+      <div className="reports-page">
 
-]
+        <div className="reports-header">
 
-return(
+          <span>
+            REPORT CENTER
+          </span>
 
-<AdminLayout>
+          <h1>
+            Reports Dashboard
+          </h1>
 
-<div className="reports-page">
+          <p>
+            Track NGO performance,
+            export records and monitor growth.
+          </p>
 
+        </div>
 
-<div className="reports-header">
+        <div className="report-grid">
 
-<span>
+          {reports.map((report, index) => (
 
-REPORT CENTER
+            <div
+              key={index}
+              className="report-card"
+            >
 
-</span>
+              <div className="report-icon">
+                {report.icon}
+              </div>
 
-<h1>
+              <h2>
+                {report.title}
+              </h2>
 
-Reports Dashboard
+              <h3>
+                {report.total}
+              </h3>
 
-</h1>
+              <div className="progress">
 
-<p>
+                <div
+                  style={{
+                    width: report.progress
+                  }}
+                />
 
-Track NGO performance,
-export records and monitor growth.
+              </div>
 
-</p>
+              <span>
+                Completion {report.progress}
+              </span>
 
-</div>
+              <div className="report-actions">
 
+                <button
+                  onClick={() =>
+                    generateReport(
+                      report.title
+                    )
+                  }
+                >
+                  <FaChartBar />
+                  Generate
+                </button>
 
+                <button
+                  onClick={() =>
+                    downloadReport(
+                      report.title
+                    )
+                  }
+                >
+                  <FaDownload />
+                  Download
+                </button>
 
-<div className="report-grid">
+              </div>
 
-{
+            </div>
 
-reports.map((report,index)=>(
+          ))}
 
-<div
+        </div>
 
-key={index}
+      </div>
 
-className="report-card"
-
->
-
-<div className="report-icon">
-
-{report.icon}
-
-</div>
-
-
-
-<h2>
-
-{report.title}
-
-</h2>
-
-
-
-<h3>
-
-{report.total}
-
-</h3>
-
-
-
-<div className="progress">
-
-<div
-
-style={{
-
-width:
-
-report.progress
-
-}}
-
->
-
-</div>
-
-</div>
-
-
-
-<span>
-
-Completion
-
-{report.progress}
-
-</span>
-
-
-
-<div className="report-actions">
-
-<button>
-
-<FaChartBar/>
-
-Generate
-
-</button>
-
-
-
-<button>
-
-<FaDownload/>
-
-Download
-
-</button>
-
-</div>
-
-</div>
-
-))
-
-}
-
-</div>
-
-</div>
-
-</AdminLayout>
-
-)
-
+    </AdminLayout>
+  );
 }

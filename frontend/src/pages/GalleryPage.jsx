@@ -1,241 +1,274 @@
-import "./GalleryPage.css"
 
-const categories=[
-"All",
-"Education",
-"Health",
-"Youth",
-"Women",
-"Community",
-"Environment"
-]
+import "./GalleryPage.css";
+import { useEffect, useState } from "react";
 
-const gallery=[
+const API_URL = import.meta.env.VITE_API_URL;
 
-{
-image:"/images/gallery1.jpg",
-title:"Education Support",
-category:"Education"
-},
+const categories = [
+  "All",
+  "Education",
+  "Health",
+  "Youth",
+  "Women",
+  "Community",
+  "Environment"
+];
 
-{
-image:"/images/gallery2.jpg",
-title:"Community Outreach",
-category:"Community"
-},
+export default function GalleryPage() {
 
-{
-image:"/images/gallery3.jpg",
-title:"Health Camp",
-category:"Health"
-},
+  const [gallery, setGallery] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState("All");
 
-{
-image:"/images/gallery4.jpg",
-title:"Women Empowerment",
-category:"Women"
-},
+  useEffect(() => {
+    loadGallery();
+  }, []);
 
-{
-image:"/images/gallery5.jpg",
-title:"Youth Training",
-category:"Youth"
-},
+  async function loadGallery() {
+    try {
 
-{
-image:"/images/gallery6.jpg",
-title:"Tree Planting",
-category:"Environment"
-},
+      const response = await fetch(
+        `${API_URL}/api/gallery`
+      );
 
-]
+      const data = await response.json();
 
-export default function GalleryPage(){
+      if (data.success) {
+        setGallery(data.gallery || []);
+      }
 
-return(
+    } catch (error) {
 
-<section className="gallery-page">
+      console.error(
+        "Failed to load gallery:",
+        error
+      );
 
-<div className="gallery-hero">
+    } finally {
 
-<span>
-OUR GALLERY
-</span>
+      setLoading(false);
 
-<h1>
+    }
+  }
 
-Stories Of Hope In Pictures
+  const filteredGallery =
+    activeCategory === "All"
+      ? gallery
+      : gallery.filter(
+          item =>
+            item.category === activeCategory
+        );
 
-</h1>
+  if (loading) {
+    return (
+      <section className="gallery-loading">
+        <div className="loader"></div>
+        <h2>Loading Gallery...</h2>
+      </section>
+    );
+  }
 
-<p>
+  return (
+    <section className="gallery-page">
 
-Explore moments of transformation,
-community impact and lives being changed
-through S&S One Family Foundation.
+      {/* HERO */}
 
-</p>
+      <section className="gallery-hero">
 
-</div>
+        <div className="hero-content">
 
+          <span>
+            OUR GALLERY
+          </span>
 
-<div className="gallery-filter">
+          <h1>
+            Stories Of Hope In Pictures
+          </h1>
 
-{
-categories.map((item,index)=>(
+          <p>
+            Explore moments of transformation,
+            community impact and lives being
+            changed through S&S One Family
+            Foundation.
+          </p>
 
-<button key={index}>
+        </div>
 
-{item}
+      </section>
 
-</button>
+      {/* FILTERS */}
 
-))
+      <div className="gallery-filter">
+
+        {categories.map((item) => (
+
+          <button
+            key={item}
+            className={
+              activeCategory === item
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setActiveCategory(item)
+            }
+          >
+            {item}
+          </button>
+
+        ))}
+
+      </div>
+
+      {/* FEATURED IMAGE */}
+
+      {gallery.length > 0 && (
+
+        <section className="featured-image">
+
+          <img
+            src={gallery[0].url}
+            alt={gallery[0].name}
+          />
+
+          <div className="featured-overlay">
+
+            <h2>
+              {gallery[0].name ||
+                "Building Brighter Futures"}
+            </h2>
+
+            <p>
+              Every image tells a story of
+              hope, resilience and
+              transformation.
+            </p>
+
+          </div>
+
+        </section>
+
+      )}
+
+      {/* GALLERY */}
+
+      <div className="gallery-grid">
+
+        {filteredGallery.length === 0 ? (
+
+          <div className="gallery-empty">
+
+            <h2>
+              No Media Found
+            </h2>
+
+            <p>
+              Upload media from the
+              Gallery Manager.
+            </p>
+
+          </div>
+
+        ) : (
+
+          filteredGallery.map((item) => (
+
+            <div
+              key={item.id}
+              className="gallery-card"
+            >
+
+              {item.type === "video" ? (
+
+                <video controls>
+                  <source src={item.url} />
+                </video>
+
+              ) : (
+
+                <img
+                  src={item.url}
+                  alt={item.name}
+                />
+
+              )}
+
+              <div className="overlay">
+
+                <h3>
+                  {item.name}
+                </h3>
+
+                <span>
+                  {item.category ||
+                    "Gallery"}
+                </span>
+
+              </div>
+
+            </div>
+
+          ))
+
+        )}
+
+      </div>
+
+      {/* IMPACT */}
+
+      <section className="gallery-impact">
+
+        <div>
+
+          <h2>
+            {gallery.length}+
+          </h2>
+
+          <p>
+            Gallery Uploads
+          </p>
+
+        </div>
+
+        <div>
+
+          <h2>
+            10K+
+          </h2>
+
+          <p>
+            Lives Impacted
+          </p>
+
+        </div>
+
+        <div>
+
+          <h2>
+            100+
+          </h2>
+
+          <p>
+            Volunteers
+          </p>
+
+        </div>
+
+        <div>
+
+          <h2>
+            25+
+          </h2>
+
+          <p>
+            Partners
+          </p>
+
+        </div>
+
+      </section>
+
+    </section>
+  );
 }
 
-</div>
-
-
-
-<div className="featured-image">
-
-<img
-src="/images/hero-gallery.jpg"
-alt=""
-/>
-
-<div className="featured-overlay">
-
-<h2>
-
-Building Brighter Futures
-
-</h2>
-
-<p>
-
-Every image tells a story of hope.
-
-</p>
-
-</div>
-
-</div>
-
-
-
-<div className="gallery-grid">
-
-{
-
-gallery.map((item,index)=>(
-
-<div
-className="gallery-card"
-key={index}
->
-
-<img
-src={item.image}
-alt=""
-/>
-
-<div className="overlay">
-
-<h3>
-
-{item.title}
-
-</h3>
-
-<span>
-
-{item.category}
-
-</span>
-
-</div>
-
-</div>
-
-))
-
-}
-
-</div>
-
-
-
-<div className="gallery-impact">
-
-<div>
-
-<h2>
-
-50+
-
-</h2>
-
-<p>
-
-Community Programs
-
-</p>
-
-</div>
-
-<div>
-
-<h2>
-
-10K+
-
-</h2>
-
-<p>
-
-Lives Impacted
-
-</p>
-
-</div>
-
-<div>
-
-<h2>
-
-100+
-
-</h2>
-
-<p>
-
-Volunteers
-
-</p>
-
-</div>
-
-<div>
-
-<h2>
-
-25+
-
-</h2>
-
-<p>
-
-Partners
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-)
-
-}
