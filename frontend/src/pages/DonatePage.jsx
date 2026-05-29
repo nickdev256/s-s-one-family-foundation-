@@ -1,54 +1,109 @@
-import "./DonatePage.css"
-import { useState } from "react"
-import { FaHandsHelping, FaUsers, FaCheck } from "react-icons/fa"
+```jsx
+import "./DonatePage.css";
+import { useState } from "react";
+
+import {
+  FaHandsHelping,
+  FaUsers,
+  FaCheck,
+} from "react-icons/fa";
 
 export default function DonatePage() {
 
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
 
-  const [donationType, setDonationType] = useState("General Fund")
+  const [loading, setLoading] = useState(false);
 
-  const [amount, setAmount] = useState(100)
+  const [success, setSuccess] = useState(false);
 
-  const [monthly, setMonthly] = useState(false)
+  const [donationType, setDonationType] =
+    useState("General Fund");
 
-  const [payment, setPayment] = useState("Credit Card")
+  const [amount, setAmount] = useState(100);
+
+  const [monthly, setMonthly] = useState(false);
+
+  const [payment, setPayment] =
+    useState("Credit Card");
 
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    comment: ""
-  })
+    comment: "",
+  });
 
   const [paymentData, setPaymentData] = useState({
     cardNumber: "",
     expiry: "",
     cvv: "",
     paypalEmail: "",
-    phone: ""
-  })
+    phone: "",
+  });
 
-  const amounts = [10, 25, 50, 100, 250]
+  const amounts = [10, 25, 50, 100, 250];
 
   function update(e) {
+
     setForm({
       ...form,
-      [e.target.name]: e.target.value
-    })
+      [e.target.name]: e.target.value,
+    });
+
   }
 
-  function donate() {
-    alert(
-      `Donation Submitted
+  async function donate() {
 
-Type: ${donationType}
-Amount: $${amount}
-Frequency: ${monthly ? "Monthly" : "One Time"}
-Payment: ${payment}
+    try {
 
-Thank You ❤️`
-    )
+      setLoading(true);
+
+      const response = await fetch(
+        "http://localhost:5000/api/donations",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            donationType,
+            amount,
+            monthly,
+            payment,
+            form,
+            paymentData,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      setLoading(false);
+
+      if (data.success) {
+
+        setSuccess(true);
+
+        alert(data.message);
+
+      } else {
+
+        alert(data.message);
+
+      }
+
+    } catch (error) {
+
+      console.log(error);
+
+      setLoading(false);
+
+      alert("Payment failed");
+
+    }
+
   }
 
   return (
@@ -56,268 +111,506 @@ Thank You ❤️`
 
       {/* HERO */}
       <section className="donate-hero">
+
         <div className="hero-overlay" />
+
         <div className="hero-content">
+
           <h1>Donate Now</h1>
+
           <p>
-            Your support transforms lives through education, healthcare and community empowerment.
+            Your support transforms lives
+            through education, healthcare
+            and community empowerment.
           </p>
+
         </div>
+
       </section>
 
       <section className="donate-container">
 
         {/* STEP 1 */}
         {step === 1 && (
+
           <>
+
             <div className="donate-heading">
+
               <span>MAKE AN IMPACT</span>
+
               <h2>CHOOSE DONATION TYPE</h2>
 
               <div className="divider">
-                <div /> ♡ <div />
+                <div />
+                ♡
+                <div />
               </div>
 
-              <p>Choose where your support creates the greatest impact.</p>
+              <p>
+                Choose where your support
+                creates the greatest impact.
+              </p>
+
             </div>
 
             <div className="option-grid">
+
               {[
                 {
                   title: "General Fund",
                   icon: <FaHandsHelping />,
-                  text: "Support our overall mission."
+                  text: "Support our overall mission.",
                 },
+
                 {
                   title: "Care For Children",
                   icon: <FaUsers />,
-                  text: "Support vulnerable children."
-                }
-              ].map(card => (
+                  text: "Support vulnerable children.",
+                },
+
+              ].map((card) => (
+
                 <button
                   key={card.title}
-                  className={donationType === card.title ? "donation-card active" : "donation-card"}
-                  onClick={() => setDonationType(card.title)}
+
+                  className={
+                    donationType === card.title
+                      ? "donation-card active"
+                      : "donation-card"
+                  }
+
+                  onClick={() =>
+                    setDonationType(card.title)
+                  }
                 >
+
                   {donationType === card.title && (
+
                     <div className="selected">
                       <FaCheck />
                     </div>
+
                   )}
 
-                  <div className="icon">{card.icon}</div>
+                  <div className="icon">
+                    {card.icon}
+                  </div>
+
                   <h3>{card.title}</h3>
+
                   <div className="small-line" />
+
                   <p>{card.text}</p>
+
                 </button>
+
               ))}
+
             </div>
 
             <div className="donate-action">
-              <button onClick={() => setStep(2)}>CONTINUE →</button>
+
+              <button
+                onClick={() => setStep(2)}
+              >
+                CONTINUE →
+              </button>
+
             </div>
+
           </>
+
         )}
 
         {/* STEP 2 */}
         {step === 2 && (
+
           <>
+
             <h2>CHOOSE AMOUNT</h2>
 
             <div className="amount-grid">
-              {amounts.map(item => (
+
+              {amounts.map((item) => (
+
                 <div
                   key={item}
-                  className={amount === item ? "amount-card active" : "amount-card"}
-                  onClick={() => setAmount(item)}
+
+                  className={
+                    amount === item
+                      ? "amount-card active"
+                      : "amount-card"
+                  }
+
+                  onClick={() =>
+                    setAmount(item)
+                  }
                 >
                   ${item}
                 </div>
+
               ))}
+
             </div>
 
             <label className="monthly">
+
               <input
                 type="checkbox"
+
                 checked={monthly}
-                onChange={() => setMonthly(!monthly)}
+
+                onChange={() =>
+                  setMonthly(!monthly)
+                }
               />
+
               Monthly Donation
+
             </label>
 
             <div className="nav">
-              <button onClick={() => setStep(1)}>BACK</button>
-              <button onClick={() => setStep(3)} className="continue">
+
+              <button
+                onClick={() => setStep(1)}
+              >
+                BACK
+              </button>
+
+              <button
+                onClick={() => setStep(3)}
+                className="continue"
+              >
                 CONTINUE
               </button>
+
             </div>
+
           </>
+
         )}
 
         {/* STEP 3 */}
         {step === 3 && (
+
           <>
+
             <h2>YOUR DETAILS</h2>
 
-            <form>
-              <input name="firstName" placeholder="First Name" onChange={update} />
-              <input name="lastName" placeholder="Last Name" onChange={update} />
-              <input name="email" placeholder="Email" onChange={update} />
-              <textarea name="comment" placeholder="Message" onChange={update} />
+            <form className="donor-form">
+
+              <input
+                name="firstName"
+                placeholder="First Name"
+                onChange={update}
+              />
+
+              <input
+                name="lastName"
+                placeholder="Last Name"
+                onChange={update}
+              />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={update}
+              />
+
+              <textarea
+                name="comment"
+                placeholder="Message"
+                onChange={update}
+              />
+
             </form>
 
             <div className="nav">
-              <button onClick={() => setStep(2)}>BACK</button>
-              <button onClick={() => setStep(4)} className="continue">
+
+              <button
+                onClick={() => setStep(2)}
+              >
+                BACK
+              </button>
+
+              <button
+                onClick={() => setStep(4)}
+                className="continue"
+              >
                 CONTINUE
               </button>
+
             </div>
+
           </>
+
         )}
 
-        {/* STEP 4 - PAYMENT */}
+        {/* STEP 4 */}
         {step === 4 && (
+
           <>
+
             <h2>PAYMENT METHOD</h2>
 
             <div className="payment-grid">
-              {["Credit Card", "PayPal", "MTN Mobile Money", "Airtel Money"].map(method => (
+
+              {[
+                "Credit Card",
+                "PayPal",
+                "MTN Mobile Money",
+                "Airtel Money",
+              ].map((method) => (
+
                 <button
                   key={method}
-                  className={payment === method ? "active" : ""}
-                  onClick={() => setPayment(method)}
+
+                  className={
+                    payment === method
+                      ? "active"
+                      : ""
+                  }
+
+                  onClick={() =>
+                    setPayment(method)
+                  }
                 >
                   {method}
                 </button>
+
               ))}
+
             </div>
 
-            {/* CREDIT CARD */}
+            {/* CARD */}
             {payment === "Credit Card" && (
+
               <div className="payment-form">
+
                 <h3>Credit / Debit Card</h3>
 
                 <input
                   placeholder="Card Number"
+
                   value={paymentData.cardNumber}
+
                   onChange={(e) =>
-                    setPaymentData({ ...paymentData, cardNumber: e.target.value })
+                    setPaymentData({
+                      ...paymentData,
+                      cardNumber: e.target.value,
+                    })
                   }
                 />
 
                 <div className="row">
+
                   <input
                     placeholder="MM/YY"
+
                     value={paymentData.expiry}
+
                     onChange={(e) =>
-                      setPaymentData({ ...paymentData, expiry: e.target.value })
+                      setPaymentData({
+                        ...paymentData,
+                        expiry: e.target.value,
+                      })
                     }
                   />
 
                   <input
                     placeholder="CVV"
+
                     type="password"
+
                     value={paymentData.cvv}
+
                     onChange={(e) =>
-                      setPaymentData({ ...paymentData, cvv: e.target.value })
+                      setPaymentData({
+                        ...paymentData,
+                        cvv: e.target.value,
+                      })
                     }
                   />
+
                 </div>
 
-                <p className="hint">
-                  Secure payment will be processed via your payment gateway.
-                </p>
               </div>
+
             )}
 
             {/* PAYPAL */}
             {payment === "PayPal" && (
+
               <div className="payment-form">
+
                 <h3>PayPal Checkout</h3>
 
                 <input
                   placeholder="PayPal Email"
+
                   value={paymentData.paypalEmail}
+
                   onChange={(e) =>
-                    setPaymentData({ ...paymentData, paypalEmail: e.target.value })
+                    setPaymentData({
+                      ...paymentData,
+                      paypalEmail: e.target.value,
+                    })
                   }
                 />
 
-                <p className="hint">
-                  You will be redirected to PayPal to complete payment.
-                </p>
               </div>
+
             )}
 
             {/* MTN */}
             {payment === "MTN Mobile Money" && (
+
               <div className="payment-form">
+
                 <h3>MTN Mobile Money</h3>
 
                 <input
                   placeholder="MTN Phone Number"
+
                   value={paymentData.phone}
+
                   onChange={(e) =>
-                    setPaymentData({ ...paymentData, phone: e.target.value })
+                    setPaymentData({
+                      ...paymentData,
+                      phone: e.target.value,
+                    })
                   }
                 />
 
-                <p className="hint">
-                  A prompt will be sent to your MTN phone to approve payment.
-                </p>
               </div>
+
             )}
 
             {/* AIRTEL */}
             {payment === "Airtel Money" && (
+
               <div className="payment-form">
+
                 <h3>Airtel Money</h3>
 
                 <input
                   placeholder="Airtel Phone Number"
+
                   value={paymentData.phone}
+
                   onChange={(e) =>
-                    setPaymentData({ ...paymentData, phone: e.target.value })
+                    setPaymentData({
+                      ...paymentData,
+                      phone: e.target.value,
+                    })
                   }
                 />
 
-                <p className="hint">
-                  You will receive a payment request on Airtel Money.
-                </p>
               </div>
+
             )}
 
             <div className="nav">
-              <button onClick={() => setStep(3)}>BACK</button>
-              <button onClick={() => setStep(5)} className="continue">
+
+              <button
+                onClick={() => setStep(3)}
+              >
+                BACK
+              </button>
+
+              <button
+                onClick={() => setStep(5)}
+                className="continue"
+              >
                 CONTINUE
               </button>
+
             </div>
+
           </>
+
         )}
 
         {/* STEP 5 */}
         {step === 5 && (
+
           <>
+
             <h2>DONATION SUMMARY</h2>
 
             <div className="summary">
-              <p>Donation <span>{donationType}</span></p>
-              <p>Amount <span>${amount}</span></p>
-              <p>Frequency <span>{monthly ? "Monthly" : "One Time"}</span></p>
-              <p>Payment <span>{payment}</span></p>
+
+              <p>
+                Donation
+                <span>{donationType}</span>
+              </p>
+
+              <p>
+                Amount
+                <span>${amount}</span>
+              </p>
+
+              <p>
+                Frequency
+                <span>
+                  {monthly
+                    ? "Monthly"
+                    : "One Time"}
+                </span>
+              </p>
+
+              <p>
+                Payment
+                <span>{payment}</span>
+              </p>
+
             </div>
 
             <div className="nav">
-              <button onClick={() => setStep(4)}>BACK</button>
-              <button className="continue" onClick={donate}>
-                DONATE NOW
+
+              <button
+                onClick={() => setStep(4)}
+              >
+                BACK
               </button>
+
+              <button
+                className="continue"
+
+                onClick={donate}
+
+                disabled={loading}
+              >
+
+                {loading
+                  ? "PROCESSING..."
+                  : "DONATE NOW"}
+
+              </button>
+
             </div>
+
+            {success && (
+
+              <div className="success-message">
+
+                <h3>
+                  Donation Submitted Successfully ❤️
+                </h3>
+
+              </div>
+
+            )}
+
           </>
+
         )}
 
       </section>
+
     </div>
-  )
+  );
 }
+```
