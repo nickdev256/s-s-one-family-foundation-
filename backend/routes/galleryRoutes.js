@@ -1,14 +1,25 @@
 import express from "express";
+import upload from "../middleware/uploadMiddleware.js";
 
 import {
   getGallery,
-  deleteMedia
+  uploadMedia,
+  deleteMedia,
 } from "../controllers/galleryController.js";
 
 const router = express.Router();
 
 router.get("/", getGallery);
 
-router.delete("/:id", deleteMedia);
+router.post(
+  "/upload",
+  upload.single("file"),
+  uploadMedia
+);
+
+router.delete(
+  "/:id",
+  deleteMedia
+);
 
 export default router;
