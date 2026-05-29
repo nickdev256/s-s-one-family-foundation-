@@ -1,4 +1,4 @@
-import { supabase } from "../config/supabase.js";
+import { supabase } from "../config/supabaseClient.js";
 
 export const getDashboardStats = async (req, res) => {
   try {
