@@ -1,378 +1,162 @@
-import "./GalleryManager.css"
+import "./GalleryManager.css";
+
+import { useEffect, useState } from "react";
+
+import AdminLayout from "../layout/AdminLayout";
 
 import {
+  FaImages,
+  FaVideo,
+  FaTrash,
+  FaPlus,
+  FaSpinner
+} from "react-icons/fa";
 
-useState
+import { supabase } from "../../lib/supabase";
 
-}
+export default function GalleryManager() {
 
-from "react"
+  const [loading, setLoading] = useState(true);
 
-import AdminLayout from "../layout/AdminLayout"
+  const [photos, setPhotos] = useState([]);
 
-import {
+  const [videos, setVideos] = useState([]);
 
-FaImages,
-FaVideo,
-FaTrash,
-FaPlus
+  useEffect(() => {
+    loadGallery();
+  }, []);
 
-}
+  async function loadGallery() {
 
-from "react-icons/fa"
+    try {
 
+      const res = await fetch(
+        "http://localhost:5000/api/gallery"
+      );
 
+      const data = await res.json();
 
-export default function GalleryManager(){
+      if (data.success) {
 
-const [
+        setPhotos(
+          data.gallery.filter(
+            item => item.type === "image"
+          )
+        );
 
-photos,
-setPhotos
+        setVideos(
+          data.gallery.filter(
+            item => item.type === "video"
+          )
+        );
+      }
 
-]=useState([])
+    } finally {
 
-const [
+      setLoading(false);
 
-videos,
-setVideos
+    }
+  }
 
-]=useState([])
+  async function uploadPhotos(e) {
 
+    const files = Array.from(e.target.files);
 
+    for (const file of files) {
 
-function uploadPhotos(e){
+      const filename =
+        `${Date.now()}-${file.name}`;
 
-const files=
+      const { error } =
+        await supabase.storage
+          .from("gallery-images")
+          .upload(filename, file);
 
-Array.from(
-e.target.files
-)
+      if (error) continue;
 
-const images=
+      const {
+        data: publicUrl
+      } = supabase.storage
+        .from("gallery-images")
+        .getPublicUrl(filename);
 
-files.map(file=>({
+      await supabase
+        .from("gallery")
+        .insert([
+          {
+            type: "image",
+            name: file.name,
+            url: publicUrl.publicUrl
+          }
+        ]);
+    }
 
-url:
+    loadGallery();
+  }
 
-URL.createObjectURL(
-file
-),
+  async function uploadVideos(e) {
 
-name:file.name
+    const files = Array.from(e.target.files);
 
-}))
+    for (const file of files) {
 
-setPhotos([
+      const filename =
+        `${Date.now()}-${file.name}`;
 
-...photos,
-
-...images
-
-])
-
-}
-
-
-
-function uploadVideos(e){
-
-const files=
-
-Array.from(
-e.target.files
-)
-
-const media=
-
-files.map(file=>({
-
-url:
-
-URL.createObjectURL(
-file
-),
-
-name:file.name
-
-}))
-
-setVideos([
-
-...videos,
-
-...media
-
-])
-
-}
-
-
-
-function deletePhoto(index){
-
-setPhotos(
-
-photos.filter(
-
-(_,i)=>
-
-i!==index
-
-)
-
-)
-
-}
-
-
-
-function deleteVideo(index){
-
-setVideos(
-
-videos.filter(
-
-(_,i)=>
-
-i!==index
-
-)
-
-)
-
-}
-
-
-
-return(
-
-<AdminLayout>
-
-<div className="gallery-manager">
-
-
-<div className="gallery-header">
-
-<span>
-
-MEDIA MANAGEMENT
-
-</span>
-
-<h1>
-
-Gallery Manager
-
-</h1>
-
-<p>
-
-Manage photos and videos
-displayed on the website.
-
-</p>
-
-</div>
-
-
-
-<div className="upload-box">
-
-
-<label className="upload-btn">
-
-<FaImages/>
-
-Upload Photos
-
-<input
-
-type="file"
-
-multiple
-
-accept="image/*"
-
-hidden
-
-onChange={uploadPhotos}
-
-/>
-
-</label>
-
-
-
-<label className="upload-btn">
-
-<FaVideo/>
-
-Upload Videos
-
-<input
-
-type="file"
-
-multiple
-
-accept="video/*"
-
-hidden
-
-onChange={uploadVideos}
-
-/>
-
-</label>
-
-</div>
-
-
-
-{/* PHOTOS */}
-
-<div className="media-section">
-
-<h2>
-
-Photos
-
-</h2>
-
-<div className="media-grid">
-
-{
-
-photos.length===0
-
-?
-
-<div className="empty">
-
-<FaPlus/>
-
-No Photos Uploaded
-
-</div>
-
-:
-
-photos.map((item,index)=>(
-
-<div
-key={index}
-className="media-card"
->
-
-<img
-src={item.url}
-alt=""
-/>
-
-<button
-
-onClick={()=>
-
-deletePhoto(
-index
-)
-
-}
-
->
-
-<FaTrash/>
-
-</button>
-
-</div>
-
-))
-
-}
-
-</div>
-
-</div>
-
-
-
-{/* VIDEOS */}
-
-<div className="media-section">
-
-<h2>
-
-Videos
-
-</h2>
-
-<div className="media-grid">
-
-{
-
-videos.length===0
-
-?
-
-<div className="empty">
-
-<FaPlus/>
-
-No Videos Uploaded
-
-</div>
-
-:
-
-videos.map((item,index)=>(
-
-<div
-key={index}
-className="media-card"
->
-
-<video
-controls
->
-
-<source
-src={item.url}
-/>
-
-</video>
-
-<button
-
-onClick={()=>
-
-deleteVideo(
-index
-)
-
-}
-
->
-
-<FaTrash/>
-
-</button>
-
-</div>
-
-))
-
-}
-
-</div>
-
-</div>
-
-</div>
-
-</AdminLayout>
-
-)
-
+      const { error } =
+        await supabase.storage
+          .from("gallery-videos")
+          .upload(filename, file);
+
+      if (error) continue;
+
+      const {
+        data: publicUrl
+      } = supabase.storage
+        .from("gallery-videos")
+        .getPublicUrl(filename);
+
+      await supabase
+        .from("gallery")
+        .insert([
+          {
+            type: "video",
+            name: file.name,
+            url: publicUrl.publicUrl
+          }
+        ]);
+    }
+
+    loadGallery();
+  }
+
+  async function deleteMedia(id) {
+
+    await fetch(
+      `http://localhost:5000/api/gallery/${id}`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    loadGallery();
+  }
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="loading-box">
+          <FaSpinner className="spin" />
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  return (
+    <AdminLayout>
+
+      {/* keep your existing UI */}
+
+    </AdminLayout>
+  );
 }

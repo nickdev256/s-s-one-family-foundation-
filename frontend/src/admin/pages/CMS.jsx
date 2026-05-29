@@ -1,152 +1,203 @@
-import "./CMS.css"
+import "./CMSPage.css";
 
-import AdminLayout from "../layout/AdminLayout"
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom"
+import AdminLayout from "../layout/AdminLayout";
 
 import {
+  FaSave,
+  FaSpinner
+} from "react-icons/fa";
 
-FaHome,
-FaInfoCircle,
-FaLayerGroup,
-FaUsers,
-FaPhone,
-FaWindowRestore
+export default function CMSPage() {
 
-}
+  const { page } = useParams();
 
-from "react-icons/fa"
+  const [loading, setLoading] = useState(true);
 
+  const [form, setForm] = useState({
+    section: "main",
+    title: "",
+    content: "",
+    image_url: ""
+  });
 
+  useEffect(() => {
+    loadContent();
+  }, [page]);
 
-export default function CMS(){
+  async function loadContent() {
+    try {
 
-const navigate=useNavigate()
+      setLoading(true);
 
-const pages=[
+      const response = await fetch(
+        `http://localhost:5000/api/cms/${page}`
+      );
 
-{
-title:"Homepage",
-icon:<FaHome/>,
-route:"/admin/cms/home"
-},
+      const data = await response.json();
 
-{
-title:"About Page",
-icon:<FaInfoCircle/>,
-route:"/admin/cms/about"
-},
+      if (
+        data.success &&
+        data.content.length
+      ) {
+        setForm({
+          section:
+            data.content[0].section || "main",
 
-{
-title:"Programs",
-icon:<FaLayerGroup/>,
-route:"/admin/cms/programs"
-},
+          title:
+            data.content[0].title || "",
 
-{
-title:"Team",
-icon:<FaUsers/>,
-route:"/admin/cms/team"
-},
+          content:
+            data.content[0].content || "",
 
-{
-title:"Contact",
-icon:<FaPhone/>,
-route:"/admin/cms/contact"
-},
+          image_url:
+            data.content[0].image_url || ""
+        });
+      }
 
-{
-title:"Footer",
-icon:<FaWindowRestore/>,
-route:"/admin/cms/footer"
-}
+    } catch (error) {
 
-]
+      console.error(error);
 
-return(
+    } finally {
 
-<AdminLayout>
+      setLoading(false);
 
-<div className="cms-page">
+    }
+  }
 
+  async function saveContent() {
 
-<div className="cms-header">
+    try {
 
-<span>
+      const response = await fetch(
+        `http://localhost:5000/api/cms/${page}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify(form)
+        }
+      );
 
-CONTENT MANAGEMENT
+      const data = await response.json();
 
-</span>
+      if (data.success) {
+        alert("Content Saved Successfully");
+      }
 
-<h1>
+    } catch (error) {
 
-Website CMS
+      console.error(error);
 
-</h1>
+      alert("Failed to save content");
 
-<p>
+    }
+  }
 
-Manage and update website sections
-without touching code.
+  if (loading) {
+    return (
+      <AdminLayout>
 
-</p>
+        <div className="cms-loading">
 
-</div>
+          <FaSpinner className="spin" />
 
+          <h2>
+            Loading Content...
+          </h2>
 
+        </div>
 
-<div className="cms-grid">
+      </AdminLayout>
+    );
+  }
 
-{
+  return (
+    <AdminLayout>
 
-pages.map((page,index)=>(
+      <div className="cms-editor">
 
-<button
+        <div className="cms-editor-header">
 
-key={index}
+          <span>
+            CMS EDITOR
+          </span>
 
-className="cms-card"
+          <h1>
+            {page.toUpperCase()}
+          </h1>
 
-onClick={()=>
+          <p>
+            Edit website content
+            and publish instantly.
+          </p>
 
-navigate(
-page.route
-)
+        </div>
 
-}
+        <div className="cms-form">
 
->
+          <label>
+            Title
+          </label>
 
-<div className="cms-icon">
+          <input
+            value={form.title}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                title: e.target.value
+              })
+            }
+          />
 
-{page.icon}
+          <label>
+            Content
+          </label>
 
-</div>
+          <textarea
+            rows="10"
+            value={form.content}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                content:
+                  e.target.value
+              })
+            }
+          />
 
-<h3>
+          <label>
+            Image URL
+          </label>
 
-{page.title}
+          <input
+            value={form.image_url}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                image_url:
+                  e.target.value
+              })
+            }
+          />
 
-</h3>
+          <button
+            className="save-btn"
+            onClick={saveContent}
+          >
+            <FaSave />
+            Save Changes
+          </button>
 
-<p>
+        </div>
 
-Open editor
+      </div>
 
-</p>
-
-</button>
-
-))
-
-}
-
-</div>
-
-</div>
-
-</AdminLayout>
-
-)
-
+    </AdminLayout>
+  );
 }

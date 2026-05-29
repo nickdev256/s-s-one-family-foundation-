@@ -1,364 +1,269 @@
-import "./PartnersAdmin.css"
+import "./PartnersAdmin.css";
 
 import {
+  FaHandshake,
+  FaSearch,
+  FaCheck,
+  FaTimes,
+  FaBuilding,
+  FaSpinner
+} from "react-icons/fa";
 
-FaHandshake,
-FaSearch,
-FaCheck,
-FaTimes,
-FaBuilding
+import { useState, useEffect } from "react";
 
-}
+import AdminLayout from "../layout/AdminLayout";
 
-from "react-icons/fa"
+export default function PartnersAdmin() {
 
-import {
+  const [search, setSearch] = useState("");
 
-useState
+  const [loading, setLoading] = useState(true);
 
-}
+  const [partners, setPartners] = useState([]);
 
-from "react"
+  useEffect(() => {
+    loadPartners();
+  }, []);
 
-import AdminLayout from "../layout/AdminLayout"
+  async function loadPartners() {
+    try {
 
+      setLoading(true);
 
+      const response = await fetch(
+        "http://localhost:5000/api/partners"
+      );
 
-export default function PartnersAdmin(){
+      const data = await response.json();
 
-const [
+      if (data.success) {
+        setPartners(data.partners);
+      }
 
-search,
-setSearch
+    } catch (error) {
+      console.error("Failed loading partners:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-]=useState("")
+  async function approve(id) {
+    try {
 
+      await fetch(
+        `http://localhost:5000/api/partners/${id}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            status: "Approved"
+          })
+        }
+      );
 
+      loadPartners();
 
-const [
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-partners,
-setPartners
+  async function reject(id) {
+    try {
 
-]=useState([
+      await fetch(
+        `http://localhost:5000/api/partners/${id}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            status: "Rejected"
+          })
+        }
+      );
 
-{
+      loadPartners();
 
-id:1,
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-organization:"Hope Foundation",
+  const filtered = partners.filter(item =>
+    item.organization
+      ?.toLowerCase()
+      .includes(search.toLowerCase())
+  );
 
-contact:"Sarah"
+  return (
+    <AdminLayout>
 
-,
+      <div className="partners-page">
 
-type:"Education",
+        {/* HEADER */}
 
-status:"Pending"
+        <div className="page-header">
 
-},
+          <div>
 
-{
+            <span>
+              PARTNERSHIPS
+            </span>
 
-id:2,
+            <h1>
+              Partner Requests
+            </h1>
 
-organization:"Global Care",
+            <p>
+              Manage NGO partnership requests
+              and collaborations.
+            </p>
 
-contact:"John",
+          </div>
 
-type:"Healthcare",
+          <div className="partner-total">
 
-status:"Approved"
+            <FaHandshake />
 
-},
+            {partners.length}
 
-{
+          </div>
 
-id:3,
+        </div>
 
-organization:"Future Youth",
+        {/* SEARCH */}
 
-contact:"David",
+        <div className="partner-search">
 
-type:"Community",
+          <FaSearch />
 
-status:"Pending"
+          <input
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+            placeholder="Search partner..."
+          />
 
-}
+        </div>
 
-])
+        {/* LOADING */}
 
+        {loading ? (
 
+          <div className="loading-box">
 
-function approve(id){
+            <FaSpinner className="spin" />
 
-setPartners(
+            <h3>Loading Partners...</h3>
 
-partners.map(item=>
+          </div>
 
-item.id===id
+        ) : (
 
-?
+          <div className="partners-grid">
 
-{
+            {filtered.length === 0 ? (
 
-...item,
+              <div className="empty-state">
 
-status:"Approved"
+                <h3>No Partner Requests Found</h3>
 
-}
+              </div>
 
-:
+            ) : (
 
-item
+              filtered.map((item) => (
 
-)
+                <div
+                  key={item.id}
+                  className="partner-card"
+                >
 
-)
+                  <div className="partner-icon">
 
-}
+                    <FaBuilding />
 
+                  </div>
 
+                  <h2>
+                    {item.organization}
+                  </h2>
 
-function reject(id){
+                  <h4>
+                    {item.contact}
+                  </h4>
 
-setPartners(
+                  <p>
+                    {item.type}
+                  </p>
 
-partners.map(item=>
+                  {item.email && (
+                    <small>
+                      {item.email}
+                    </small>
+                  )}
 
-item.id===id
+                  <span
+                    className={
+                      item.status?.toLowerCase()
+                    }
+                  >
+                    {item.status}
+                  </span>
 
-?
+                  <div className="partner-actions">
 
-{
+                    <button
+                      className="approve"
+                      onClick={() =>
+                        approve(item.id)
+                      }
+                      disabled={
+                        item.status === "Approved"
+                      }
+                    >
 
-...item,
+                      <FaCheck />
 
-status:"Rejected"
+                      Approve
 
-}
+                    </button>
 
-:
+                    <button
+                      className="reject"
+                      onClick={() =>
+                        reject(item.id)
+                      }
+                      disabled={
+                        item.status === "Rejected"
+                      }
+                    >
 
-item
+                      <FaTimes />
 
-)
+                      Reject
 
-)
+                    </button>
 
-}
+                  </div>
 
+                </div>
 
+              ))
 
-const filtered=
+            )}
 
-partners.filter(item=>
+          </div>
 
-item.organization
+        )}
 
-.toLowerCase()
+      </div>
 
-.includes(
-
-search.toLowerCase()
-
-)
-
-)
-
-
-
-return(
-
-<AdminLayout>
-
-<div className="partners-page">
-
-
-<div className="page-header">
-
-<div>
-
-<span>
-
-PARTNERSHIPS
-
-</span>
-
-<h1>
-
-Partner Requests
-
-</h1>
-
-<p>
-
-Manage NGO partnership requests
-and collaborations.
-
-</p>
-
-</div>
-
-
-
-<div className="partner-total">
-
-<FaHandshake/>
-
-{partners.length}
-
-</div>
-
-</div>
-
-
-
-<div className="partner-search">
-
-<FaSearch/>
-
-<input
-
-value={search}
-
-onChange={(e)=>
-
-setSearch(
-e.target.value
-)
-
-}
-
-placeholder="Search partner"
-
-/>
-
-</div>
-
-
-
-<div className="partners-grid">
-
-{
-
-filtered.map(item=>(
-
-<div
-
-key={item.id}
-
-className="partner-card"
-
->
-
-<div className="partner-icon">
-
-<FaBuilding/>
-
-</div>
-
-
-
-<h2>
-
-{item.organization}
-
-</h2>
-
-
-
-<h4>
-
-{item.contact}
-
-</h4>
-
-
-
-<p>
-
-{item.type}
-
-</p>
-
-
-
-<span
-
-className={
-
-item.status
-.toLowerCase()
-
-}
-
->
-
-{item.status}
-
-</span>
-
-
-
-<div className="partner-actions">
-
-<button
-
-className="approve"
-
-onClick={()=>
-
-approve(
-item.id
-)
-
-}
-
->
-
-<FaCheck/>
-
-Approve
-
-</button>
-
-
-
-<button
-
-className="reject"
-
-onClick={()=>
-
-reject(
-item.id
-)
-
-}
-
->
-
-<FaTimes/>
-
-Reject
-
-</button>
-
-</div>
-
-</div>
-
-))
-
-}
-
-</div>
-
-</div>
-
-</AdminLayout>
-
-)
-
+    </AdminLayout>
+  );
 }

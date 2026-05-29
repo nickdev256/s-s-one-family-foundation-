@@ -214,4 +214,81 @@ padding:36px;
 
 }
 
+}.cms-editor{
+padding:40px;
+}
+
+.cms-editor-header{
+margin-bottom:30px;
+}
+
+.cms-editor-header span{
+color:#c59d5f;
+font-weight:700;
+letter-spacing:2px;
+}
+
+.cms-editor-header h1{
+margin:10px 0;
+font-size:40px;
+}
+
+.cms-form{
+display:flex;
+flex-direction:column;
+gap:15px;
+background:#fff;
+padding:30px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.cms-form label{
+font-weight:600;
+}
+
+.cms-form input,
+.cms-form textarea{
+width:100%;
+padding:15px;
+border:1px solid #ddd;
+border-radius:12px;
+font-size:15px;
+}
+
+.save-btn{
+border:none;
+background:#d4a853;
+color:white;
+padding:15px;
+border-radius:12px;
+font-weight:700;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+}
+
+.cms-loading{
+height:60vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:20px;
+}
+
+.spin{
+animation:spin 1s linear infinite;
+font-size:40px;
+}
+
+@keyframes spin{
+from{
+transform:rotate(0);
+}
+to{
+transform:rotate(360deg);
+}
 }
