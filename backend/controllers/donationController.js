@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { supabase } from "../supabaseClient.js";
+import { supabase } from "../config/supabase.js";
 
 export const createDonation = async (req, res) => {
 
