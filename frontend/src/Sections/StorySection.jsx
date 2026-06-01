@@ -187,16 +187,7 @@ Are
 
 
 <p>
-
-S&S One Family Foundation supports
-children and communities through
-education, healthcare,
-food support,
-protection and empowerment.
-
-Together we create sustainable
-change and brighter futures.
-
+S&S One Family Foundation is dedicated to creating social transformation through education, agriculture, talent development, housing, tourism, healthcare, and skills development, empowering individuals and communities with opportunities, support, and sustainable solutions that improve lives and build a brighter future for all.
 </p>
 
 

@@ -20,17 +20,10 @@ export default function Programs(){
 const programs=[
 
 {
-icon:<FaChild/>,
-title:'Child Support',
-description:
-'Providing vulnerable children with protection, food assistance, mentorship, psychosocial support and opportunities to grow in safe and loving environments.'
-},
-
-{
-icon:<FaBookOpen/>,
-title:'Education Support',
-description:
-'Supporting access to quality education through sponsorships, school materials, tuition support, digital learning and academic mentorship.'
+  icon: <FaChild />,
+  title: "Child & Education Support",
+  description:
+    "Supporting vulnerable children through protection, food assistance, mentorship, psychosocial care, sponsorships, school materials, tuition support, digital learning, and opportunities to thrive in safe and empowering environments."
 },
 
 {
@@ -55,11 +48,11 @@ description:
 },
 
 {
-icon:<FaLeaf/>,
-title:'Environmental Sustainability',
-description:
-'Promoting environmental conservation, tree planting, clean water initiatives and sustainable community development.'
-}
+  icon: <FaLeaf />,
+  title: "Environmental Sustainability & Tourism",
+  description:
+    "Promoting environmental conservation, tree planting, clean water initiatives, eco-tourism, cultural tourism, and sustainable community development to protect natural resources while creating opportunities for local communities."
+},
 
 ]
 
