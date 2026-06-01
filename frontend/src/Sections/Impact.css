@@ -432,4 +432,30 @@ font-size:1.5rem;
 
 }
 
+}.discover-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+margin-top:25px;
+
+width:200px;
+height:60px;
+
+background:#f4b400;
+color:#fff;
+
+text-decoration:none;
+
+border-radius:50px;
+
+font-weight:700;
+font-size:16px;
+
+transition:.3s ease;
+}
+
+.discover-btn:hover{
+transform:translateY(-4px);
+background:#d89b00;
 }

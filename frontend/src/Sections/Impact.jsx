@@ -6,10 +6,10 @@ FaHeartbeat,
 FaUsers,
 FaHandsHelping
 }
-
 from 'react-icons/fa'
 
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 export default function Impact(){
 
@@ -51,11 +51,8 @@ text:
 return(
 
 <section
-
 className="impact-section"
-
 id="impact"
-
 >
 
 {/* HEADER */}
@@ -90,7 +87,6 @@ OUR IMPACT
 
 </span>
 
-
 <h1>
 
 Transforming Lives.
@@ -105,7 +101,6 @@ Creating Opportunity.
 
 </h1>
 
-
 <p>
 
 S&S One Family Foundation exists to create lasting social transformation by empowering vulnerable children, strengthening families and equipping communities through education, health, protection, skills development and humanitarian support.
@@ -113,8 +108,6 @@ S&S One Family Foundation exists to create lasting social transformation by empo
 </p>
 
 </motion.div>
-
-
 
 {/* IMPACT CONTENT */}
 
@@ -144,11 +137,9 @@ once:true
 
 <div className="impact-visual">
 
-
 <div className="impact-stats">
 
 {
-
 pillars.map((item,index)=>(
 
 <motion.div
@@ -158,9 +149,7 @@ className="impact-card"
 key={index}
 
 whileHover={{
-
 y:-10
-
 }}
 
 >
@@ -171,13 +160,11 @@ y:-10
 
 </div>
 
-
 <h2>
 
 {item.title}
 
 </h2>
-
 
 <p>
 
@@ -187,15 +174,10 @@ y:-10
 
 </motion.div>
 
-)
-
-)
-
+))
 }
 
 </div>
-
-
 
 <div className="impact-message">
 
@@ -205,15 +187,22 @@ Our Commitment
 
 </h3>
 
-
 <p>
 
 Every programme is designed to restore dignity, strengthen self-reliance and create sustainable futures for children, youth and vulnerable communities.
 
 </p>
 
-</div>
+<Link
+to="/about"
+className="discover-btn"
+>
 
+Discover More
+
+</Link>
+
+</div>
 
 </div>
 
