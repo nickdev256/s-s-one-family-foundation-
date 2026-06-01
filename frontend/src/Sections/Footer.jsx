@@ -1,4 +1,5 @@
 import "./Footer.css"
+import logo from "../assets/image/logo.jpg"
 
 import {
 FaFacebookF,
@@ -25,19 +26,41 @@ return(
 
 <div className="footer-about">
 
+<img
+  src={logo}
+  alt="S&S One Family Foundation"
+  className="footer-logo"
+/>
+
 <h1>
-
-S&S ONE FAMILY FOUNDATION
-
+  S&S One Family Foundation
 </h1>
 
 <p>
-
-Building hope, restoring dignity and
-transforming communities through education,
-healthcare, empowerment and humanitarian support.
-
+A registered community foundation committed to
+empowering vulnerable children, families and
+communities through education, healthcare,
+livelihood support and sustainable development.
 </p>
+
+<div className="footer-impact">
+
+<div>
+<h3>500+</h3>
+<span>Children Supported</span>
+</div>
+
+<div>
+<h3>120</h3>
+<span>Families Assisted</span>
+</div>
+
+<div>
+<h3>UGX 6.8M+</h3>
+<span>Community Impact</span>
+</div>
+
+</div>
 
 <div className="social-icons">
 
@@ -81,9 +104,15 @@ rel="noopener noreferrer"
 
 </a>
 
-</div>
+
 
 </div>
+<a href="/donate" className="footer-donate">
+  Donate Now
+</a>
+</div>
+
+
 
 {/* QUICK LINKS */}
 
@@ -221,6 +250,18 @@ Subscribe
 {/* BOTTOM */}
 
 <div className="footer-bottom">
+
+    <div className="footer-bottom-links">
+
+<a href="/privacy-policy">
+Privacy Policy
+</a>
+
+<a href="/terms">
+Terms of Use
+</a>
+
+</div>
 
 <p>
 
