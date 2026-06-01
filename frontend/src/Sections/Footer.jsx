@@ -198,7 +198,7 @@ Contact Info
 
 <p>
 
-Kampala, Uganda
+Namasuba , Entebbe Road 
 
 </p>
 
@@ -211,6 +211,7 @@ Kampala, Uganda
 <p>
 
 +256 746340871
++256 756 478200
 
 </p>
 
