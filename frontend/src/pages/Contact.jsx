@@ -76,8 +76,7 @@ Address
 
 <p>
 
-Kampala, Uganda
-
+Namasuba , Entebbe Road
 </p>
 
 </div>
@@ -100,7 +99,8 @@ Phone
 
 <p>
 
-+256 700 000000
++256 746340871
++256 756 478200
 
 </p>
 
@@ -124,7 +124,7 @@ Email
 
 <p>
 
-info@ssonefamilyfoundation.org
+ssonefamilyfoundation1@gmail.com
 
 </p>
 

@@ -366,4 +366,10 @@ max-width:320px;
 
 }
 
+}.hero-primary-btn,
+.hero-secondary-btn{
+display:flex;
+align-items:center;
+justify-content:center;
+text-decoration:none;
 }
