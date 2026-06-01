@@ -1,5 +1,7 @@
 import "./DonatePage.css";
-import { useState } from "react";
+import { useState , useEffect} from "react";
+import Footer from "../Sections/Footer";
+
 
 import {
   FaHeart,
@@ -30,6 +32,9 @@ const DONATION_TYPES = [
 const PRESET_AMOUNTS = [10000, 25000, 50000, 100000, 250000];
 
 export default function DonatePage() {
+  useEffect(() => {
+  window.scrollTo(0, 0)}, [])
+  
   const [step, setStep] = useState(1);
 
   const [loading, setLoading] = useState(false);
@@ -137,19 +142,20 @@ export default function DonatePage() {
       : formData.amount;
 
   return (
+    <>
     <div className="donate-page">
       {/* HERO */}
 
-      <section className="donate-hero">
+      <section id="donate-hero" className="donate-hero">
         <div className="overlay" />
 
         <div className="hero-content">
-          <span className="badge">
-            <FaHeart />
-            Make A Difference
-          </span>
+          
 
-          <h1>Transform Lives Through Giving</h1>
+<h1 className="hero-title">
+  Transform Lives
+  <span className="hero-script">Through Giving</span>
+</h1>
 
           <p>
             Every contribution helps us provide
@@ -160,6 +166,40 @@ export default function DonatePage() {
       </section>
 
       {/* MAIN CARD */}
+
+     
+
+
+   <div className="trust-strip">
+
+  <div>
+    <strong>500+</strong>
+    <span>Children Supported</span>
+  </div>
+
+  <div>
+    <strong>120</strong>
+    <span>Families Assisted</span>
+  </div>
+
+  <div>
+    <strong>UGX 6.8M+</strong>
+    <span>Community Impact</span>
+  </div>
+
+</div>
+
+ <div className="impact-intro">
+
+  <h2>Every Gift Creates Lasting Change</h2>
+
+  <p>
+    Your support provides education, healthcare,
+    food relief and protection for vulnerable
+    children and families across Uganda.
+  </p>
+
+</div>
 
       <div className="donation-wrapper">
         {/* PROGRESS */}
@@ -223,7 +263,7 @@ export default function DonatePage() {
               className="primary-btn"
               onClick={nextStep}
             >
-              Continue
+             <h3> Continue </h3>
             </button>
           </>
         )}
@@ -513,5 +553,6 @@ export default function DonatePage() {
         )}
       </div>
     </div>
-  );
-}
+    <Footer />
+  </>
+)}

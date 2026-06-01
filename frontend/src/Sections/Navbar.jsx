@@ -272,9 +272,13 @@ onKeyDown={(e) => {
             <FaSearch />
           </button>
 
-          <Link to="/donate" className="donate-btn">
-            Donate
-          </Link>
+          <Link
+  to="/donate"
+  className="donate-btn"
+  onClick={() => window.scrollTo(0, 0)}
+>
+  Donate
+</Link>
 
         </div>
 
