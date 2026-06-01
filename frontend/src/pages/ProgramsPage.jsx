@@ -70,13 +70,20 @@ description:
 },
 
 {
-id:"tourism",
+id:"environment",
 icon:<FaLeaf/>,
-title:"Environmental Sustainability & Tourism",
+title:"Environmental Sustainability",
 description:
-"Promoting environmental conservation, tree planting, clean water initiatives, eco-tourism, cultural tourism and sustainable development practices that protect natural resources while creating community opportunities."
+"Promoting environmental conservation, tree planting, climate action, clean water initiatives, waste management and sustainable practices that protect natural resources and create healthier communities for future generations."
 },
 
+{
+id:"tourism",
+icon:<FaHome/>,
+title:"Tourism & Cultural Heritage",
+description:
+"Promoting tourism through visits to natural attractions, cultural heritage sites, wildlife reserves, historical landmarks and community tourism initiatives that showcase local beauty, preserve cultural identity and create economic opportunities for communities."
+},
 {
 id:"housing",
 icon:<FaHome/>,
