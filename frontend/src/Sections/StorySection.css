@@ -1,6 +1,11 @@
 /* ====================================== */
 /* STORY SECTION */
 /* ====================================== */
+@font-face {
+  font-family: "Breathing";
+  src: url("../assets/fonts/Breathing.ttf") format("truetype");
+}
+
 
 .story-section{
   padding:140px 7%;
@@ -398,15 +403,17 @@
 }
 
 .story-text h2{
-  font-size:88px;
+  font-family: "Breathing";
+font-size: clamp(3.8rem, 6vw, 5.8rem);
+font-weight: 300;
+opacity: 0.92;
+letter-spacing: 1px;
+margin-top: 25px;
+margin-bottom: 20px;
+color: #F0B221;
 
-  line-height:.95;
 
-  color:#081E4B;
-
-  margin-bottom:35px;
-
-  font-weight:900;
+    
 }
 
 .story-text span{
@@ -466,7 +473,7 @@
 
 .stats h3{
   font-size:62px;
-  color:#D69B1D;
+  color:#F0B221;
 }
 
 .stats label{
@@ -497,7 +504,7 @@
 
   font-size:20px;
 
-  color:#0B2C6A;
+  color:#000000;
 
   font-weight:700;
 
@@ -512,7 +519,7 @@
 
   border-radius:18px;
 
-  background:#0B2C6A;
+  background:#F0B221;
 
   color:white;
 
