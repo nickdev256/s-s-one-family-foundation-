@@ -484,4 +484,29 @@ height:54px;
 
 }
 
+}.explore-btn{
+display:inline-flex;
+justify-content:center;
+align-items:center;
+
+width:140px;
+height:50px;
+
+margin-top:20px;
+
+background:#D89B2B;
+color:#fff;
+
+text-decoration:none;
+
+border-radius:8px;
+
+font-weight:600;
+
+transition:.3s ease;
+}
+
+.explore-btn:hover{
+background:#071A54;
+transform:translateY(-3px);
 }

@@ -19,100 +19,89 @@ from "react-icons/fa"
 
 export default function ProgramsPage(){
 
-const programs=[
+const programs = [
 
 {
-id:"education",
-icon:<FaGraduationCap/>,
-title:"Education & Skills Development",
-
+id:"child-education",
+icon:<FaChild/>,
+title:"Child & Education Support",
 description:
-"Improving access to quality education through scholarships, school support, vocational and technical training, literacy programs, apprenticeship opportunities and practical life skills that prepare underprivileged children and youth for employment and self-reliance."
+"Supporting vulnerable children through protection, sponsorships, school fees, scholastic materials, mentorship, digital learning, life skills development and access to quality education that empowers them to reach their full potential."
 },
 
 {
 id:"health",
 icon:<FaHeartbeat/>,
-title:"Health & Community Care",
-
+title:"Healthcare & Community Wellness",
 description:
-"Supporting access to healthcare services, psychosocial care, reproductive health education, HIV/AIDS awareness, prenatal care, family planning, sanitation initiatives and community-based health programs that restore dignity and wellbeing."
-},
-
-{
-id:"child",
-icon:<FaChild/>,
-title:"Child Protection",
-
-description:
-"Protecting children from abuse, exploitation, neglect and harmful practices while promoting child rights, rehabilitation, counseling, safe spaces and long-term support for vulnerable and orphaned children."
-},
-
-{
-id:"youth",
-icon:<FaUsers/>,
-title:"Youth Empowerment",
-
-description:
-"Equipping young people with leadership skills, citizenship values, entrepreneurship, talent development, volunteer opportunities and mentorship programs that enable meaningful participation in society."
-},
-
-{
-id:"gender",
-icon:<FaFemale/>,
-title:"Women Empowerment",
-
-description:
-"Empowering women and girls through education, life skills, technical training, self-esteem development, reproductive health information, economic opportunities and advocacy against gender-based violence."
-},
-
-{
-id:"humanitarian",
-icon:<FaHandsHelping/>,
-title:"Humanitarian Support",
-
-description:
-"Providing relief assistance, social protection, emergency support, care services and sustainable interventions for vulnerable families, refugees, single mothers, widows, elderly persons and disadvantaged communities."
+"Improving access to healthcare services, medical outreach programs, reproductive health education, psychosocial support, sanitation initiatives and community health interventions that promote healthier lives."
 },
 
 {
 id:"agriculture",
 icon:<FaSeedling/>,
-title:"Agriculture & Livelihoods",
-
+title:"Agriculture & Food Security",
 description:
-"Promoting agriculture, vocational farming, food security and income-generating projects while creating opportunities for communities to build sustainable livelihoods and economic independence."
+"Promoting modern agriculture, sustainable farming practices, food security initiatives, vocational farming skills and income-generating agricultural projects that strengthen livelihoods and reduce poverty."
+},
+
+{
+id:"women",
+icon:<FaFemale/>,
+title:"Women & Girls Empowerment",
+description:
+"Empowering women and girls through education, entrepreneurship, vocational training, leadership development, economic opportunities and advocacy programs that promote gender equality and self-reliance."
+},
+
+{
+id:"youth",
+icon:<FaUsers/>,
+title:"Youth Empowerment & Talent Development",
+description:
+"Equipping young people with leadership skills, entrepreneurship training, sports, arts, music, innovation and talent development opportunities that nurture future leaders and productive citizens."
+},
+
+{
+id:"skills",
+icon:<FaBriefcase/>,
+title:"Skills Development & Employment",
+description:
+"Providing vocational training, technical education, apprenticeship opportunities, business development support and employment pathways that prepare individuals for sustainable careers and economic independence."
 },
 
 {
 id:"environment",
 icon:<FaLeaf/>,
 title:"Environmental Sustainability",
-
 description:
-"Driving environmental rehabilitation, climate awareness, solid waste management, conservation activities and youth participation in sustainable environmental protection initiatives."
+"Promoting environmental conservation, tree planting, climate action, clean water initiatives, waste management and sustainable practices that protect natural resources and create healthier communities for future generations."
 },
 
 {
-id:"employment",
-icon:<FaBriefcase/>,
-title:"Employment & Entrepreneurship",
-
-description:
-"Creating employment pathways through business training, entrepreneurship support, skills development, financial literacy, savings culture and youth-led enterprise opportunities."
-},
-
-{
-id:"community",
+id:"tourism",
 icon:<FaHome/>,
-title:"Community Development",
-
+title:"Tourism & Cultural Heritage",
 description:
-"Strengthening communities through advocacy, capacity building, social action, infrastructure support, establishment of schools and training centers, water access and sustainable development initiatives."
+"Promoting tourism through visits to natural attractions, cultural heritage sites, wildlife reserves, historical landmarks and community tourism initiatives that showcase local beauty, preserve cultural identity and create economic opportunities for communities."
+},
+{
+id:"housing",
+icon:<FaHome/>,
+title:"Housing & Community Development",
+description:
+"Supporting vulnerable families through housing initiatives, community infrastructure development, access to clean water, sanitation facilities and sustainable projects that improve living conditions."
+},
 
+{
+id:"humanitarian",
+icon:<FaHandsHelping/>,
+title:"Humanitarian & Social Support",
+description:
+"Providing emergency relief, social protection, food assistance, care services and support for vulnerable families, refugees, elderly persons, widows and disadvantaged communities."
 }
 
-]
+];
+
 
 return(
 

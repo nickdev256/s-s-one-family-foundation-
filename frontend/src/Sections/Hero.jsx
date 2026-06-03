@@ -2,8 +2,7 @@ import './Hero.css'
 
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-
-import ScrollIndicator from '../components/ScrollIndicator'
+import { Link } from 'react-router-dom'
 
 import img1 from "../assets/image/image(367).png"
 import img2 from "../assets/image/image(373).png"
@@ -113,7 +112,6 @@ src={galleryImages[current].image}
 alt={galleryImages[current].title}
 />
 
-
 <div className="hero-story-card">
 
 <span>
@@ -134,20 +132,25 @@ S&S ONE FAMILY FOUNDATION
 
 </p>
 
-
 <div className="hero-cta">
 
-<button className="hero-primary-btn">
+<Link
+to="/donate"
+className="hero-primary-btn"
+>
 
 Donate
 
-</button>
+</Link>
 
-<button className="hero-secondary-btn">
+<Link
+to="/donate"
+className="hero-secondary-btn"
+>
 
 Sponsor
 
-</button>
+</Link>
 
 </div>
 
@@ -157,10 +160,7 @@ Sponsor
 
 </motion.div>
 
-<ScrollIndicator/>
-
 </section>
 
 )
-
 }

@@ -12,6 +12,7 @@ FaChild
 from 'react-icons/fa'
 
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 import bg from "../assets/image/image(373).png"
 
@@ -20,17 +21,10 @@ export default function Programs(){
 const programs=[
 
 {
-icon:<FaChild/>,
-title:'Child Support',
-description:
-'Providing vulnerable children with protection, food assistance, mentorship, psychosocial support and opportunities to grow in safe and loving environments.'
-},
-
-{
-icon:<FaBookOpen/>,
-title:'Education Support',
-description:
-'Supporting access to quality education through sponsorships, school materials, tuition support, digital learning and academic mentorship.'
+  icon:<FaChild />,
+  title:"Child & Education Support",
+  description:
+  "Supporting vulnerable children through protection, food assistance, mentorship, psychosocial care, sponsorships, school materials, tuition support, digital learning, and opportunities to thrive in safe and empowering environments."
 },
 
 {
@@ -55,10 +49,10 @@ description:
 },
 
 {
-icon:<FaLeaf/>,
-title:'Environmental Sustainability',
+icon:<FaLeaf />,
+title:"Environmental Sustainability & Tourism",
 description:
-'Promoting environmental conservation, tree planting, clean water initiatives and sustainable community development.'
+"Protecting the environment and promoting tourism by preserving natural attractions, cultural sites, wildlife habitats, and historical landmarks while creating opportunities for communities to benefit from responsible travel and sustainable tourism activities."
 }
 
 ]
@@ -66,11 +60,8 @@ description:
 return(
 
 <section
-
 className="programs"
-
 id="programs"
-
 >
 
 <img
@@ -109,8 +100,6 @@ and long-term development.
 </p>
 
 </div>
-
-
 
 <div className="program-grid">
 
@@ -162,11 +151,14 @@ y:-12
 
 </p>
 
-<button>
+<Link
+to="/programs"
+className="explore-btn"
+>
 
 Explore
 
-</button>
+</Link>
 
 </motion.div>
 
