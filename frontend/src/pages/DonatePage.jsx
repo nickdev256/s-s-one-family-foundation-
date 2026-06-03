@@ -351,60 +351,53 @@ export default function DonatePage() {
             </div>
 
             <div className="form-grid">
-              <input
-                placeholder="First Name"
-                value={formData.firstName}
-                onChange={(e) =>
-                  updateField(
-                    "firstName",
-                    e.target.value
-                  )
-                }
-              />
 
-              <input
-                placeholder="Last Name"
-                value={formData.lastName}
-                onChange={(e) =>
-                  updateField(
-                    "lastName",
-                    e.target.value
-                  )
-                }
-              />
+              <div className="input-group">
+  <input
+    type="text"
+     placeholder=""
+  />
+  <label>First Name:</label>
+</div>
 
-              <input
-                placeholder="Email Address"
-                value={formData.email}
-                onChange={(e) =>
-                  updateField(
-                    "email",
-                    e.target.value
-                  )
-                }
-              />
 
-              <input
-                placeholder="Phone Number"
-                value={formData.phone}
-                onChange={(e) =>
-                  updateField(
-                    "phone",
-                    e.target.value
-                  )
-                }
-              />
+             <div className="input-group">
+  <input
+  type="text"
+  placeholder=""
+/>
+  <label>Last Name:</label>
+</div>
 
-              <textarea
-                placeholder="Message"
-                value={formData.message}
-                onChange={(e) =>
-                  updateField(
-                    "message",
-                    e.target.value
-                  )
-                }
-              />
+<div className="input-group">
+ <input
+  type="email"
+  placeholder=""
+/>
+  <label>Email Address:</label>
+</div>
+
+<div className="input-group">
+ <input
+  type="tel"
+  placeholder=""
+/>
+  <label>Phone Number:</label>
+</div>
+
+<div className="input-group textarea-group">
+
+  <textarea
+    placeholder=" "
+    value={formData.message}
+    onChange={(e)=>
+      updateField("message",e.target.value)
+    }
+  />
+
+  <label>Message:</label>
+
+</div>
             </div>
 
             <div className="buttons">
