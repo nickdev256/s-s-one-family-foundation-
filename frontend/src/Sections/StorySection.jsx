@@ -176,12 +176,7 @@ duration:1
 
 <h2>
 
-Who we 
-<span>
-
-Are
-
-</span>
+Who we are
 
 </h2>
 
