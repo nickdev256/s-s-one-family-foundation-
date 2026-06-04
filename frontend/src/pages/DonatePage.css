@@ -470,7 +470,7 @@ PAYMENTS
 }
 
 .payment-grid button.active{
-  background:#d89b2b;
+  background:#eba930;
   color:white;
 }
 
@@ -985,19 +985,114 @@ textarea:focus{
 
 }
 
-/* SUMMARY */
+/* ==========================
+DONATION SUMMARY
+========================== */
 
 .summary-card{
 
-  margin-top:30px;
+  margin-top:40px;
 
-  background:#fafbfd;
+  background:white;
 
-  border:1px solid #edf1f5;
+  border-radius:28px;
 
-  border-radius:25px;
+  padding:35px;
 
-  padding:30px;
+  border:1px solid rgba(216,155,43,.15);
+
+  box-shadow:
+  0 20px 50px rgba(0,0,0,.06);
+
+}
+
+.summary-header{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:15px;
+
+  margin-bottom:30px;
+
+  padding-bottom:20px;
+
+  border-bottom:1px solid #edf1f5;
+
+}
+
+.summary-header svg{
+
+  font-size:1.8rem;
+
+  color:#D89B2B;
+
+}
+
+.summary-header h3{
+
+  font-size:1.7rem;
+
+  color:#071A54;
+
+  font-weight:800;
+
+}
+
+.summary-row{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:18px 0;
+
+  border-bottom:1px solid #edf1f5;
+
+}
+
+.summary-row span{
+
+  color:#666;
+
+  font-size:1rem;
+
+}
+
+.summary-row strong{
+
+  color:#071A54;
+
+  font-size:1.1rem;
+
+  font-weight:800;
+
+}
+
+.summary-impact{
+
+  margin-top:25px;
+
+  padding:20px;
+
+  border-radius:18px;
+
+  background:#fffaf0;
+
+  border-left:5px solid #D89B2B;
+
+}
+
+.summary-impact p{
+
+  color:#555;
+
+  line-height:1.8;
+
+  margin:0;
 
 }
 
@@ -1489,3 +1584,213 @@ FLOATING LABELS
 
 }
 
+
+
+/* ==========================
+FORM ERRORS
+========================== */
+
+.form-error{
+
+  margin:25px 0;
+
+  padding:16px 20px;
+
+  border-radius:14px;
+
+  background:#fff0f0;
+
+  border:1px solid #ffcaca;
+
+  color:#c62828;
+
+  text-align:center;
+
+  font-weight:600;
+
+}
+
+.error-text{
+
+  display:block;
+
+  margin-top:8px;
+
+  color:#c62828;
+
+  font-size:.85rem;
+
+  font-weight:600;
+
+}
+
+
+/* ==========================
+PHONE INPUT
+========================== */
+
+.phone-group{
+
+  display:flex;
+
+  gap:12px;
+
+  align-items:center;
+
+}
+
+.phone-group select{
+
+  width:170px;
+
+  height:65px;
+
+  border:2px solid #edf1f5;
+
+  border-radius:18px;
+
+  padding:0 15px;
+
+  background:white;
+
+  font-size:15px;
+
+  outline:none;
+
+  cursor:pointer;
+
+}
+
+.phone-group select:focus{
+
+  border-color:#D89B2B;
+
+}
+
+.phone-group input{
+
+  flex:1;
+
+}
+
+.payment-logo{
+
+  width:170px;
+
+  height:90px;
+
+  object-fit:contain;
+
+  margin-bottom:10px;
+
+}
+
+.payment-card{
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:10px;
+
+}
+
+
+
+
+
+
+.card-details{
+
+  width:100%;
+
+  margin-top:25px;
+
+}
+
+.card-row{
+
+  display:grid;
+
+  grid-template-columns:2fr 1fr;
+
+  gap:25px;
+
+  margin-bottom:25px;
+
+}
+
+.bank-card-logo{
+
+  width:80px;
+
+  height:90px;
+
+  object-fit:contain;
+
+  margin-top: 20px;
+
+}
+
+
+
+
+/* ==========================
+CARD NUMBER PREVIEW
+========================== */
+
+.card-input-wrapper{
+
+  position:relative;
+
+  width:80%;
+
+}
+
+.card-input{
+
+  width:100%;
+
+  padding-right:220px;
+
+}
+
+.card-preview{
+
+  position:absolute;
+
+  right:15px;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  height:30px;
+
+  width:auto;
+
+  object-fit:contain;
+
+  pointer-events:none;
+
+  border-radius: 10px;
+
+}
+
+.paypal-logo{
+
+  width:160px;
+
+  height:140px;
+
+  object-fit:contain;
+
+  display:block;
+
+  margin:0 auto 0px;
+
+}
