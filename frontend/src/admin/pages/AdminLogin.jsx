@@ -10,7 +10,7 @@ import {
   FaEyeSlash
 } from "react-icons/fa";
 
-import { supabase } from "../../config/supabase";
+import { supabase } from "../../lib/supabase";
 
 import logo from "../../assets/image/logo.jpg";
 
