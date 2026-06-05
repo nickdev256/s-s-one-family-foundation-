@@ -1,3 +1,4 @@
+
 import "./AdminLogin.css";
 
 import { useState } from "react";
@@ -8,6 +9,7 @@ import {
   FaUserShield,
   FaEye,
   FaEyeSlash,
+  FaUserPlus,
   FaKey
 } from "react-icons/fa";
 
@@ -34,12 +36,16 @@ export default function AdminLogin() {
   const [error, setError] =
     useState("");
 
+  const [success, setSuccess] =
+    useState("");
+
   async function login(e) {
 
     e.preventDefault();
 
     setLoading(true);
     setError("");
+    setSuccess("");
 
     try {
 
@@ -52,11 +58,9 @@ export default function AdminLogin() {
         password
       });
 
-      if(error){
+      if (error) {
 
         setError(error.message);
-
-        setLoading(false);
 
         return;
 
@@ -72,15 +76,13 @@ export default function AdminLogin() {
       .eq("email", email)
       .single();
 
-      if(adminError || !admin){
+      if (adminError || !admin) {
 
         await supabase.auth.signOut();
 
         setError(
           "You are not authorized to access this dashboard."
         );
-
-        setLoading(false);
 
         return;
 
@@ -90,7 +92,7 @@ export default function AdminLogin() {
 
     }
 
-    catch(err){
+    catch (err) {
 
       setError(
         "Unable to login. Please try again."
@@ -98,16 +100,97 @@ export default function AdminLogin() {
 
     }
 
-    setLoading(false);
+    finally {
+
+      setLoading(false);
+
+    }
 
   }
 
-  async function resetPassword(){
+  async function createAccount() {
 
-    if(!email){
+    if (!email || !password) {
 
       setError(
-        "Enter your email address first."
+        "Enter email and password first."
+      );
+
+      return;
+
+    }
+
+    try {
+
+      setLoading(true);
+
+      setError("");
+
+      setSuccess("");
+
+      const {
+        data,
+        error
+      } =
+      await supabase.auth.signUp({
+        email,
+        password
+      });
+
+      if (error) {
+
+        setError(error.message);
+
+        return;
+
+      }
+
+      const { error: adminError } =
+      await supabase
+      .from("admins")
+      .upsert([
+        {
+          email,
+          role: "super_admin"
+        }
+      ]);
+
+      if (adminError) {
+
+        setError(adminError.message);
+
+        return;
+
+      }
+
+      setSuccess(
+        "Account created successfully. You can now login."
+      );
+
+    }
+
+    catch (err) {
+
+      setError(
+        "Failed to create account."
+      );
+
+    }
+
+    finally {
+
+      setLoading(false);
+
+    }
+
+  }
+
+  async function resetPassword() {
+
+    if (!email) {
+
+      setError(
+        "Enter your email first."
       );
 
       return;
@@ -119,23 +202,23 @@ export default function AdminLogin() {
       email
     );
 
-    if(error){
+    if (error) {
 
       setError(error.message);
 
     }
 
-    else{
+    else {
 
-      alert(
-        "Password reset link sent to your email."
+      setSuccess(
+        "Password reset email sent."
       );
 
     }
 
   }
 
-  return(
+  return (
 
     <div className="admin-login">
 
@@ -150,7 +233,7 @@ export default function AdminLogin() {
         />
 
         <div className="admin-badge">
-          <FaUserShield/>
+          <FaUserShield />
         </div>
 
         <h1>
@@ -159,17 +242,25 @@ export default function AdminLogin() {
 
         <p>
           S&S One Family Foundation
-          <br/>
+          <br />
           Secure Control Center
         </p>
 
-        {error &&
+        {error && (
 
           <div className="login-error">
             {error}
           </div>
 
-        }
+        )}
+
+        {success && (
+
+          <div className="login-success">
+            {success}
+          </div>
+
+        )}
 
         <form onSubmit={login}>
 
@@ -177,7 +268,7 @@ export default function AdminLogin() {
             type="email"
             placeholder="Email Address"
             value={email}
-            onChange={(e)=>
+            onChange={(e) =>
               setEmail(e.target.value)
             }
             required
@@ -193,7 +284,7 @@ export default function AdminLogin() {
               }
               placeholder="Password"
               value={password}
-              onChange={(e)=>
+              onChange={(e) =>
                 setPassword(
                   e.target.value
                 )
@@ -204,17 +295,19 @@ export default function AdminLogin() {
             <button
               type="button"
               className="toggle-password"
-              onClick={()=>
+              onClick={() =>
                 setShowPassword(
                   !showPassword
                 )
               }
             >
+
               {
                 showPassword
-                ? <FaEyeSlash/>
-                : <FaEye/>
+                ? <FaEyeSlash />
+                : <FaEye />
               }
+
             </button>
 
           </div>
@@ -225,13 +318,26 @@ export default function AdminLogin() {
             disabled={loading}
           >
 
-            <FaLock/>
+            <FaLock />
 
             {
               loading
-              ? "Signing In..."
+              ? "Please Wait..."
               : "Login"
             }
+
+          </button>
+
+          <button
+            type="button"
+            className="register-btn"
+            onClick={createAccount}
+            disabled={loading}
+          >
+
+            <FaUserPlus />
+
+            Create My Account
 
           </button>
 
@@ -241,7 +347,7 @@ export default function AdminLogin() {
             onClick={resetPassword}
           >
 
-            <FaKey/>
+            <FaKey />
 
             Forgot Password
 
@@ -260,3 +366,4 @@ export default function AdminLogin() {
   );
 
 }
+
