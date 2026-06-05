@@ -7,7 +7,8 @@ import {
   FaLock,
   FaUserShield,
   FaEye,
-  FaEyeSlash
+  FaEyeSlash,
+  FaKey
 } from "react-icons/fa";
 
 import { supabase } from "../../lib/supabase";
@@ -15,9 +16,11 @@ import { supabase } from "../../lib/supabase";
 import logo from "../../assets/image/logo.jpg";
 
 export default function AdminLogin() {
+
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] =
+    useState("");
 
   const [password, setPassword] =
     useState("");
@@ -32,38 +35,110 @@ export default function AdminLogin() {
     useState("");
 
   async function login(e) {
+
     e.preventDefault();
 
     setLoading(true);
     setError("");
 
     try {
-      const { data, error } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
 
-      if (error) {
+      const {
+        data,
+        error
+      } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if(error){
+
         setError(error.message);
+
         setLoading(false);
+
         return;
+
       }
 
-      if (data.session) {
-        navigate("/admin/dashboard");
+      const {
+        data: admin,
+        error: adminError
+      } =
+      await supabase
+      .from("admins")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+      if(adminError || !admin){
+
+        await supabase.auth.signOut();
+
+        setError(
+          "You are not authorized to access this dashboard."
+        );
+
+        setLoading(false);
+
+        return;
+
       }
-    } catch (err) {
+
+      navigate("/admin/dashboard");
+
+    }
+
+    catch(err){
+
       setError(
         "Unable to login. Please try again."
       );
+
     }
 
     setLoading(false);
+
   }
 
-  return (
+  async function resetPassword(){
+
+    if(!email){
+
+      setError(
+        "Enter your email address first."
+      );
+
+      return;
+
+    }
+
+    const { error } =
+    await supabase.auth.resetPasswordForEmail(
+      email
+    );
+
+    if(error){
+
+      setError(error.message);
+
+    }
+
+    else{
+
+      alert(
+        "Password reset link sent to your email."
+      );
+
+    }
+
+  }
+
+  return(
+
     <div className="admin-login">
+
       <div className="admin-overlay"></div>
 
       <div className="login-card">
@@ -75,22 +150,26 @@ export default function AdminLogin() {
         />
 
         <div className="admin-badge">
-          <FaUserShield />
+          <FaUserShield/>
         </div>
 
-        <h1>Admin Login</h1>
+        <h1>
+          Admin Portal
+        </h1>
 
         <p>
           S&S One Family Foundation
-          <br />
-          Control Center
+          <br/>
+          Secure Control Center
         </p>
 
-        {error && (
+        {error &&
+
           <div className="login-error">
             {error}
           </div>
-        )}
+
+        }
 
         <form onSubmit={login}>
 
@@ -98,7 +177,7 @@ export default function AdminLogin() {
             type="email"
             placeholder="Email Address"
             value={email}
-            onChange={(e) =>
+            onChange={(e)=>
               setEmail(e.target.value)
             }
             required
@@ -109,12 +188,12 @@ export default function AdminLogin() {
             <input
               type={
                 showPassword
-                  ? "text"
-                  : "password"
+                ? "text"
+                : "password"
               }
               placeholder="Password"
               value={password}
-              onChange={(e) =>
+              onChange={(e)=>
                 setPassword(
                   e.target.value
                 )
@@ -125,28 +204,47 @@ export default function AdminLogin() {
             <button
               type="button"
               className="toggle-password"
-              onClick={() =>
+              onClick={()=>
                 setShowPassword(
                   !showPassword
                 )
               }
             >
-              {showPassword
-                ? <FaEyeSlash />
-                : <FaEye />}
+              {
+                showPassword
+                ? <FaEyeSlash/>
+                : <FaEye/>
+              }
             </button>
 
           </div>
 
           <button
             type="submit"
+            className="login-btn"
             disabled={loading}
           >
-            <FaLock />
 
-            {loading
-              ? "Logging In..."
-              : "LOGIN"}
+            <FaLock/>
+
+            {
+              loading
+              ? "Signing In..."
+              : "Login"
+            }
+
+          </button>
+
+          <button
+            type="button"
+            className="forgot-btn"
+            onClick={resetPassword}
+          >
+
+            <FaKey/>
+
+            Forgot Password
+
           </button>
 
         </form>
@@ -156,6 +254,9 @@ export default function AdminLogin() {
         </span>
 
       </div>
+
     </div>
+
   );
+
 }

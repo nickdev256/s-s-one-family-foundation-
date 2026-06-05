@@ -1,6 +1,10 @@
+
 import "./Dashboard.css";
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { supabase } from "../../lib/supabase";
 
 import AdminLayout from "../layout/AdminLayout";
 
@@ -16,225 +20,422 @@ import {
   FaArrowRight,
   FaChartLine,
   FaUserFriends,
-  FaSpinner
+  FaSpinner,
+  FaSignOutAlt
 } from "react-icons/fa";
 
 export default function Dashboard() {
-  const [loading, setLoading] = useState(true);
 
-  const [stats, setStats] = useState({
-    donations: 0,
-    volunteers: 0,
-    partners: 0,
-    messages: 0
-  });
+  const navigate = useNavigate();
 
-  const [activity, setActivity] = useState([]);
+  const [loading, setLoading] =
+    useState(true);
+
+  const [stats, setStats] =
+    useState({
+      donations: 0,
+      volunteers: 0,
+      partners: 0,
+      messages: 0
+    });
+
+  const [activity, setActivity] =
+    useState([]);
 
   useEffect(() => {
+
     fetchDashboard();
+
   }, []);
 
   async function fetchDashboard() {
+
     try {
+
       setLoading(true);
 
-      const response = await fetch(
-        "http://localhost:5000/api/dashboard/stats"
+      const {
+        data: { session }
+      } =
+      await supabase.auth.getSession();
+
+      if (!session) {
+
+        navigate("/admin");
+
+        return;
+
+      }
+
+      const response =
+      await fetch(
+
+        `${import.meta.env.VITE_API_URL}/api/dashboard/stats`,
+
+        {
+          headers: {
+            Authorization:
+            `Bearer ${session.access_token}`
+          }
+        }
+
       );
 
-      const data = await response.json();
+      const data =
+      await response.json();
 
       if (data.success) {
+
         setStats(data.stats);
-        setActivity(data.activity);
+
+        setActivity(
+          data.activity || []
+        );
+
       }
-    } catch (error) {
-      console.error("Dashboard Error:", error);
-    } finally {
-      setLoading(false);
+
     }
+
+    catch(error){
+
+      console.error(
+        "Dashboard Error:",
+        error
+      );
+
+    }
+
+    finally{
+
+      setLoading(false);
+
+    }
+
+  }
+
+  async function logout(){
+
+    await supabase.auth.signOut();
+
+    navigate("/admin");
+
   }
 
   const cards = [
+
     {
-      title: "Total Donations",
-      value: `UGX ${Number(
+      title:"Total Donations",
+      value:`UGX ${Number(
         stats.donations
       ).toLocaleString()}`,
-      growth: "+12%",
-      icon: <FaDonate />
+      growth:"+12%",
+      icon:<FaDonate/>
     },
 
     {
-      title: "Volunteers",
-      value: stats.volunteers,
-      growth: "+24",
-      icon: <FaUsers />
+      title:"Volunteers",
+      value:stats.volunteers,
+      growth:"+24",
+      icon:<FaUsers/>
     },
 
     {
-      title: "Partners",
-      value: stats.partners,
-      growth: "+4",
-      icon: <FaHandshake />
+      title:"Partners",
+      value:stats.partners,
+      growth:"+4",
+      icon:<FaHandshake/>
     },
 
     {
-      title: "Messages",
-      value: stats.messages,
-      growth: "+8",
-      icon: <FaEnvelope />
+      title:"Messages",
+      value:stats.messages,
+      growth:"+8",
+      icon:<FaEnvelope/>
     }
+
   ];
 
-  if (loading) {
-    return (
+  if(loading){
+
+    return(
+
       <AdminLayout>
+
         <div className="dashboard-loading">
-          <FaSpinner className="spin" />
-          <h2>Loading Dashboard...</h2>
+
+          <FaSpinner
+            className="spin"
+          />
+
+          <h2>
+            Loading Dashboard...
+          </h2>
+
         </div>
+
       </AdminLayout>
+
     );
+
   }
 
-  return (
+  return(
+
     <AdminLayout>
+
       <div className="dashboard">
 
-        {/* HEADER */}
         <div className="dashboard-header">
+
           <div>
-            <span>ADMIN PANEL</span>
+
+            <span>
+              ADMIN PANEL
+            </span>
 
             <h1>
               Welcome Back 👋
             </h1>
 
             <p>
-              Manage S&S One Family Foundation
-              from one dashboard.
+              Manage S&S One Family
+              Foundation from one
+              dashboard.
             </p>
+
           </div>
 
-          <div className="dashboard-actions">
+          <div
+            className="dashboard-actions"
+          >
+
             <button>
-              <FaBell />
+
+              <FaBell/>
+
               Notifications
+
             </button>
 
             <button>
-              <FaCalendarAlt />
+
+              <FaCalendarAlt/>
+
               Schedule
+
             </button>
+
+            <button
+              className="logout-btn"
+              onClick={logout}
+            >
+
+              <FaSignOutAlt/>
+
+              Logout
+
+            </button>
+
           </div>
+
         </div>
 
-        {/* STATS */}
         <div className="admin-grid">
-          {cards.map((card, index) => (
+
+          {cards.map(
+            (card,index)=>(
             <div
               key={index}
               className="admin-card"
             >
+
               <div className="card-top">
+
                 <div className="card-icon">
+
                   {card.icon}
+
                 </div>
 
                 <div className="growth">
-                  <FaArrowUp />
+
+                  <FaArrowUp/>
+
                   {card.growth}
+
                 </div>
+
               </div>
 
-              <h2>{card.value}</h2>
-
-              <p>{card.title}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* LOWER */}
-        <div className="dashboard-lower">
-
-          {/* ACTIVITY */}
-          <div className="activity">
-
-            <div className="section-header">
-              <h2>Recent Activity</h2>
-
-              <button>
-                View All
-                <FaArrowRight />
-              </button>
-            </div>
-
-            {activity.length === 0 ? (
-              <div className="empty-state">
-                No activity found
-              </div>
-            ) : (
-              activity.map((item) => (
-                <div
-                  key={item.id}
-                  className="activity-item"
-                >
-                  <div className="dot" />
-
-                  <div>
-                    <h4>{item.title}</h4>
-
-                    <span>
-                      {new Date(
-                        item.created_at
-                      ).toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* RIGHT SIDE */}
-          <div className="side-area">
-
-            <div className="quick-actions">
-              <h2>Quick Actions</h2>
-
-              <button>
-                <FaDonate />
-                View Donations
-              </button>
-
-              <button>
-                <FaUserFriends />
-                Manage Volunteers
-              </button>
-
-              <button>
-                <FaImages />
-                Open Gallery
-              </button>
-            </div>
-
-            <div className="mini-card">
-              <div className="mini-icon">
-                <FaChartLine />
-              </div>
-
-              <h3>Performance</h3>
+              <h2>
+                {card.value}
+              </h2>
 
               <p>
-                Foundation growth is being
-                tracked in real time.
+                {card.title}
               </p>
+
+            </div>
+          ))}
+
+        </div>
+
+        <div
+          className="dashboard-lower"
+        >
+
+          <div className="activity">
+
+            <div
+              className="section-header"
+            >
+
+              <h2>
+                Recent Activity
+              </h2>
+
+              <button>
+
+                View All
+
+                <FaArrowRight/>
+
+              </button>
+
+            </div>
+
+            {activity.length===0
+            ?(
+
+              <div
+                className="empty-state"
+              >
+                No activity found
+              </div>
+
+            )
+            :(
+
+              activity.map(item=>(
+              <div
+                key={item.id}
+                className="activity-item"
+              >
+
+                <div
+                  className="dot"
+                />
+
+                <div>
+
+                  <h4>
+                    {item.title}
+                  </h4>
+
+                  <span>
+
+                    {
+                      new Date(
+                        item.created_at
+                      ).toLocaleString()
+                    }
+
+                  </span>
+
+                </div>
+
+              </div>
+              ))
+
+            )}
+
+          </div>
+
+          <div className="side-area">
+
+            <div
+              className="quick-actions"
+            >
+
+              <h2>
+                Quick Actions
+              </h2>
+
+              <button
+                onClick={()=>
+                navigate(
+                "/admin/donations"
+                )}
+              >
+
+                <FaDonate/>
+
+                View Donations
+
+              </button>
+
+              <button
+                onClick={()=>
+                navigate(
+                "/admin/volunteers"
+                )}
+              >
+
+                <FaUserFriends/>
+
+                Manage Volunteers
+
+              </button>
+
+              <button
+                onClick={()=>
+                navigate(
+                "/admin/gallery"
+                )}
+              >
+
+                <FaImages/>
+
+                Open Gallery
+
+              </button>
+
+            </div>
+
+            <div
+              className="mini-card"
+            >
+
+              <div
+                className="mini-icon"
+              >
+
+                <FaChartLine/>
+
+              </div>
+
+              <h3>
+                Performance
+              </h3>
+
+              <p>
+
+                Foundation growth is
+                being tracked in
+                real time.
+
+              </p>
+
             </div>
 
           </div>
+
         </div>
+
       </div>
+
     </AdminLayout>
+
   );
+
 }
