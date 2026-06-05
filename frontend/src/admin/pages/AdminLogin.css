@@ -1,396 +1,194 @@
-/* =================================
-ADMIN LOGIN
-================================= */
-
 .admin-login{
-
-min-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-padding:40px;
-
-position:relative;
-
-overflow:hidden;
-
-background:
-
-linear-gradient(
-135deg,
-#071A54,
-#0D327A
-);
-
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  overflow:hidden;
+  background:
+  linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+  );
 }
-
-
-
-/* =================================
-BACKGROUND EFFECT
-================================= */
 
 .admin-overlay{
-
-position:absolute;
-
-inset:0;
-
-background:
-
-radial-gradient(
-circle at top right,
-rgba(216,155,43,.18),
-transparent 28%
-),
-
-radial-gradient(
-circle at bottom left,
-rgba(255,255,255,.06),
-transparent 35%
-);
-
+  position:absolute;
+  inset:0;
+  background:
+  rgba(0,0,0,.35);
 }
-
-
-
-/* =================================
-LOGIN CARD
-================================= */
 
 .login-card{
+  position:relative;
+  z-index:2;
 
-width:560px;
+  width:100%;
+  max-width:420px;
 
-background:
+  background:#ffffff;
 
-rgba(255,255,255,.97);
+  border-radius:24px;
 
-padding:70px;
+  padding:40px 30px;
 
-border-radius:38px;
+  text-align:center;
 
-position:relative;
-
-z-index:20;
-
-text-align:center;
-
-box-shadow:
-
-0 50px 120px
-rgba(0,0,0,.25);
-
+  box-shadow:
+  0 20px 50px rgba(0,0,0,.25);
 }
-
-
-
-/* =================================
-LOGO
-================================= */
 
 .admin-logo{
-
-width:180px;
-
-height:180px;
-
-object-fit:contain;
-
-margin:auto;
-
-display:block;
-
-margin-bottom:14px;
-
-filter:
-
-drop-shadow(
-0 10px 25px
-rgba(0,0,0,.15)
-);
-
+  width:100px;
+  height:100px;
+  object-fit:cover;
+  border-radius:50%;
+  margin-bottom:15px;
+  border:4px solid #f3f4f6;
 }
-
-
-
-/* =================================
-ICON
-================================= */
 
 .admin-badge{
+  width:60px;
+  height:60px;
 
-width:84px;
+  margin:0 auto 15px;
 
-height:84px;
+  border-radius:50%;
 
-margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-margin-bottom:30px;
+  background:#2563eb;
+  color:#fff;
 
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-border-radius:50%;
-
-background:
-
-linear-gradient(
-135deg,
-#F5D98E,
-#D89B2B
-);
-
-color:white;
-
-font-size:34px;
-
-box-shadow:
-
-0 15px 40px
-rgba(216,155,43,.35);
-
+  font-size:24px;
 }
-
-
-
-/* =================================
-TEXT
-================================= */
 
 .login-card h1{
-
-font-size:44px;
-
-font-weight:900;
-
-color:#071A54;
-
-margin-bottom:12px;
-
+  margin:0;
+  color:#111827;
+  font-size:2rem;
 }
-
-
 
 .login-card p{
-
-font-size:15px;
-
-line-height:1.9;
-
-color:#7C8294;
-
-margin-bottom:42px;
-
+  margin-top:10px;
+  color:#6b7280;
+  line-height:1.6;
 }
 
+.login-error{
+  margin:15px 0;
 
+  background:#fee2e2;
+  color:#dc2626;
 
-/* =================================
-FORM
-================================= */
+  padding:12px;
+  border-radius:10px;
 
-form{
-
-display:flex;
-
-flex-direction:column;
-
-gap:18px;
-
+  font-size:.9rem;
 }
 
+.login-card form{
+  margin-top:25px;
 
-
-form input{
-
-height:66px;
-
-padding:0 26px;
-
-border:none;
-
-border-radius:18px;
-
-background:#F6F8FC;
-
-font-size:15px;
-
-color:#222;
-
-transition:.3s;
-
+  display:flex;
+  flex-direction:column;
+  gap:15px;
 }
 
+.login-card input{
+  width:100%;
 
+  padding:15px;
 
-form input:focus{
+  border:1px solid #d1d5db;
 
-outline:none;
+  border-radius:12px;
 
-background:white;
+  outline:none;
 
-box-shadow:
+  font-size:1rem;
 
-0 0 0 2px
-rgba(216,155,43,.25);
-
+  transition:.3s;
 }
 
-
-
-/* =================================
-BUTTON
-================================= */
-
-form button{
-
-height:70px;
-
-border:none;
-
-border-radius:18px;
-
-background:
-
-linear-gradient(
-135deg,
-#D89B2B,
-#F2C55E
-);
-
-color:white;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-gap:12px;
-
-cursor:pointer;
-
-font-size:14px;
-
-font-weight:800;
-
-letter-spacing:4px;
-
-transition:.35s;
-
+.login-card input:focus{
+  border-color:#2563eb;
 }
 
-
-
-form button:hover{
-
-transform:
-
-translateY(-4px);
-
-box-shadow:
-
-0 25px 60px
-rgba(216,155,43,.3);
-
+.password-wrapper{
+  position:relative;
 }
 
+.toggle-password{
+  position:absolute;
 
+  top:50%;
+  right:12px;
 
-/* =================================
-FOOTER
-================================= */
+  transform:translateY(-50%);
+
+  border:none;
+  background:none;
+
+  cursor:pointer;
+
+  color:#6b7280;
+
+  font-size:1rem;
+}
+
+.login-card button[type="submit"]{
+  border:none;
+
+  padding:15px;
+
+  border-radius:12px;
+
+  background:#2563eb;
+
+  color:#fff;
+
+  font-size:1rem;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+
+  transition:.3s;
+}
+
+.login-card button[type="submit"]:hover{
+  background:#1d4ed8;
+}
+
+.login-card button[type="submit"]:disabled{
+  opacity:.7;
+  cursor:not-allowed;
+}
 
 .login-card span{
+  display:block;
 
-display:block;
+  margin-top:20px;
 
-margin-top:30px;
+  color:#6b7280;
 
-font-size:12px;
-
-letter-spacing:3px;
-
-color:#9AA0B0;
-
+  font-size:.9rem;
 }
 
+@media(max-width:480px){
 
-
-/* =================================
-RESPONSIVE
-================================= */
-
-@media(max-width:768px){
-
-.admin-login{
-
-padding:20px;
-
-}
-
-
-
-.login-card{
-
-width:100%;
-
-padding:42px;
-
-}
-
-
-
-.admin-logo{
-
-width:130px;
-
-height:130px;
-
-}
-
-
-
-.admin-badge{
-
-width:70px;
-
-height:70px;
-
-font-size:28px;
-
-}
-
-
-
-.login-card h1{
-
-font-size:30px;
-
-}
-
-
-
-form input{
-
-height:60px;
-
-}
-
-
-
-form button{
-
-height:64px;
-
-}
+  .login-card{
+    margin:20px;
+    padding:30px 20px;
+  }
 
 }
