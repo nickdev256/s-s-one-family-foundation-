@@ -1,112 +1,161 @@
-import "./AdminLogin.css"
+import "./AdminLogin.css";
 
-import { useNavigate } from "react-router-dom"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
-FaLock,
-FaUserShield
-}
+  FaLock,
+  FaUserShield,
+  FaEye,
+  FaEyeSlash
+} from "react-icons/fa";
 
-from "react-icons/fa"
+import { supabase } from "../../lib/supabase";
 
-import logo from "../../assets/image/logo.jpg"
+import logo from "../../assets/image/logo.jpg";
 
-export default function AdminLogin(){
+export default function AdminLogin() {
+  const navigate = useNavigate();
 
-const navigate=useNavigate()
+  const [email, setEmail] = useState("");
 
-function login(e){
+  const [password, setPassword] =
+    useState("");
 
-e.preventDefault()
+  const [loading, setLoading] =
+    useState(false);
 
-navigate("/admin/dashboard")
+  const [showPassword, setShowPassword] =
+    useState(false);
 
-}
+  const [error, setError] =
+    useState("");
 
-return(
+  async function login(e) {
+    e.preventDefault();
 
-<div className="admin-login">
+    setLoading(true);
+    setError("");
 
-<div className="admin-overlay"></div>
+    try {
+      const { data, error } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
 
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+        return;
+      }
 
-<div className="login-card">
+      if (data.session) {
+        navigate("/admin/dashboard");
+      }
+    } catch (err) {
+      setError(
+        "Unable to login. Please try again."
+      );
+    }
 
+    setLoading(false);
+  }
 
-<img
+  return (
+    <div className="admin-login">
+      <div className="admin-overlay"></div>
 
-src={logo}
+      <div className="login-card">
 
-alt="S&S One Family Foundation"
+        <img
+          src={logo}
+          alt="S&S One Family Foundation"
+          className="admin-logo"
+        />
 
-className="admin-logo"
+        <div className="admin-badge">
+          <FaUserShield />
+        </div>
 
-/>
+        <h1>Admin Login</h1>
 
+        <p>
+          S&S One Family Foundation
+          <br />
+          Control Center
+        </p>
 
-<div className="admin-badge">
+        {error && (
+          <div className="login-error">
+            {error}
+          </div>
+        )}
 
-<FaUserShield/>
+        <form onSubmit={login}>
 
-</div>
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+            required
+          />
 
+          <div className="password-wrapper">
 
+            <input
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
+              placeholder="Password"
+              value={password}
+              onChange={(e) =>
+                setPassword(
+                  e.target.value
+                )
+              }
+              required
+            />
 
-<h1>
+            <button
+              type="button"
+              className="toggle-password"
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
+            >
+              {showPassword
+                ? <FaEyeSlash />
+                : <FaEye />}
+            </button>
 
-Admin Login
+          </div>
 
-</h1>
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            <FaLock />
 
-<p>
+            {loading
+              ? "Logging In..."
+              : "LOGIN"}
+          </button>
 
-S&S One Family Foundation
-Control Center
+        </form>
 
-</p>
+        <span>
+          Protected Dashboard Access
+        </span>
 
-
-
-<form
-onSubmit={login}
->
-
-<input
-type="email"
-placeholder="Email Address"
-required
-/>
-
-<input
-type="password"
-placeholder="Password"
-required
-/>
-
-<button
-type="submit"
->
-
-<FaLock/>
-
-LOGIN
-
-</button>
-
-</form>
-
-
-
-<span>
-
-Protected Dashboard Access
-
-</span>
-
-</div>
-
-</div>
-
-)
-
+      </div>
+    </div>
+  );
 }
