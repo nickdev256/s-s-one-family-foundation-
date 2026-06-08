@@ -1,9 +1,5 @@
 import { supabase } from "../config/supabaseClient.js";
 
-/* ================================
-GET GALLERY
-================================ */
-
 export const getGallery = async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -12,9 +8,16 @@ export const getGallery = async (req, res) => {
 
     if (error) throw error;
 
+    const gallery = (data || []).map(
+      (item) => ({
+        ...item,
+        url: item.image_url || item.url,
+      })
+    );
+
     return res.status(200).json({
       success: true,
-      gallery: data || [],
+      gallery,
     });
 
   } catch (error) {
