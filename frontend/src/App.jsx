@@ -22,7 +22,7 @@ import GalleryPage from "./pages/GalleryPage"
 
 import AdminLogin from "./admin/pages/AdminLogin"
 import Dashboard from "./admin/pages/Dashboard"
-import ProtectedRoute from "./admin/pages/ProtectedRoute";
+import ProtectedRoute from "./admin/routes/Protected Route";
 import DonationsAdmin from "./admin/pages/DonationsAdmin"
 import VolunteersAdmin from "./admin/pages/VolunteersAdmin"
 import MessagesAdmin from "./admin/pages/MessagesAdmin"
