@@ -22,11 +22,12 @@ overflow:hidden;
 
 background:
 linear-gradient(
-rgba(4,12,18,.45),
-rgba(4,12,18,.65)
+rgba(4,12,18,.85),
+rgba(4,12,18,.90)
 ),
 
-url("../assets/image/image(374).png");
+url("../assets/image/image(374).png") !important;
+
 
 background-size:cover;
 
@@ -52,8 +53,8 @@ inset:0;
 background:
 linear-gradient(
 90deg,
-rgba(0,0,0,.35),
-rgba(0,0,0,.10)
+rgba(0,0,0,.05),
+rgba(0,0,0,.02)
 );
 
 z-index:1;
@@ -79,19 +80,18 @@ z-index:3;
 LEFT SIDE
 ====================== */
 
-.impact-tag{
+.impact-tag {
 
 display:inline-block;
 
 padding:14px 28px;
 
+
 border-radius:50px;
 
-background:
-rgba(255,255,255,.10);
 
 border:
-1px solid rgba(255,255,255,.18);
+1px solid rgb(242, 169, 68);
 
 backdrop-filter:blur(12px);
 

@@ -21,10 +21,9 @@ overflow:hidden;
 background:
 
 linear-gradient(
-rgba(10,18,28,.45),
-rgba(10,18,28,.72)
+rgba(10,18,28,.08),
+rgba(10,18,28,.05)
 ),
-
 url("../assets/image/image(374).png");
 
 background-size:cover;
@@ -190,7 +189,7 @@ height:68px;
 
 background:transparent;
 
-border:2px solid white;
+border:2px solid #e8b85c;
 
 color:white;
 
@@ -208,7 +207,7 @@ transition:.35s;
 
 .volunteer button:hover{
 
-background:white;
+background:#e8b85c;
 
 color:#111;
 
