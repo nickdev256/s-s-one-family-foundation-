@@ -1,7 +1,8 @@
 
 import "./AdminLogin.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   FaLock,
@@ -11,9 +12,14 @@ import {
   FaUserShield
 } from "react-icons/fa";
 
+import { supabase } from "../../lib/supabase";
+
 import logo from "../../assets/image/logo.jpg";
 
 export default function AdminLogin() {
+
+  const navigate =
+    useNavigate();
 
   const [email, setEmail] =
     useState("");
@@ -24,13 +30,194 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] =
     useState(false);
 
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [success, setSuccess] =
+    useState("");
+
+  useEffect(() => {
+
+    checkSession();
+
+  }, []);
+
+  async function checkSession() {
+
+    try {
+
+      const {
+        data: { session }
+      } =
+      await supabase.auth.getSession();
+
+      if (!session) return;
+
+      const {
+        data: admin
+      } =
+      await supabase
+      .from("admins")
+      .select("*")
+      .eq(
+        "email",
+        session.user.email
+      )
+      .single();
+
+      if (admin) {
+
+        navigate(
+          "/admin/dashboard"
+        );
+
+      }
+
+    }
+
+    catch {
+
+      // ignore
+
+    }
+
+  }
+
+  async function login(e) {
+
+    e.preventDefault();
+
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+
+      const {
+        error
+      } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+
+        setError(
+          error.message
+        );
+
+        return;
+
+      }
+
+      const {
+        data: admin,
+        error: adminError
+      } =
+      await supabase
+      .from("admins")
+      .select("*")
+      .eq(
+        "email",
+        email
+      )
+      .single();
+
+      if (
+        adminError ||
+        !admin
+      ) {
+
+        await supabase.auth.signOut();
+
+        setError(
+          "You are not authorized to access this dashboard."
+        );
+
+        return;
+
+      }
+
+      setSuccess(
+        "Login successful."
+      );
+
+      navigate(
+        "/admin/dashboard"
+      );
+
+    }
+
+    catch {
+
+      setError(
+        "Unable to login. Please try again."
+      );
+
+    }
+
+    finally {
+
+      setLoading(false);
+
+    }
+
+  }
+
+  async function resetPassword() {
+
+    setError("");
+    setSuccess("");
+
+    if (!email) {
+
+      setError(
+        "Enter your email address first."
+      );
+
+      return;
+
+    }
+
+    const {
+      error
+    } =
+    await supabase.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo:
+          window.location.origin +
+          "/admin/reset-password"
+      }
+    );
+
+    if (error) {
+
+      setError(
+        error.message
+      );
+
+    }
+
+    else {
+
+      setSuccess(
+        "Password reset link sent to your email."
+      );
+
+    }
+
+  }
+
   return (
 
     <div className="admin-login">
 
       <div className="admin-container">
-
-        {/* LEFT */}
 
         <div className="admin-left">
 
@@ -59,8 +246,6 @@ export default function AdminLogin() {
 
         </div>
 
-        {/* RIGHT */}
-
         <div className="admin-right">
 
           <div className="login-card">
@@ -84,103 +269,137 @@ export default function AdminLogin() {
               <span className="green"></span>
             </div>
 
-            <div className="form-group">
+            {error && (
+              <div className="login-error">
+                {error}
+              </div>
+            )}
 
-              <label>
-                Email Address
-              </label>
+            {success && (
+              <div className="login-success">
+                {success}
+              </div>
+            )}
 
-              <div className="input-box">
+            <form
+              onSubmit={login}
+            >
 
-                <FaEnvelope />
+              <div className="form-group">
 
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e)=>
-                    setEmail(e.target.value)
-                  }
-                />
+                <label>
+                  Email Address
+                </label>
+
+                <div className="input-box">
+
+                  <FaEnvelope />
+
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={email}
+                    onChange={(e)=>
+                      setEmail(
+                        e.target.value
+                      )
+                    }
+                    required
+                  />
+
+                </div>
 
               </div>
 
-            </div>
+              <div className="form-group">
 
-            <div className="form-group">
+                <label>
+                  Password
+                </label>
 
-              <label>
-                Password
-              </label>
+                <div className="input-box">
 
-              <div className="input-box">
+                  <FaLock />
 
-                <FaLock />
+                  <input
+                    type={
+                      showPassword
+                        ? "text"
+                        : "password"
+                    }
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e)=>
+                      setPassword(
+                        e.target.value
+                      )
+                    }
+                    required
+                  />
 
-                <input
-                  type={
-                    showPassword
-                      ? "text"
-                      : "password"
-                  }
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e)=>
-                    setPassword(e.target.value)
-                  }
-                />
+                  <button
+                    type="button"
+                    className="eye-btn"
+                    onClick={() =>
+                      setShowPassword(
+                        !showPassword
+                      )
+                    }
+                  >
+
+                    {
+                      showPassword
+                        ? <FaEyeSlash />
+                        : <FaEye />
+                    }
+
+                  </button>
+
+                </div>
+
+              </div>
+
+              <div className="login-options">
+
+                <label>
+
+                  <input
+                    type="checkbox"
+                  />
+
+                  Remember me
+
+                </label>
 
                 <button
                   type="button"
-                  className="eye-btn"
-                  onClick={() =>
-                    setShowPassword(
-                      !showPassword
-                    )
+                  className="forgot-btn"
+                  onClick={
+                    resetPassword
                   }
                 >
-
-                  {
-                    showPassword
-                      ? <FaEyeSlash />
-                      : <FaEye />
-                  }
-
+                  Forgot Password?
                 </button>
 
               </div>
 
-            </div>
-
-            <div className="login-options">
-
-              <label>
-
-                <input
-                  type="checkbox"
-                />
-
-                Remember me
-
-              </label>
-
               <button
-                className="forgot-btn"
+                type="submit"
+                className="login-btn"
+                disabled={loading}
               >
-                Forgot Password?
+
+                <FaLock />
+
+                {
+                  loading
+                    ? "Signing In..."
+                    : "Sign In"
+                }
+
               </button>
 
-            </div>
-
-            <button
-              className="login-btn"
-            >
-
-              <FaLock />
-
-              Sign In
-
-            </button>
+            </form>
 
             <div className="protected">
 
