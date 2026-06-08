@@ -2,7 +2,8 @@
 import "./GalleryPage.css";
 import { useEffect, useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL =
+  "https://s-s-one-family-foundation.onrender.com";
 
 const categories = [
   "All",
@@ -24,32 +25,40 @@ export default function GalleryPage() {
     loadGallery();
   }, []);
 
-  async function loadGallery() {
+ async function loadGallery() {
   try {
     const response = await fetch(
       `${API_URL}/api/gallery`
     );
 
-    const data =
-      await response.json();
+    const text =
+      await response.text();
 
     console.log(
-      "Gallery Data:",
-      data.gallery
+      "Gallery Response:",
+      text
     );
+
+    const data =
+      JSON.parse(text);
 
     if (data.success) {
       setGallery(
         data.gallery || []
       );
     }
+
   } catch (error) {
+
     console.error(
       "Failed to load gallery:",
       error
     );
+
   } finally {
+
     setLoading(false);
+
   }
 }
 
