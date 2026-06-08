@@ -1,19 +1,31 @@
 import { supabase } from "../config/supabaseClient.js";
 
-export const getGallery = async (req, res) => {
+export const getGallery = async (
+  req,
+  res
+) => {
   try {
-    const { data, error } = await supabase
-      .from("gallery")
-      .select("*");
 
-    if (error) throw error;
+    const {
+      data,
+      error,
+    } =
+      await supabase
+        .from("gallery")
+        .select("*");
 
-    const gallery = (data || []).map(
-      (item) => ({
-        ...item,
-        url: item.image_url || item.url,
-      })
-    );
+    if (error)
+      throw error;
+
+    const gallery =
+      (data || []).map(
+        (item) => ({
+          ...item,
+          url:
+            item.image_url ||
+            item.url,
+        })
+      );
 
     return res.status(200).json({
       success: true,
@@ -29,16 +41,19 @@ export const getGallery = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        error.message,
     });
   }
 };
-
 /* ================================
 UPLOAD MEDIA
 ================================ */
 
-export const uploadMedia = async (req, res) => {
+export const uploadMedia = async (
+  req,
+  res
+) => {
   try {
 
     if (!req.file) {
@@ -58,7 +73,9 @@ export const uploadMedia = async (req, res) => {
     const filename =
       `${Date.now()}-${req.file.originalname}`;
 
-    const { error: uploadError } =
+    const {
+      error: uploadError,
+    } =
       await supabase.storage
         .from(bucket)
         .upload(
@@ -73,26 +90,49 @@ export const uploadMedia = async (req, res) => {
     if (uploadError)
       throw uploadError;
 
-    const { data: publicUrl } =
+    const {
+      data: publicUrl,
+    } =
       supabase.storage
         .from(bucket)
-        .getPublicUrl(filename);
+        .getPublicUrl(
+          filename
+        );
 
-    const { data, error } =
-  await supabase
-    .from("gallery")
-    .insert([
-      {
-        name:
-          req.file.originalname,
-        image_url:
-          publicUrl.publicUrl,
-        type,
-      },
-    ])
-    .select();
+    const {
+      data,
+      error,
+    } =
+      await supabase
+        .from("gallery")
+        .insert([
+          {
+            name:
+              req.file
+                .originalname,
 
-    if (error) throw error;
+            image_url:
+              publicUrl.publicUrl,
+
+            url:
+              publicUrl.publicUrl,
+
+            caption:
+              req.body
+                .caption || "",
+
+            category:
+              req.body
+                .category ||
+              "Community",
+
+            type,
+          },
+        ])
+        .select();
+
+    if (error)
+      throw error;
 
     return res.status(201).json({
       success: true,
@@ -108,7 +148,8 @@ export const uploadMedia = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message:
+        error.message,
     });
   }
 };
