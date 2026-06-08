@@ -1,16 +1,14 @@
-
 import "./AdminLogin.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-  FaLock,
-  FaUserShield,
-  FaEye,
-  FaEyeSlash,
-  FaUserPlus,
-  FaKey
+FaLock,
+FaUserShield,
+FaEye,
+FaEyeSlash,
+FaKey
 } from "react-icons/fa";
 
 import { supabase } from "../../lib/supabase";
@@ -19,351 +17,349 @@ import logo from "../../assets/image/logo.jpg";
 
 export default function AdminLogin() {
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
-  const [email, setEmail] =
-    useState("");
+const [email, setEmail] =
+useState("");
 
-  const [password, setPassword] =
-    useState("");
+const [password, setPassword] =
+useState("");
 
-  const [loading, setLoading] =
-    useState(false);
+const [loading, setLoading] =
+useState(false);
 
-  const [showPassword, setShowPassword] =
-    useState(false);
+const [showPassword, setShowPassword] =
+useState(false);
 
-  const [error, setError] =
-    useState("");
+const [error, setError] =
+useState("");
 
-  const [success, setSuccess] =
-    useState("");
+const [success, setSuccess] =
+useState("");
 
-  async function login(e) {
+useEffect(() => {
 
-    e.preventDefault();
 
-    setLoading(true);
-    setError("");
-    setSuccess("");
+checkSession();
 
-    try {
 
-      const {
-        data,
-        error
-      } =
-      await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+}, []);
 
-      if (error) {
+async function checkSession() {
 
-        setError(error.message);
 
-        return;
+try {
 
-      }
+  const {
+    data: { session }
+  } =
+  await supabase.auth.getSession();
 
-      const {
-        data: admin,
-        error: adminError
-      } =
-      await supabase
-      .from("admins")
-      .select("*")
-      .eq("email", email)
-      .single();
+  if (!session) return;
 
-      if (adminError || !admin) {
+  const {
+    data: admin
+  } =
+  await supabase
+  .from("admins")
+  .select("*")
+  .eq(
+    "email",
+    session.user.email
+  )
+  .single();
 
-        await supabase.auth.signOut();
+  if (admin) {
 
-        setError(
-          "You are not authorized to access this dashboard."
-        );
-
-        return;
-
-      }
-
-      navigate("/admin/dashboard");
-
-    }
-
-    catch (err) {
-
-      setError(
-        "Unable to login. Please try again."
-      );
-
-    }
-
-    finally {
-
-      setLoading(false);
-
-    }
-
-  }
-
-  async function createAccount() {
-
-    if (!email || !password) {
-
-      setError(
-        "Enter email and password first."
-      );
-
-      return;
-
-    }
-
-    try {
-
-      setLoading(true);
-
-      setError("");
-
-      setSuccess("");
-
-      const {
-        data,
-        error
-      } =
-      await supabase.auth.signUp({
-        email,
-        password
-      });
-
-      if (error) {
-
-        setError(error.message);
-
-        return;
-
-      }
-
-      const { error: adminError } =
-      await supabase
-      .from("admins")
-      .upsert([
-        {
-          email,
-          role: "super_admin"
-        }
-      ]);
-
-      if (adminError) {
-
-        setError(adminError.message);
-
-        return;
-
-      }
-
-      setSuccess(
-        "Account created successfully. You can now login."
-      );
-
-    }
-
-    catch (err) {
-
-      setError(
-        "Failed to create account."
-      );
-
-    }
-
-    finally {
-
-      setLoading(false);
-
-    }
-
-  }
-
-  async function resetPassword() {
-
-    if (!email) {
-
-      setError(
-        "Enter your email first."
-      );
-
-      return;
-
-    }
-
-    const { error } =
-    await supabase.auth.resetPasswordForEmail(
-      email
+    navigate(
+      "/admin/dashboard"
     );
 
-    if (error) {
+  }
 
-      setError(error.message);
+}
 
-    }
+catch {
 
-    else {
+  // ignore
 
-      setSuccess(
-        "Password reset email sent."
-      );
+}
 
-    }
+
+}
+
+async function login(e) {
+
+
+e.preventDefault();
+
+setLoading(true);
+setError("");
+setSuccess("");
+
+try {
+
+  const {
+    error
+  } =
+  await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+
+    setError(
+      error.message
+    );
+
+    return;
 
   }
 
-  return (
+  const {
+    data: admin,
+    error: adminError
+  } =
+  await supabase
+  .from("admins")
+  .select("*")
+  .eq(
+    "email",
+    email
+  )
+  .single();
 
-    <div className="admin-login">
+  if (
+    adminError ||
+    !admin
+  ) {
 
-      <div className="admin-overlay"></div>
+    await supabase.auth.signOut();
 
-      <div className="login-card">
+    setError(
+      "You are not authorized to access this dashboard."
+    );
 
-        <img
-          src={logo}
-          alt="S&S One Family Foundation"
-          className="admin-logo"
-        />
+    return;
 
-        <div className="admin-badge">
-          <FaUserShield />
-        </div>
+  }
 
-        <h1>
-          Admin Portal
-        </h1>
+  setSuccess(
+    "Login successful."
+  );
 
-        <p>
-          S&S One Family Foundation
-          <br />
-          Secure Control Center
-        </p>
-
-        {error && (
-
-          <div className="login-error">
-            {error}
-          </div>
-
-        )}
-
-        {success && (
-
-          <div className="login-success">
-            {success}
-          </div>
-
-        )}
-
-        <form onSubmit={login}>
-
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
-            required
-          />
-
-          <div className="password-wrapper">
-
-            <input
-              type={
-                showPassword
-                ? "text"
-                : "password"
-              }
-              placeholder="Password"
-              value={password}
-              onChange={(e) =>
-                setPassword(
-                  e.target.value
-                )
-              }
-              required
-            />
-
-            <button
-              type="button"
-              className="toggle-password"
-              onClick={() =>
-                setShowPassword(
-                  !showPassword
-                )
-              }
-            >
-
-              {
-                showPassword
-                ? <FaEyeSlash />
-                : <FaEye />
-              }
-
-            </button>
-
-          </div>
-
-          <button
-            type="submit"
-            className="login-btn"
-            disabled={loading}
-          >
-
-            <FaLock />
-
-            {
-              loading
-              ? "Please Wait..."
-              : "Login"
-            }
-
-          </button>
-
-          <button
-            type="button"
-            className="register-btn"
-            onClick={createAccount}
-            disabled={loading}
-          >
-
-            <FaUserPlus />
-
-            Create My Account
-
-          </button>
-
-          <button
-            type="button"
-            className="forgot-btn"
-            onClick={resetPassword}
-          >
-
-            <FaKey />
-
-            Forgot Password
-
-          </button>
-
-        </form>
-
-        <span>
-          Protected Dashboard Access
-        </span>
-
-      </div>
-
-    </div>
-
+  navigate(
+    "/admin/dashboard"
   );
 
 }
 
+catch {
+
+  setError(
+    "Unable to login. Please try again."
+  );
+
+}
+
+finally {
+
+  setLoading(false);
+
+}
+
+
+}
+
+async function resetPassword() {
+
+
+setError("");
+setSuccess("");
+
+if (!email) {
+
+  setError(
+    "Enter your email address first."
+  );
+
+  return;
+
+}
+
+const {
+  error
+} =
+await supabase.auth.resetPasswordForEmail(
+  email,
+  {
+    redirectTo:
+      window.location.origin +
+      "/admin/reset-password"
+  }
+);
+
+if (error) {
+
+  setError(
+    error.message
+  );
+
+}
+
+else {
+
+  setSuccess(
+    "Password reset link sent to your email."
+  );
+
+}
+
+
+}
+
+return (
+
+
+<div className="admin-login">
+
+  <div className="admin-overlay"></div>
+
+  <div className="login-card">
+
+    <img
+      src={logo}
+      alt="S&S One Family Foundation"
+      className="admin-logo"
+    />
+
+    <div className="admin-badge">
+      <FaUserShield />
+    </div>
+
+    <h1>
+      Admin Portal
+    </h1>
+
+    <p>
+      S&S One Family Foundation
+      <br />
+      Secure Control Center
+    </p>
+
+    {error && (
+
+      <div className="login-error">
+        {error}
+      </div>
+
+    )}
+
+    {success && (
+
+      <div className="login-success">
+        {success}
+      </div>
+
+    )}
+
+    <form
+      onSubmit={login}
+    >
+
+      <input
+        type="email"
+        placeholder="Enter Email Address"
+        value={email}
+        onChange={(e) =>
+          setEmail(
+            e.target.value
+          )
+        }
+        autoComplete="email"
+        required
+      />
+
+      <div className="password-wrapper">
+
+        <input
+          type={
+            showPassword
+              ? "text"
+              : "password"
+          }
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) =>
+            setPassword(
+              e.target.value
+            )
+          }
+          autoComplete="current-password"
+          required
+        />
+
+        <button
+          type="button"
+          className="toggle-password"
+          onClick={() =>
+            setShowPassword(
+              !showPassword
+            )
+          }
+        >
+
+          {
+            showPassword
+              ? <FaEyeSlash />
+              : <FaEye />
+          }
+
+        </button>
+
+      </div>
+
+      <button
+        type="submit"
+        className="login-btn"
+        disabled={loading}
+      >
+
+        <FaLock />
+
+        {
+          loading
+            ? "Signing In..."
+            : "Login"
+        }
+
+      </button>
+
+      <button
+        type="button"
+        className="forgot-btn"
+        onClick={
+          resetPassword
+        }
+      >
+
+        <FaKey />
+
+        Forgot Password
+
+      </button>
+
+    </form>
+
+    <span>
+      Protected Dashboard Access
+    </span>
+
+  </div>
+
+</div>
+
+);
+
+}

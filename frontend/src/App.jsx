@@ -223,58 +223,85 @@ element={
 
 
 
-{/* =====================
-ADMIN
-===================== */}
-
 <Route
-path="/admin"
-element={<AdminLogin/>}
+  path="/admin/dashboard"
+  element={
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  }
 />
 
 <Route
-path="/admin/dashboard"
-element={<Dashboard/>}
+  path="/admin/donations"
+  element={
+    <ProtectedRoute>
+      <DonationsAdmin />
+    </ProtectedRoute>
+  }
 />
 
 <Route
-path="/admin/donations"
-element={<DonationsAdmin/>}
+  path="/admin/volunteers"
+  element={
+    <ProtectedRoute>
+      <VolunteersAdmin />
+    </ProtectedRoute>
+  }
 />
 
 <Route
-path="/admin/volunteers"
-element={<VolunteersAdmin/>}
+  path="/admin/messages"
+  element={
+    <ProtectedRoute>
+      <MessagesAdmin />
+    </ProtectedRoute>
+  }
 />
 
 <Route
-path="/admin/messages"
-element={<MessagesAdmin/>}
+  path="/admin/partners"
+  element={
+    <ProtectedRoute>
+      <PartnersAdmin />
+    </ProtectedRoute>
+  }
 />
 
 <Route
-path="/admin/partners"
-element={<PartnersAdmin/>}
+  path="/admin/gallery"
+  element={
+    <ProtectedRoute>
+      <GalleryManager />
+    </ProtectedRoute>
+  }
 />
 
 <Route
-path="/admin/gallery"
-element={<GalleryManager/>}
+  path="/admin/cms"
+  element={
+    <ProtectedRoute>
+      <CMS />
+    </ProtectedRoute>
+  }
 />
 
 <Route
-path="/admin/cms"
-element={<CMS/>}
+  path="/admin/settings"
+  element={
+    <ProtectedRoute>
+      <SettingsAdmin />
+    </ProtectedRoute>
+  }
 />
 
 <Route
-path="/admin/settings"
-element={<SettingsAdmin/>}
-/>
-
-<Route
-path="/admin/reports"
-element={<Reports/>}
+  path="/admin/reports"
+  element={
+    <ProtectedRoute>
+      <Reports />
+    </ProtectedRoute>
+  }
 />
 
 
