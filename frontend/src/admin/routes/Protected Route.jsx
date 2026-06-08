@@ -3,99 +3,146 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 export default function ProtectedRoute({
-  children
+children
 }) {
 
-  const [loading, setLoading] =
-    useState(true);
+const [loading, setLoading] =
+useState(true);
 
-  const [authorized, setAuthorized] =
-    useState(false);
+const [authorized, setAuthorized] =
+useState(false);
 
-  useEffect(() => {
+useEffect(() => {
+
+checkAccess();
+
+const {
+  data: authListener
+} =
+supabase.auth.onAuthStateChange(
+  async () => {
 
     checkAccess();
 
-  }, []);
+  }
+);
 
-  async function checkAccess() {
+return () => {
 
-    try {
+  authListener.subscription.unsubscribe();
 
-      const {
-        data: { session }
-      } =
-      await supabase.auth.getSession();
+};
 
-      if (!session) {
 
-        setAuthorized(false);
-        setLoading(false);
+}, []);
 
-        return;
+async function checkAccess() {
 
-      }
 
-      const email =
-        session.user.email;
+try {
 
-      const {
-        data: admin,
-        error
-      } =
-      await supabase
-      .from("admins")
-      .select("*")
-      .eq("email", email)
-      .single();
+  setLoading(true);
 
-      if (error || !admin) {
+  const {
+    data: { session }
+  } =
+  await supabase.auth.getSession();
 
-        await supabase.auth.signOut();
+  if (!session) {
 
-        setAuthorized(false);
-
-      } else {
-
-        setAuthorized(true);
-
-      }
-
-    }
-
-    catch (err) {
-
-      setAuthorized(false);
-
-    }
-
-    setLoading(false);
+    setAuthorized(false);
+    return;
 
   }
 
-  if (loading) {
+  const email =
+    session.user.email;
 
-    return (
+  const {
+    data: admin,
+    error
+  } =
+  await supabase
+  .from("admins")
+  .select("email, role")
+  .eq(
+    "email",
+    email
+  )
+  .single();
 
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "1.2rem",
-          fontWeight: "600"
-        }}
-      >
-        Loading...
-      </div>
+  if (
+    error ||
+    !admin
+  ) {
 
-    );
+    await supabase.auth.signOut();
+
+    setAuthorized(false);
+
+    return;
 
   }
 
-  return authorized
-    ? children
-    : <Navigate to="/admin" replace />;
+  setAuthorized(true);
+
+}
+
+catch {
+
+  setAuthorized(false);
+
+}
+
+finally {
+
+  setLoading(false);
+
+}
+
+
+}
+
+if (loading) {
+
+
+return (
+
+  <div
+    style={{
+      minHeight:"100vh",
+      display:"flex",
+      justifyContent:"center",
+      alignItems:"center",
+      background:"#0f172a",
+      color:"#fff",
+      fontSize:"1rem",
+      fontWeight:"600"
+    }}
+  >
+
+    Checking Access...
+
+  </div>
+
+);
+
+
+}
+
+if (!authorized) {
+
+
+return (
+  <Navigate
+    to="/admin"
+    replace
+  />
+);
+
+
+}
+
+return children;
 
 }
