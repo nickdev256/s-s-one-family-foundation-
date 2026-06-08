@@ -143,64 +143,6 @@ export default function GalleryPage() {
 
       </div>
 
-      {/* FEATURED */}
-
-      {gallery.length > 0 && (
-
-        <section className="featured-image">
-
-          {gallery[0].type ===
-          "video" ? (
-
-            <video
-              controls
-              poster={
-                gallery[0].image_url
-              }
-            >
-              <source
-                src={
-                  gallery[0]
-                    .image_url ||
-                  gallery[0].url
-                }
-              />
-            </video>
-
-          ) : (
-
-            <img
-              src={
-                gallery[0]
-                  .image_url ||
-                gallery[0].url
-              }
-              alt={
-                gallery[0].caption
-              }
-            />
-
-          )}
-
-          <div className="featured-overlay">
-
-            <div className="category-badge">
-              {gallery[0]
-                .category ||
-                "Community"}
-            </div>
-
-            <h2>
-              {gallery[0]
-                .caption ||
-                "Building Brighter Futures"}
-            </h2>
-
-          </div>
-
-        </section>
-
-      )}
 
       {/* GALLERY GRID */}
 
