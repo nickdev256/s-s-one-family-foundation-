@@ -25,31 +25,33 @@ export default function GalleryPage() {
   }, []);
 
   async function loadGallery() {
-    try {
+  try {
+    const response = await fetch(
+      `${API_URL}/api/gallery`
+    );
 
-      const response = await fetch(
-        `${API_URL}/api/gallery`
+    const data =
+      await response.json();
+
+    console.log(
+      "Gallery Data:",
+      data.gallery
+    );
+
+    if (data.success) {
+      setGallery(
+        data.gallery || []
       );
-
-      const data = await response.json();
-
-      if (data.success) {
-        setGallery(data.gallery || []);
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Failed to load gallery:",
-        error
-      );
-
-    } finally {
-
-      setLoading(false);
-
     }
+  } catch (error) {
+    console.error(
+      "Failed to load gallery:",
+      error
+    );
+  } finally {
+    setLoading(false);
   }
+}
 
   const filteredGallery =
     activeCategory === "All"
@@ -120,99 +122,75 @@ export default function GalleryPage() {
 
       </div>
 
-      {/* FEATURED IMAGE */}
-
       {gallery.length > 0 && (
+  <section className="featured-image">
+    {gallery[0].type === "video" ? (
+      <video controls>
+        <source src={gallery[0].image_url} />
+      </video>
+    ) : (
+      <img
+        src={gallery[0].image_url}
+        alt={gallery[0].name}
+      />
+    )}
 
-        <section className="featured-image">
+    <div className="featured-overlay">
+      <h2>
+        {gallery[0].name ||
+          "Building Brighter Futures"}
+      </h2>
 
-          <img
-            src={gallery[0].url}
-            alt={gallery[0].name}
-          />
-
-          <div className="featured-overlay">
-
-            <h2>
-              {gallery[0].name ||
-                "Building Brighter Futures"}
-            </h2>
-
-            <p>
-              Every image tells a story of
-              hope, resilience and
-              transformation.
-            </p>
-
-          </div>
-
-        </section>
-
-      )}
+      <p>
+        Every image tells a story of hope,
+        resilience and transformation.
+      </p>
+    </div>
+  </section>
+)}
 
       {/* GALLERY */}
 
       <div className="gallery-grid">
-
-        {filteredGallery.length === 0 ? (
-
-          <div className="gallery-empty">
-
-            <h2>
-              No Media Found
-            </h2>
-
-            <p>
-              Upload media from the
-              Gallery Manager.
-            </p>
-
-          </div>
-
+  {filteredGallery.length === 0 ? (
+    <div className="gallery-empty">
+      <h2>No Media Found</h2>
+      <p>
+        Upload media from the Gallery
+        Manager.
+      </p>
+    </div>
+  ) : (
+    filteredGallery.map((item) => (
+      <div
+        key={item.id}
+        className="gallery-card"
+      >
+        {item.type === "video" ? (
+          <video controls>
+            <source
+              src={item.image_url}
+            />
+          </video>
         ) : (
-
-          filteredGallery.map((item) => (
-
-            <div
-              key={item.id}
-              className="gallery-card"
-            >
-
-              {item.type === "video" ? (
-
-                <video controls>
-                  <source src={item.url} />
-                </video>
-
-              ) : (
-
-                <img
-                  src={item.url}
-                  alt={item.name}
-                />
-
-              )}
-
-              <div className="overlay">
-
-                <h3>
-                  {item.name}
-                </h3>
-
-                <span>
-                  {item.category ||
-                    "Gallery"}
-                </span>
-
-              </div>
-
-            </div>
-
-          ))
-
+          <img
+            src={item.image_url}
+            alt={item.name}
+          />
         )}
 
+        <div className="overlay">
+          <h3>{item.name}</h3>
+
+          <span>
+            {item.category ||
+              "Gallery"}
+          </span>
+        </div>
       </div>
+    ))
+  )}
+</div>
 
       {/* IMPACT */}
 
