@@ -76,18 +76,18 @@ export const uploadMedia = async (req, res) => {
         .getPublicUrl(filename);
 
     const { data, error } =
-      await supabase
-        .from("gallery")
-        .insert([
-          {
-            name:
-              req.file.originalname,
-            url:
-              publicUrl.publicUrl,
-            type,
-          },
-        ])
-        .select();
+  await supabase
+    .from("gallery")
+    .insert([
+      {
+        name:
+          req.file.originalname,
+        image_url:
+          publicUrl.publicUrl,
+        type,
+      },
+    ])
+    .select();
 
     if (error) throw error;
 
