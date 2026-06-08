@@ -11,8 +11,6 @@ import {
   FaHeart,
   FaHandsHelping,
   FaUsers,
-  FaMobileAlt,
-  FaCreditCard,
   FaCheckCircle,
 } from "react-icons/fa";
 
