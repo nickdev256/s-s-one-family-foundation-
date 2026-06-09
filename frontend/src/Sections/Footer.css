@@ -31,6 +31,21 @@ padding-top:80px;
 
 }
 
+@media(max-width:700px){
+
+  .footer{
+
+    padding-top:80px;
+    text-align:center;
+
+    background-position:center center;
+    background-size:550%;
+    background-repeat:no-repeat;
+
+  }
+
+}
+
 
 
 /* OVERLAY */
