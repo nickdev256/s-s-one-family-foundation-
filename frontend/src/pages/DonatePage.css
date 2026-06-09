@@ -1264,7 +1264,7 @@ margin-bottom:25px;
 
 .impact-content h2{
 
-font-size:4rem;
+font-size: 2.3rem;
 
 font-weight:900;
 
@@ -1793,4 +1793,143 @@ CARD NUMBER PREVIEW
 
   margin:0 auto 0px;
 
+}
+
+
+/* =================================
+MOBILE FIXES
+================================= */
+
+@media (max-width: 768px){
+
+  /* HERO */
+
+  .donate-hero{
+    height:55vh;
+    background-attachment:scroll;
+  }
+
+  .hero-content{
+    padding:0 20px;
+  }
+
+  .hero-content h1{
+    font-size:3rem !important;
+    line-height:1.1;
+    letter-spacing:-1px;
+  }
+
+  .hero-top{
+    font-size:3.2rem;
+  }
+
+  .hero-script{
+    font-size:2.2rem;
+    margin-top:10px;
+  }
+
+  .hero-content p{
+    font-size:1rem;
+    line-height:1.7;
+  }
+
+  /* TRUST STRIP */
+
+  .trust-strip{
+    margin:-60px 15px 30px;
+    padding:25px 20px;
+
+    display:grid;
+    grid-template-columns:1fr;
+    gap:25px;
+
+    text-align:center;
+  }
+
+  .trust-strip strong{
+    font-size:2rem;
+  }
+
+  .trust-strip span{
+    font-size:1rem;
+  }
+
+  /* IMPACT INTRO */
+
+  .impact-intro{
+    padding:0 20px;
+  }
+
+  .impact-intro h2{
+    font-size:2.2rem;
+    line-height:1.2;
+  }
+
+  .impact-intro p{
+    font-size:1rem;
+  }
+
+  /* IMPACT CARDS */
+
+  .impact-stats{
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+
+  .impact-box{
+    padding:35px 20px;
+  }
+
+  .impact-box h3{
+    font-size:2.2rem;
+  }
+
+  /* DONATION WRAPPER */
+
+  .donation-wrapper{
+    margin:20px 12px 60px;
+    padding:25px 18px;
+    border-radius:20px;
+  }
+
+  /* PAYMENT LOGOS */
+
+  .payment-logo{
+    width:120px;
+    height:70px;
+  }
+
+  .paypal-logo{
+    width:120px;
+    height:auto;
+  }
+
+  /* BUTTONS */
+
+  .primary-btn,
+  .secondary-btn{
+    width:100%;
+    min-width:100%;
+    margin-left:0;
+  }
+
+  /* CARD DETAILS */
+
+  .card-row{
+    grid-template-columns:1fr;
+    gap:15px;
+  }
+
+  .card-input-wrapper{
+    width:100%;
+  }
+
+  .card-input{
+    padding-right:100px;
+  }
+
+  .card-preview{
+    width:70px;
+    height:auto;
+  }
 }
