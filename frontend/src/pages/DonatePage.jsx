@@ -1,14 +1,16 @@
 import "./DonatePage.css";
 import { useState , useEffect} from "react";
 import Footer from "../Sections/Footer";
-
+import mtnLogo from "../assets/image/mtn-momo.png";
+import airtelLogo from "../assets/image/airtel-money.png";
+import bankCardLogo from "../assets/image/yy.png";
+import cardLogo from "../assets/image/card-preview.png";
+import paypalLogo from "../assets/image/paypal.png";
 
 import {
   FaHeart,
   FaHandsHelping,
   FaUsers,
-  FaMobileAlt,
-  FaCreditCard,
   FaCheckCircle,
 } from "react-icons/fa";
 
@@ -41,24 +43,30 @@ export default function DonatePage() {
 
   const [errors, setErrors] = useState({});
 
+  const [showCardForm, setShowCardForm] = useState(false);
+
   const [formData, setFormData] = useState({
-    donationType: "general",
+    
+  donationType: "general",
 
-    amount: 100000,
+  amount: 100000,
 
-    customAmount: "",
+  customAmount: "",
 
-    recurring: false,
+  recurring: false,
 
-    paymentMethod: "MTN",
+  paymentMethod: "MTN",
 
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+  firstName: "",
+  lastName: "",
+  email: "",
 
-    message: "",
-  });
+  countryCode: "+256",
+
+  phone: "",
+
+  message: "",
+});
 
   const updateField = (field, value) => {
     setFormData((prev) => ({
@@ -78,13 +86,33 @@ export default function DonatePage() {
       newErrors.lastName = "Last name is required";
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    }
+   if (!formData.email.trim()) {
+  newErrors.email = "Email is required";
+} else if (
+  !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+) {
+  newErrors.email = "Please enter a valid email address";
+}
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    }
+ if (!formData.phone.trim()) {
+
+  newErrors.phone =
+    "Phone number is required";
+
+} else if (
+  !/^([0-9]{9,15})$/.test(formData.phone)
+) {
+
+  newErrors.phone =
+    "Enter a valid phone number";
+
+}
+else if (!/^\d+$/.test(formData.phone)) {
+  newErrors.phone =
+    "Phone number should contain only numbers";
+
+}
+
 
     setErrors(newErrors);
 
@@ -352,38 +380,161 @@ export default function DonatePage() {
 
             <div className="form-grid">
 
-              <div className="input-group">
+<div className="input-group">
   <input
     type="text"
-     placeholder=""
+    placeholder=""
+    value={formData.firstName}
+    onChange={(e)=>
+      updateField("firstName", e.target.value)
+    }
   />
   <label>First Name:</label>
+
+  {errors.firstName && (
+    <span className="error-text">
+      {errors.firstName}
+    </span>
+  )}
 </div>
 
 
-             <div className="input-group">
+<div className="input-group">
   <input
-  type="text"
-  placeholder=""
-/>
+    type="text"
+    placeholder=""
+    value={formData.lastName}
+    onChange={(e)=>
+      updateField("lastName", e.target.value)
+    }
+  />
+
   <label>Last Name:</label>
+
+  {errors.lastName && (
+    <span className="error-text">
+      {errors.lastName}
+    </span>
+  )}
 </div>
 
+
 <div className="input-group">
- <input
-  type="email"
-  placeholder=""
-/>
+  <input
+    type="email"
+    placeholder=""
+    value={formData.email}
+    onChange={(e)=>
+      updateField("email", e.target.value)
+    }
+    required
+  />
+
   <label>Email Address:</label>
+
+  {errors.email && (
+    <span className="error-text">
+      {errors.email}
+    </span>
+  )}
 </div>
 
-<div className="input-group">
- <input
+
+<div className="input-group phone-group">
+
+  <select
+    value={formData.countryCode}
+    onChange={(e)=>
+      updateField(
+        "countryCode",
+        e.target.value
+      )
+    }
+  >
+    <option value="+256">🇺🇬 Uganda (+256)</option>
+<option disabled>──────────</option>
+ <option value="+244">🇦🇴 Angola (+244)</option>
+<option value="+213">🇩🇿 Algeria (+213)</option>
+<option value="+61">🇦🇺 Australia (+61)</option>
+<option value="+973">🇧🇭 Bahrain (+973)</option>
+<option value="+880">🇧🇩 Bangladesh (+880)</option>
+<option value="+32">🇧🇪 Belgium (+32)</option>
+<option value="+267">🇧🇼 Botswana (+267)</option>
+<option value="+55">🇧🇷 Brazil (+55)</option>
+<option value="+257">🇧🇮 Burundi (+257)</option>
+<option value="+237">🇨🇲 Cameroon (+237)</option>
+<option value="+1">🇨🇦 Canada (+1)</option>
+<option value="+86">🇨🇳 China (+86)</option>
+<option value="+45">🇩🇰 Denmark (+45)</option>
+<option value="+20">🇪🇬 Egypt (+20)</option>
+<option value="+251">🇪🇹 Ethiopia (+251)</option>
+<option value="+33">🇫🇷 France (+33)</option>
+<option value="+49">🇩🇪 Germany (+49)</option>
+<option value="+233">🇬🇭 Ghana (+233)</option>
+<option value="+91">🇮🇳 India (+91)</option>
+<option value="+62">🇮🇩 Indonesia (+62)</option>
+<option value="+353">🇮🇪 Ireland (+353)</option>
+<option value="+39">🇮🇹 Italy (+39)</option>
+<option value="+81">🇯🇵 Japan (+81)</option>
+<option value="+254">🇰🇪 Kenya (+254)</option>
+<option value="+965">🇰🇼 Kuwait (+965)</option>
+<option value="+60">🇲🇾 Malaysia (+60)</option>
+<option value="+52">🇲🇽 Mexico (+52)</option>
+<option value="+212">🇲🇦 Morocco (+212)</option>
+<option value="+264">🇳🇦 Namibia (+264)</option>
+<option value="+31">🇳🇱 Netherlands (+31)</option>
+<option value="+64">🇳🇿 New Zealand (+64)</option>
+<option value="+234">🇳🇬 Nigeria (+234)</option>
+<option value="+47">🇳🇴 Norway (+47)</option>
+<option value="+968">🇴🇲 Oman (+968)</option>
+<option value="+92">🇵🇰 Pakistan (+92)</option>
+<option value="+63">🇵🇭 Philippines (+63)</option>
+<option value="+48">🇵🇱 Poland (+48)</option>
+<option value="+351">🇵🇹 Portugal (+351)</option>
+<option value="+974">🇶🇦 Qatar (+974)</option>
+<option value="+250">🇷🇼 Rwanda (+250)</option>
+<option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+<option value="+221">🇸🇳 Senegal (+221)</option>
+<option value="+65">🇸🇬 Singapore (+65)</option>
+<option value="+27">🇿🇦 South Africa (+27)</option>
+<option value="+211">🇸🇸 South Sudan (+211)</option>
+<option value="+82">🇰🇷 South Korea (+82)</option>
+<option value="+34">🇪🇸 Spain (+34)</option>
+<option value="+94">🇱🇰 Sri Lanka (+94)</option>
+<option value="+46">🇸🇪 Sweden (+46)</option>
+<option value="+41">🇨🇭 Switzerland (+41)</option>
+<option value="+255">🇹🇿 Tanzania (+255)</option>
+<option value="+66">🇹🇭 Thailand (+66)</option>
+<option value="+216">🇹🇳 Tunisia (+216)</option>
+<option value="+256" selected>🇺🇬 Uganda (+256)</option>
+<option value="+971">🇦🇪 United Arab Emirates (+971)</option>
+<option value="+44">🇬🇧 United Kingdom (+44)</option>
+<option value="+1">🇺🇸 United States (+1)</option>
+<option value="+84">🇻🇳 Vietnam (+84)</option>
+<option value="+260">🇿🇲 Zambia (+260)</option>
+<option value="+263">🇿🇼 Zimbabwe (+263)</option>
+  </select>
+
+  <input
   type="tel"
   placeholder=""
+  value={formData.phone}
+  onChange={(e)=>{
+    const value = e.target.value.replace(/\D/g, "");
+    updateField("phone", value);
+  }}
 />
+
   <label>Phone Number:</label>
+
+  {errors.phone && (
+    <span className="error-text">
+      {errors.phone}
+    </span>
+  )}
+
 </div>
+
 
 <div className="input-group textarea-group">
 
@@ -399,6 +550,12 @@ export default function DonatePage() {
 
 </div>
             </div>
+
+            {Object.keys(errors).length > 0 && (
+  <div className="form-error">
+    Please fill in all required fields before continuing.
+  </div>
+)}
 
             <div className="buttons">
               <button
@@ -440,8 +597,12 @@ export default function DonatePage() {
                   )
                 }
               >
-                <FaMobileAlt />
-                MTN MoMo
+                <img
+  src={mtnLogo}
+  alt="MTN MoMo"
+  className="payment-logo"
+/>
+
               </button>
 
               <button
@@ -457,55 +618,169 @@ export default function DonatePage() {
                   )
                 }
               >
-                <FaMobileAlt />
-                Airtel Money
+                <img
+  src={airtelLogo}
+  alt="Airtel Money"
+  className="payment-logo"
+/>
+
+
               </button>
+
+              
 
               <button
                 className={
-                  formData.paymentMethod === "CARD"
+                  formData.paymentMethod === "VISA CARD"
                     ? "payment-card active"
                     : "payment-card"
                 }
-                onClick={() =>
-                  updateField(
-                    "paymentMethod",
-                    "CARD"
-                  )
-                }
+                onClick={() => {
+  updateField("paymentMethod", "VISA CARD");
+  setShowCardForm(!showCardForm);
+}}
               >
-                <FaCreditCard />
-                Bank Card
+                <img
+  src={bankCardLogo}
+  alt="Bank Card"
+  className="bank-card-logo"
+/>
+
+<span></span>
               </button>
+
+
+             
+
+              
+
+              <button
+  className={
+    formData.paymentMethod === "PayPal"
+      ? "payment-card active"
+      : "payment-card"
+  }
+  onClick={() => {
+    updateField("paymentMethod", "PayPal");
+    setShowCardForm(true);
+  }}
+>
+  <img
+    src={paypalLogo}
+    alt="PayPal"
+    className="paypal-logo"
+  />
+
+  <span></span>
+</button>
+
+
+
+
+              
             </div>
 
-            <div className="summary-card">
-              <h3>Donation Summary</h3>
+            
 
-              <p>
-                Amount:
-                <strong>
-                  UGX{" "}
-                  {finalAmount.toLocaleString()}
-                </strong>
-              </p>
+{(
+  formData.paymentMethod === "VISA CARD" ||
+  formData.paymentMethod === "PAYPAL"
+) && (
 
-              <p>
-                Frequency:
-                <strong>
-                  {formData.recurring
-                    ? "Monthly"
-                    : "One Time"}
-                </strong>
-              </p>
+  <div className="card-details">
 
-              <p>
-                Payment:
-                <strong>
-                  {formData.paymentMethod}
-                </strong>
-              </p>
-            </div>
+    <div className="card-row">
+
+
+
+
+    <div className="input-group">
+
+  <label>Card Number:</label>
+
+  <div className="card-input-wrapper">
+
+   <div className="input-group">
+        <input type="text" placeholder="" />
+        <label>Card Number:</label>
+      </div>
+
+
+
+    <img
+      src={cardLogo}
+      alt="Card"
+      className="card-preview"
+    />
+
+  </div>
+
+</div>
+
+      <div className="input-group">
+        <input type="text" placeholder="" />
+        <label>CVC:</label>
+      </div>
+
+    </div>
+
+    <div className="card-row">
+
+      <div className="input-group">
+        <input type="text" placeholder="" />
+        <label>Cardholder Name:</label>
+      </div>
+
+      <div className="input-group">
+        <input type="text" placeholder="" />
+        <label>MM / YY:</label>
+      </div>
+
+    </div>
+
+  </div>
+
+)}
+
+
+
+           <div className="summary-card">
+
+  <div className="summary-header">
+    <FaHeart />
+    <h3>Donation Summary</h3>
+  </div>
+
+  <div className="summary-row">
+    <span>Donation Amount</span>
+    <strong>
+      UGX {finalAmount.toLocaleString()}
+    </strong>
+  </div>
+
+  <div className="summary-row">
+    <span>Frequency</span>
+    <strong>
+      {formData.recurring ? "Monthly" : "One Time"}
+    </strong>
+  </div>
+
+  <div className="summary-row">
+    <span>Payment Method</span>
+    <strong>
+      {formData.paymentMethod}
+    </strong>
+  </div>
+
+  <div className="summary-impact">
+    <p>
+      Your contribution helps provide education,
+      healthcare and community support to vulnerable
+      children and families across Uganda.
+    </p>
+  </div>
+
+</div>
 
             <div className="buttons">
               <button

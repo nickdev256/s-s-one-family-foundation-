@@ -106,7 +106,7 @@ Creating Opportunity.
 S&S One Family Foundation exists to create lasting social 
 transformation by empowering vulnerable children, strengthening 
 families and equipping communities through education, health, protection, 
-skills development and humanitarian support.
+skills development and humanitarian support .
 
 </p>
 
