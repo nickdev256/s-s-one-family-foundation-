@@ -3,7 +3,7 @@ import { useState , useEffect} from "react";
 import Footer from "../Sections/Footer";
 import mtnLogo from "../assets/image/mtn-momo.png";
 import airtelLogo from "../assets/image/airtel-money.png";
-import bankCardLogo from "../assets/image/YY.png";
+import bankCardLogo from "../assets/image/yy.png";
 import cardLogo from "../assets/image/card-preview.png";
 import paypalLogo from "../assets/image/paypal.png";
 
