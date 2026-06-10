@@ -12,6 +12,7 @@ export const createOrder = async (req, res) => {
 
     request.requestBody({
       intent: "CAPTURE",
+
       purchase_units: [
         {
           amount: {
@@ -25,17 +26,59 @@ export const createOrder = async (req, res) => {
     const order =
       await client.execute(request);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       orderID: order.result.id
     });
 
   } catch (error) {
-    console.error(error);
 
-    res.status(500).json({
+    console.error(
+      "CREATE ORDER ERROR:",
+      error
+    );
+
+    return res.status(500).json({
       success: false,
-      message: error.message
+      message:
+        error.message ||
+        "Failed to create order"
+    });
+  }
+};
+
+export const captureOrder = async (req, res) => {
+  try {
+
+    const { orderID } = req.body;
+
+    const request =
+      new paypal.orders.OrdersCaptureRequest(
+        orderID
+      );
+
+    request.requestBody({});
+
+    const capture =
+      await client.execute(request);
+
+    return res.status(200).json({
+      success: true,
+      capture: capture.result
+    });
+
+  } catch (error) {
+
+    console.error(
+      "CAPTURE ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message:
+        error.message ||
+        "Failed to capture payment"
     });
   }
 };

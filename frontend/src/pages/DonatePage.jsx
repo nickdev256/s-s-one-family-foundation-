@@ -839,22 +839,18 @@ return;
       ) => {
 
         const response =
-          await fetch(
-            "`${API_URL}/api/donations/capture`",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
-
-              body: JSON.stringify({
-                orderID:
-                  data.orderID,
-              }),
-            }
-          );
+         await fetch(
+  `${API_URL}/api/donations/capture`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      orderID: data.orderID,
+    }),
+  }
+);
 
         const result =
           await response.json();
