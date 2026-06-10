@@ -963,59 +963,139 @@ HEARTBEAT ANIMATION
    MOBILE NAVIGATION
 ========================== */
 
-.mobile-menu-btn{
+/* ==========================
+   MOBILE NAVIGATION
+========================== */
+
+/* Hide mobile elements on desktop */
+.mobile-icons,
+.mobile-menu-btn,
+.mobile-menu-header,
+.mobile-donate,
+.mobile-submenu,
+.mobile-dropdown-title,
+.mobile-overlay{
   display:none;
-  font-size:1.8rem;
-  color:#fff;
-  cursor:pointer;
-  z-index:1001;
 }
 
 /* Tablet & Mobile */
 @media (max-width: 992px){
 
+  /* Hide desktop navigation */
+  .nav-actions{
+    display:none;
+  }
+
+  /* Mobile icons */
+  .mobile-icons{
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+
   .mobile-menu-btn{
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:30px;
+    font-size:28px;
     color:#fff;
     cursor:pointer;
     z-index:1002;
   }
 
-  .nav-links{
-    position:fixed;
-    top:0;
-    right:-260px;
-    width:220px;
-    height:100vh;
-
-    background:rgba(7,20,33,.98);
-    backdrop-filter:blur(20px);
-
+  .mobile-search-btn-top{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.12);
+    color:#fff;
     display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    justify-content:flex-start;
-
-    padding:110px 25px 30px;
-
-    gap:8px;
-
-    transition:right .35s ease-in-out;
-    z-index:1001;
-
-    border-left:1px solid rgba(255,255,255,.08);
-
-    box-shadow:
-    -20px 0 40px rgba(0,0,0,.35);
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
   }
+
+  /* Drawer */
+.nav-links{
+  position:fixed;
+  top:0;
+  right:-280px;
+
+  width:250px;
+  height: 90vh;
+
+  border-radius: 10px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+
+  margin-top: 15px;
+ 
+  padding:100px 25px 30px;
+  gap:10px;
+
+  background: rgba(12, 15, 38, 0.963);
+
+  backdrop-filter:blur(25px);
+ 
+
+  border-left:1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+  -10px 0 30px rgba(0,0,0,.25);
+
+  transition:right .35s ease;
+  z-index:1001;
+}
+ 
 
   .nav-links.active{
     right:0;
   }
 
+  .mobile-overlay{
+    display:block;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:1000;
+  }
+
+  /* Menu title */
+  .mobile-menu-header{
+    display:flex;
+    width:100%;
+    justify-content:center;
+    margin-bottom:20px;
+    margin-top: -60px;
+  }
+
+  .mobile-menu-header h4{
+  color:#EAB84A;
+  letter-spacing:4px;
+  font-size:12px;
+  font-weight:700;
+  position:relative;
+}
+
+.mobile-menu-header h4::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:-10px;
+
+  width:60px;
+  height:2px;
+
+  background:#EAB84A;
+  border-radius:10px;
+}
+
+  /* Links */
   .nav-item{
     width:100%;
   }
@@ -1023,164 +1103,81 @@ HEARTBEAT ANIMATION
   .nav-item a{
     display:block;
     width:100%;
-
     padding:12px 0;
-
     color:#fff;
     text-decoration:none;
-
-    font-size:15px;
-    font-weight:600;
-    letter-spacing:1px;
-
-    border-bottom:
-    1px solid rgba(255,255,255,.08);
+    border-bottom:1px solid rgba(255,255,255,.08);
   }
 
   .nav-item a:hover{
     color:#EAB84A;
     padding-left:10px;
-    transition:.3s;
   }
 
-  .dropdown{
-    display:none !important;
-  }
-
-  .nav-actions{
-    display:none;
-  }
-}
-
-.mobile-overlay{
-  position:fixed;
-  inset:0;
-
-  background:rgba(0,0,0,.45);
-
-  backdrop-filter:blur(2px);
-
-  z-index:1000;
-}
-
-
-.mobile-menu-header{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin-bottom:25px;
-}
-
-.mobile-menu-header img{
-  width:70px;
-  height:70px;
-  object-fit:contain;
-}
-
-.mobile-menu-header h4{
-  color:#EAB84A;
-  letter-spacing:4px;
-  font-size:12px;
-  font-weight:700;
-}
-
-
-
-.mobile-donate{
-  margin-top:20px;
-  width:100%;
-
-  text-align:center;
-  text-decoration:none;
-
-  background:#EAB84A;
-  color:#fff;
-
-  padding:14px;
-  border-radius:12px;
-
-  font-weight:700;
-  letter-spacing:1px;
-
-  transition:.3s ease;
-}
-
-.mobile-donate:hover{
-  background:#dca638;
-  transform:translateY(-2px);
-}
-
-
-.mobile-search-btn{
-  width:100%;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-
-  margin-top:15px;
-
-  padding:14px;
-
-  border:none;
-  border-radius:12px;
-
-  background:rgba(255,255,255,.08);
-
-  color:#fff;
-
-  font-size:15px;
-  font-weight:600;
-
-  cursor:pointer;
-
-  transition:.3s ease;
-}
-
-.mobile-search-btn:hover{
-  background:rgba(255,255,255,.15);
-  color:#EAB84A;
-}
-
-
-.mobile-icons{
-  display:none;
-}
-
-@media(max-width:992px){
-
-  .mobile-icons{
+  /* Mobile donate */
+  .mobile-donate{
     display:flex;
-    align-items:center;
-    gap:18px;
-  }
-
-  .mobile-search-btn-top{
-    width:42px;
-    height:42px;
-
-    border:none;
-    border-radius:50%;
-
-    background:rgba(255,255,255,.12);
-
-    color:#fff;
-
-    display:flex;
-    align-items:center;
+    width:100%;
     justify-content:center;
+    align-items:center;
 
-    cursor:pointer;
+    margin-top:20px;
+    padding:14px;
 
-    backdrop-filter:blur(10px);
+    text-decoration:none;
+    border-radius:12px;
 
-    transition:.3s ease;
-  }
-
-  .mobile-search-btn-top:hover{
     background:#EAB84A;
     color:#111;
+    font-weight:700;
+  }
+
+  .mobile-donate:hover{
+    background:#dca638;
+  }
+
+
+.mobile-dropdown-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    cursor:pointer;
+    padding:14px 0;
+    color:#fff;
+    font-weight:600;
+  }
+
+
+.mobile-submenu{
+  display:flex;
+  flex-direction:column;
+
+  width:100%;
+
+  padding-left:20px;
+  margin-top:10px;
+  margin-bottom:10px;
+
+  border-left:2px solid rgba(234,184,74,.4);
+}
+
+.mobile-submenu a{
+    padding:10px 0;
+    color:#d8d8d8;
+    text-decoration:none;
+    font-size:14px;
+  }
+
+.mobile-submenu a:hover{
+  color:#EAB84A;
+}
+
+}
+
+
+@media(max-width:992px){
+  .dropdown{
+    display:none !important;
   }
 }
