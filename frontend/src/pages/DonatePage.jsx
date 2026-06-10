@@ -141,7 +141,7 @@ else if (!/^\d+$/.test(formData.phone)) {
     setLoading(true);
 
     const response = await fetch(
-      `${API_URL}/api/donations`,
+      `${API_URL}/api/paypal/create-order`,
       {
         method: "POST",
         headers: {
@@ -839,8 +839,8 @@ return;
       ) => {
 
         const response =
-         await fetch(
-  `${API_URL}/api/donations/capture`,
+ await fetch(
+  `${API_URL}/api/paypal/capture-order`,
   {
     method: "POST",
     headers: {
