@@ -6,7 +6,9 @@ import airtelLogo from "../assets/image/airtel-money.png";
 import bankCardLogo from "../assets/image/yy.png";
 import cardLogo from "../assets/image/card-preview.png";
 import paypalLogo from "../assets/image/paypal.png";
-
+import {
+  PayPalButtons
+} from "@paypal/react-paypal-js";
 import {
   FaHeart,
   FaHandsHelping,
@@ -14,8 +16,6 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
-const [orderID, setOrderID] =
-  useState(null);
 
 const DONATION_TYPES = [
   {
@@ -41,6 +41,8 @@ export default function DonatePage() {
   window.scrollTo(0, 0)}, [])
   
   const [step, setStep] = useState(1);
+  const [orderID, setOrderID] =
+  useState(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -184,9 +186,8 @@ else if (!/^\d+$/.test(formData.phone)) {
         data.orderID
       );
 
-     alert(
-  `PayPal Order Created: ${data.orderID}`
-);
+ setOrderID(data.orderID);
+return;
 
       return;
     }
