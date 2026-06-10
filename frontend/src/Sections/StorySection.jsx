@@ -2,6 +2,8 @@ import './StorySection.css'
 
 import { motion } from 'framer-motion'
 
+import { Link, useNavigate } from "react-router-dom"
+
 import {
 FaHandsHelping,
 FaChild,
@@ -176,7 +178,7 @@ duration:1
 
 <h2>
 
-Who we are
+Who We Are
 
 </h2>
 
@@ -235,13 +237,13 @@ About Us
 </button>
 
 
-<button className="discover-btn">
-
-Discover More
-
-<FaArrowRight/>
-
-</button>
+<Link
+  to="/about"
+  className="discover-btn"
+>
+  Discover More
+<FaArrowRight />
+</Link>
 
 </div>
 
