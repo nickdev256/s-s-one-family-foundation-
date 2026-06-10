@@ -38,6 +38,19 @@ export default function Navbar() {
 
   const navigate = useNavigate()
   const timer = useRef(null)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 992);
+
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 992);
+  };
+
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
+}, []);
 
   const [openSearch, setOpenSearch] = useState(false)
   const [query, setQuery] = useState("")
@@ -45,6 +58,10 @@ export default function Navbar() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  const [aboutOpen, setAboutOpen] = useState(false);
+const [programsOpen, setProgramsOpen] = useState(false);
+const [involvedOpen, setInvolvedOpen] = useState(false);
 
   const filteredResults = SEARCH_DATA.filter(item =>
   item.name.toLowerCase().includes(query.toLowerCase())
@@ -234,29 +251,51 @@ onKeyDown={(e) => {
 {/* NAVIGATION */}
 <div className={`nav-links ${mobileMenu ? "active" : ""}`}>
 
-          <div className="nav-item">
-            <Link
-  to="/"
-  onClick={() => setMobileMenu(false)}
->
-
   <div className="mobile-menu-header">
   <h4>MENU</h4>
 </div>
 
-
-  HOME
-</Link>
-          </div>
-
-        <div className="nav-item">
+<div className="nav-item">
   <Link
-    to="/about"
+    to="/"
     onClick={() => setMobileMenu(false)}
   >
+    HOME
+  </Link>
+</div>
+
+
+
+       <div className="nav-item">
+
+  {/* DESKTOP LINK */}
+ {!isMobile && (
+  <Link to="/about">
     WHO WE ARE <FaChevronDown />
   </Link>
+)}
 
+  {/* MOBILE DROPDOWN */}
+  {isMobile && (
+  <div
+    className="mobile-dropdown-title"
+    onClick={() => setAboutOpen(!aboutOpen)}
+  >
+    WHO WE ARE <FaChevronDown />
+  </div>
+)}
+
+  {aboutOpen && (
+    <div className="mobile-submenu">
+      <Link to="/about">Who We Are</Link>
+      <Link to="/team">Our Team</Link>
+      <Link to="/about#mission">Mission</Link>
+      <Link to="/about#vision">Vision</Link>
+      <Link to="/about#values">Values</Link>
+    </div>
+  )}
+
+  {/* DESKTOP DROPDOWN */}
   <div className="dropdown">
     <Link to="/about">Who We Are</Link>
     <Link to="/team">Our Team</Link>
@@ -264,15 +303,37 @@ onKeyDown={(e) => {
     <Link to="/about#vision">Vision</Link>
     <Link to="/about#values">Values</Link>
   </div>
+
 </div>
 
+{/* WHAT WE DO */}
 <div className="nav-item">
-  <Link
-    to="/programs"
-    onClick={() => setMobileMenu(false)}
-  >
+
+  {!isMobile && (
+  <Link to="/programs">
     WHAT WE DO <FaChevronDown />
   </Link>
+)}
+
+{isMobile && (
+  <div
+    className="mobile-dropdown-title"
+    onClick={() => setProgramsOpen(!programsOpen)}
+  >
+    WHAT WE DO <FaChevronDown />
+  </div>
+)}
+
+  {programsOpen && (
+    <div className="mobile-submenu">
+      <Link to="/programs">All Programs</Link>
+      <Link to="/programs#education">Education</Link>
+      <Link to="/programs#health">Health</Link>
+      <Link to="/programs#child">Child Protection</Link>
+      <Link to="/programs#youth">Youth Empowerment</Link>
+      <Link to="/programs#community">Community Development</Link>
+    </div>
+  )}
 
   <div className="dropdown">
     <Link to="/programs">All Programs</Link>
@@ -282,15 +343,36 @@ onKeyDown={(e) => {
     <Link to="/programs#youth">Youth Empowerment</Link>
     <Link to="/programs#community">Community Development</Link>
   </div>
+
 </div>
 
+
+{/* GET INVOLVED */}
 <div className="nav-item">
-  <Link
-    to="/work"
-    onClick={() => setMobileMenu(false)}
-  >
+
+ {!isMobile && (
+  <Link to="/work">
     GET INVOLVED <FaChevronDown />
   </Link>
+)}
+
+ {isMobile && (
+  <div
+    className="mobile-dropdown-title"
+    onClick={() => setInvolvedOpen(!involvedOpen)}
+  >
+    GET INVOLVED<FaChevronDown />
+  </div>
+)}
+
+  {involvedOpen && (
+    <div className="mobile-submenu">
+      <Link to="/volunteer">Volunteer</Link>
+      <Link to="/donate">Donate</Link>
+      <Link to="/partner">Partner</Link>
+      <Link to="/contact">Contact</Link>
+    </div>
+  )}
 
   <div className="dropdown">
     <Link to="/volunteer">Volunteer</Link>
@@ -298,8 +380,8 @@ onKeyDown={(e) => {
     <Link to="/partner">Partner</Link>
     <Link to="/contact">Contact</Link>
   </div>
-</div>
 
+</div>
           <div className="nav-item">
 
           <Link
