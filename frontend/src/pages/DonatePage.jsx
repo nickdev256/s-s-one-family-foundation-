@@ -14,6 +14,9 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
+const [orderID, setOrderID] =
+  useState(null);
+
 const DONATION_TYPES = [
   {
     id: "general",
