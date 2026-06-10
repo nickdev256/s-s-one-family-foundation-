@@ -43,7 +43,7 @@ export default function DonatePage() {
   const [step, setStep] = useState(1);
   const [orderID, setOrderID] =
   useState(null);
-
+const API_URL = import.meta.env.VITE_API_URL;
   const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({});
@@ -141,7 +141,7 @@ else if (!/^\d+$/.test(formData.phone)) {
     setLoading(true);
 
     const response = await fetch(
-      "http://localhost:5000/api/donations",
+      `${API_URL}/api/donations`,
       {
         method: "POST",
         headers: {
@@ -189,7 +189,6 @@ else if (!/^\d+$/.test(formData.phone)) {
  setOrderID(data.orderID);
 return;
 
-      return;
     }
 
     setStep(5);
@@ -841,7 +840,7 @@ return;
 
         const response =
           await fetch(
-            "http://localhost:5000/api/donations/capture",
+            "`${API_URL}/api/donations/capture`",
             {
               method: "POST",
 
