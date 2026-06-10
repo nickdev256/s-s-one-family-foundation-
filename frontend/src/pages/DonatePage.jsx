@@ -132,37 +132,78 @@ else if (!/^\d+$/.test(formData.phone)) {
   };
 
   const submitDonation = async () => {
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const response = await fetch(
-        "http://localhost:5000/api/donations/create",
-        {
-          method: "POST",
+    const response = await fetch(
+      "http://localhost:5000/api/donations",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-          headers: {
-            "Content-Type": "application/json",
+        body: JSON.stringify({
+          donationType: formData.donationType,
+
+          amount: finalAmount,
+
+          monthly: formData.recurring,
+
+          payment: formData.paymentMethod,
+
+          form: {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            comment: formData.message,
           },
 
-          body: JSON.stringify({
-            ...formData,
-          }),
-        }
+          paymentData: {},
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Donation failed"
+      );
+    }
+
+    if (
+      formData.paymentMethod === "PayPal" &&
+      data.orderID
+    ) {
+      console.log(
+        "PayPal Order ID:",
+        data.orderID
       );
 
-      const data = await response.json();
+     alert(
+  `PayPal Order Created: ${data.orderID}`
+);
 
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-
-      setStep(5);
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
+      return;
     }
-  };
+
+    setStep(5);
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      error.message || "Something went wrong"
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
 
   const finalAmount =
     formData.customAmount !== ""
@@ -682,10 +723,7 @@ else if (!/^\d+$/.test(formData.phone)) {
 
             
 
-{(
-  formData.paymentMethod === "VISA CARD" ||
-  formData.paymentMethod === "PAYPAL"
-) && (
+{formData.paymentMethod === "VISA CARD" && (
 
   <div className="card-details">
 
@@ -781,7 +819,61 @@ else if (!/^\d+$/.test(formData.phone)) {
   </div>
 
 </div>
+{orderID && (
+  <div
+    style={{
+      marginTop: "20px"
+    }}
+  >
+    <PayPalButtons
 
+      createOrder={() =>
+        Promise.resolve(orderID)
+      }
+
+      onApprove={async (
+        data
+      ) => {
+
+        const response =
+          await fetch(
+            "http://localhost:5000/api/donations/capture",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
+
+              body: JSON.stringify({
+                orderID:
+                  data.orderID,
+              }),
+            }
+          );
+
+        const result =
+          await response.json();
+
+        if (
+          result.success
+        ) {
+
+          setStep(5);
+
+        } else {
+
+          alert(
+            "Payment failed"
+          );
+
+        }
+
+      }}
+    />
+  </div>
+)}
             <div className="buttons">
               <button
                 className="secondary-btn"

@@ -1,6 +1,8 @@
 import axios from "axios";
 
 import { supabase } from "../config/supabaseClient.js";
+import paypal from "@paypal/checkout-server-sdk";
+import paypalClient from "../config/paypal.js";
 
 export const createDonation = async (req, res) => {
 
@@ -61,12 +63,34 @@ export const createDonation = async (req, res) => {
     // PAYPAL
     if (payment === "PayPal") {
 
-      return res.status(200).json({
-        success: true,
-        message: "Redirecting to PayPal",
-      });
+  const request =
+    new paypal.orders.OrdersCreateRequest();
 
-    }
+  request.prefer("return=representation");
+
+  request.requestBody({
+    intent: "CAPTURE",
+
+    purchase_units: [
+      {
+        amount: {
+          currency_code: "USD",
+          value: (
+            Number(amount) / 3700
+          ).toFixed(2)
+        }
+      }
+    ]
+  });
+
+  const order =
+    await paypalClient.execute(request);
+
+  return res.status(200).json({
+    success: true,
+    orderID: order.result.id
+  });
+}
 
     // CREDIT CARD
     if (payment === "Credit Card") {
@@ -100,6 +124,41 @@ export const createDonation = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server Error",
+    });
+
+  }
+};export const capturePayPalOrder = async (
+  req,
+  res
+) => {
+  try {
+
+    const { orderID } = req.body;
+
+    const request =
+      new paypal.orders.OrdersCaptureRequest(
+        orderID
+      );
+
+    request.requestBody({});
+
+    const capture =
+      await paypalClient.execute(
+        request
+      );
+
+    return res.status(200).json({
+      success: true,
+      details: capture.result
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message
     });
 
   }

@@ -9,6 +9,7 @@ import volunteerRoutes from "./routes/volunteerRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import cmsRoutes from "./routes/cmsRoutes.js";
 import galleryRoutes from "./routes/galleryRoutes.js";
+import paypalRoutes from "./routes/paypalRoutes.js";
 
 dotenv.config();
 
@@ -45,6 +46,10 @@ app.use("/api/reports", reportRoutes);
 app.use("/api/cms", cmsRoutes);
 
 app.use("/api/gallery", galleryRoutes);
+app.use(
+  "/api/paypal",
+  paypalRoutes
+);
 
 /* =================================
 HEALTH CHECK
