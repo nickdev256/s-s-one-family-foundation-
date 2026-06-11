@@ -1,27 +1,84 @@
-import express from "express";
+import axios from "axios";
 
-import {
-createPesapalOrder
-} from "../controllers/pesapalController.js";
+const BASE_URL =
+  "https://pay.pesapal.com/v3/api";
 
-import {
-registerIpn
-} from "../controllers/registerIpnController.js";
+export const registerIpn = async (
+  req,
+  res
+) => {
+  try {
 
-const router = express.Router();
+    /* Get Access Token */
 
-/* Create Payment Order */
+    const authResponse =
+      await axios.post(
+        `${BASE_URL}/Auth/RequestToken`,
+        {
+          consumer_key:
+            process.env.PESAPAL_CONSUMER_KEY,
 
-router.post(
-"/create-order",
-createPesapalOrder
-);
+          consumer_secret:
+            process.env.PESAPAL_CONSUMER_SECRET,
+        },
+        {
+          headers: {
+            Accept:
+              "application/json",
+            "Content-Type":
+              "application/json",
+          },
+        }
+      );
 
-/* Register IPN */
+    const token =
+      authResponse.data.token;
 
-router.get(
-"/register-ipn",
-registerIpn
-);
+    /* Register IPN */
 
-export default router;
+    const ipnResponse =
+      await axios.post(
+        `${BASE_URL}/URLSetup/RegisterIPN`,
+        {
+          url:
+            "https://s-s-one-family-foundation.onrender.com/api/pesapal/ipn",
+
+          ipn_notification_type:
+            "GET",
+        },
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`,
+
+            Accept:
+              "application/json",
+
+            "Content-Type":
+              "application/json",
+          },
+        }
+      );
+
+    return res.status(200).json({
+      success: true,
+      data: ipnResponse.data,
+    });
+
+  } catch (error) {
+
+    console.error(
+      "REGISTER IPN ERROR:",
+      error.response?.data ||
+        error.message
+    );
+
+    return res.status(500).json({
+      success: false,
+      error:
+        error.response?.data ||
+        error.message,
+    });
+
+  }
+};
