@@ -840,48 +840,44 @@ return;
     }}
   >
     <PayPalButtons
+  createOrder={() => {
+    console.log("Using order:", orderID);
+    return Promise.resolve(orderID);
+  }}
 
-      createOrder={() =>
-        Promise.resolve(orderID)
+  onApprove={async (data) => {
+    console.log("APPROVED", data);
+
+    const response = await fetch(
+      `${API_URL}/api/paypal/capture-order`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderID: data.orderID,
+        }),
       }
+    );
 
-      onApprove={async (
-        data
-      ) => {
+    const result = await response.json();
 
-        const response =
- await fetch(
-  `${API_URL}/api/paypal/capture-order`,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      orderID: data.orderID,
-    }),
-  }
-);
+    console.log("CAPTURE RESULT", result);
 
-        const result =
-          await response.json();
+    if (result.success) {
+      setStep(5);
+    }
+  }}
 
-        if (
-          result.success
-        ) {
+  onError={(err) => {
+    console.error("PAYPAL ERROR", err);
+  }}
 
-          setStep(5);
-
-        } else {
-
-          alert(
-            "Payment failed"
-          );
-
-        }
-
-      }}
-    />
+  onCancel={(data) => {
+    console.log("PAYPAL CANCELLED", data);
+  }}
+/>
   </div>
 )}
             <div className="buttons">
