@@ -1,13 +1,22 @@
 import express from "express";
 import {
-createPesapalOrder
+  createPesapalOrder
 } from "../controllers/pesapalController.js";
+
+import {
+  registerIpn
+} from "../controllers/registerIpnController.js";
 
 const router = express.Router();
 
 router.post(
-"/create-order",
-createPesapalOrder
+  "/create-order",
+  createPesapalOrder
+);
+
+router.get(
+  "/register-ipn",
+  registerIpn
 );
 
 export default router;
