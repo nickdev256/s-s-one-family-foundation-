@@ -171,6 +171,10 @@ if (formData.paymentMethod === "VISA CARD") {
   const data = await response.json();
 
   console.log("PESAPAL RESPONSE:", data);
+  console.log(
+  "REDIRECT URL:",
+  data.redirect_url
+);
 
   if (data.redirect_url) {
     window.location.href = data.redirect_url;
