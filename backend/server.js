@@ -102,6 +102,19 @@ app.post("/api/pesapal/ipn", (req, res) => {
   });
 
 });
+
+app.get("/api/pesapal/ipn", (req, res) => {
+
+  console.log(
+    "PESAPAL IPN RECEIVED:",
+    req.query
+  );
+
+  res.status(200).json({
+    success: true
+  });
+
+});
 /* =================================
 404 HANDLER
 ================================= */
@@ -126,18 +139,7 @@ app.use((err, req, res, next) => {
     message: err.message || "Internal Server Error"
   });
 });
-app.get("/api/pesapal/ipn", (req, res) => {
 
-  console.log(
-    "PESAPAL IPN RECEIVED:",
-    req.query
-  );
-
-  res.status(200).json({
-    success: true
-  });
-
-});
 /* =================================
 START SERVER
 ================================= */
