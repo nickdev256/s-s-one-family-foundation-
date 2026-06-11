@@ -7,14 +7,15 @@ import {
 
 const router = express.Router();
 
-router.post(
-  "/create-order",
-  createOrder
-);
+router.get("/test", (req, res) => {
+  res.json({
+    success: true,
+    message: "PayPal routes working"
+  });
+});
 
-router.post(
-  "/capture-order",
-  captureOrder
-);
+router.post("/create-order", createOrder);
+
+router.post("/capture-order", captureOrder);
 
 export default router;
