@@ -139,7 +139,11 @@ else if (!/^\d+$/.test(formData.phone)) {
   const submitDonation = async () => {
   try {
     setLoading(true);
-
+console.log("API_URL =", API_URL);
+console.log(
+  "Request URL =",
+  `${API_URL}/api/paypal/create-order`
+);
     const response = await fetch(
       `${API_URL}/api/paypal/create-order`,
       {
