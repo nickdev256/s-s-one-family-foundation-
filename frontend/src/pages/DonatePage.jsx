@@ -9,6 +9,7 @@ import paypalLogo from "../assets/image/paypal.png";
 import {
   PayPalButtons
 } from "@paypal/react-paypal-js";
+import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import {
   FaHeart,
   FaHandsHelping,
@@ -33,6 +34,18 @@ const DONATION_TYPES = [
     icon: <FaUsers />,
   },
 ];
+const config = {
+  public_key: import.meta.env.VITE_FLUTTER_PUBLIC_KEY,
+  tx_ref: Date.now().toString(),
+  amount: finalAmount,
+  currency: "UGX",
+  payment_options: "card",
+  customer: {
+    email: formData.email,
+    phonenumber: formData.phone,
+    name: `${formData.firstName} ${formData.lastName}`,
+  },
+};
 
 const PRESET_AMOUNTS = [10000, 25000, 50000, 100000, 250000];
 
@@ -141,7 +154,7 @@ else if (!/^\d+$/.test(formData.phone)) {
     setLoading(true);
 
     const response = await fetch(
-      `${API_URL}/api/paypal/create-order`,
+      `${API_URL}/api/donations`,
       {
         method: "POST",
         headers: {
@@ -207,6 +220,22 @@ return;
 
   }
 };
+if (formData.paymentMethod === "VISA CARD") {
+  handleFlutterPayment({
+    callback: (response) => {
+      console.log(response);
+
+      if (response.status === "successful") {
+        setStep(5);
+      }
+
+      closePaymentModal();
+    },
+    onClose: () => {},
+  });
+
+  return;
+}
 
   const finalAmount =
     formData.customAmount !== ""
