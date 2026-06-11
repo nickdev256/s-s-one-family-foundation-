@@ -498,77 +498,18 @@ return;
 <div className="input-group phone-group">
 
   <select
-    value={formData.countryCode}
-    onChange={(e)=>
-      updateField(
-        "countryCode",
-        e.target.value
-      )
-    }
-  >
-    <option value="+256">🇺🇬 Uganda (+256)</option>
-<option disabled>──────────</option>
- <option value="+244">🇦🇴 Angola (+244)</option>
-<option value="+213">🇩🇿 Algeria (+213)</option>
-<option value="+61">🇦🇺 Australia (+61)</option>
-<option value="+973">🇧🇭 Bahrain (+973)</option>
-<option value="+880">🇧🇩 Bangladesh (+880)</option>
-<option value="+32">🇧🇪 Belgium (+32)</option>
-<option value="+267">🇧🇼 Botswana (+267)</option>
-<option value="+55">🇧🇷 Brazil (+55)</option>
-<option value="+257">🇧🇮 Burundi (+257)</option>
-<option value="+237">🇨🇲 Cameroon (+237)</option>
-<option value="+1">🇨🇦 Canada (+1)</option>
-<option value="+86">🇨🇳 China (+86)</option>
-<option value="+45">🇩🇰 Denmark (+45)</option>
-<option value="+20">🇪🇬 Egypt (+20)</option>
-<option value="+251">🇪🇹 Ethiopia (+251)</option>
-<option value="+33">🇫🇷 France (+33)</option>
-<option value="+49">🇩🇪 Germany (+49)</option>
-<option value="+233">🇬🇭 Ghana (+233)</option>
-<option value="+91">🇮🇳 India (+91)</option>
-<option value="+62">🇮🇩 Indonesia (+62)</option>
-<option value="+353">🇮🇪 Ireland (+353)</option>
-<option value="+39">🇮🇹 Italy (+39)</option>
-<option value="+81">🇯🇵 Japan (+81)</option>
-<option value="+254">🇰🇪 Kenya (+254)</option>
-<option value="+965">🇰🇼 Kuwait (+965)</option>
-<option value="+60">🇲🇾 Malaysia (+60)</option>
-<option value="+52">🇲🇽 Mexico (+52)</option>
-<option value="+212">🇲🇦 Morocco (+212)</option>
-<option value="+264">🇳🇦 Namibia (+264)</option>
-<option value="+31">🇳🇱 Netherlands (+31)</option>
-<option value="+64">🇳🇿 New Zealand (+64)</option>
-<option value="+234">🇳🇬 Nigeria (+234)</option>
-<option value="+47">🇳🇴 Norway (+47)</option>
-<option value="+968">🇴🇲 Oman (+968)</option>
-<option value="+92">🇵🇰 Pakistan (+92)</option>
-<option value="+63">🇵🇭 Philippines (+63)</option>
-<option value="+48">🇵🇱 Poland (+48)</option>
-<option value="+351">🇵🇹 Portugal (+351)</option>
-<option value="+974">🇶🇦 Qatar (+974)</option>
-<option value="+250">🇷🇼 Rwanda (+250)</option>
-<option value="+966">🇸🇦 Saudi Arabia (+966)</option>
-<option value="+221">🇸🇳 Senegal (+221)</option>
-<option value="+65">🇸🇬 Singapore (+65)</option>
-<option value="+27">🇿🇦 South Africa (+27)</option>
-<option value="+211">🇸🇸 South Sudan (+211)</option>
-<option value="+82">🇰🇷 South Korea (+82)</option>
-<option value="+34">🇪🇸 Spain (+34)</option>
-<option value="+94">🇱🇰 Sri Lanka (+94)</option>
-<option value="+46">🇸🇪 Sweden (+46)</option>
-<option value="+41">🇨🇭 Switzerland (+41)</option>
-<option value="+255">🇹🇿 Tanzania (+255)</option>
-<option value="+66">🇹🇭 Thailand (+66)</option>
-<option value="+216">🇹🇳 Tunisia (+216)</option>
-<option value="+256" selected>🇺🇬 Uganda (+256)</option>
-<option value="+971">🇦🇪 United Arab Emirates (+971)</option>
-<option value="+44">🇬🇧 United Kingdom (+44)</option>
-<option value="+1">🇺🇸 United States (+1)</option>
-<option value="+84">🇻🇳 Vietnam (+84)</option>
-<option value="+260">🇿🇲 Zambia (+260)</option>
-<option value="+263">🇿🇼 Zimbabwe (+263)</option>
-  </select>
+  value={formData.country}
+  onChange={(e) =>
+    updateField("country", e.target.value)
+  }
+>
+  <option value="UG">Uganda</option>
+  <option value="KE">Kenya</option>
+  <option value="TZ">Tanzania</option>
+  <option value="RW">Rwanda</option>
+  <option value="US">United States</option>
+  <option value="GB">United Kingdom</option>
+</select>
 
   <input
   type="tel"

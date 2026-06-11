@@ -10,18 +10,23 @@ export const createOrder = async (req, res) => {
 
     request.prefer("return=representation");
 
-    request.requestBody({
-      intent: "CAPTURE",
+ request.requestBody({
+  intent: "CAPTURE",
 
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: amount
-          }
-        }
-      ]
-    });
+  application_context: {
+    shipping_preference: "NO_SHIPPING",
+    user_action: "PAY_NOW"
+  },
+
+  purchase_units: [
+    {
+      amount: {
+        currency_code: "USD",
+        value: amount
+      }
+    }
+  ]
+});
 
     const order =
       await client.execute(request);
