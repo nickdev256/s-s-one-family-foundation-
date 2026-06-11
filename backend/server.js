@@ -10,6 +10,9 @@ import reportRoutes from "./routes/reportRoutes.js";
 import cmsRoutes from "./routes/cmsRoutes.js";
 import galleryRoutes from "./routes/galleryRoutes.js";
 import paypalRoutes from "./routes/paypalRoutes.js";
+import pesapalRoutes
+from "./routes/pesapalRoutes.js";
+
 
 dotenv.config();
 
@@ -50,6 +53,10 @@ app.use(
   "/api/paypal",
   paypalRoutes
 );
+app.use(
+  "/api/pesapal",
+  pesapalRoutes
+);
 
 /* =================================
 HEALTH CHECK
@@ -83,7 +90,18 @@ app.get("/api", (req, res) => {
     }
   });
 });
+app.post("/api/pesapal/ipn", (req, res) => {
 
+  console.log(
+    "PESAPAL IPN RECEIVED:",
+    req.body
+  );
+
+  res.status(200).json({
+    success: true
+  });
+
+});
 /* =================================
 404 HANDLER
 ================================= */
@@ -108,7 +126,18 @@ app.use((err, req, res, next) => {
     message: err.message || "Internal Server Error"
   });
 });
+app.get("/api/pesapal/ipn", (req, res) => {
 
+  console.log(
+    "PESAPAL IPN RECEIVED:",
+    req.query
+  );
+
+  res.status(200).json({
+    success: true
+  });
+
+});
 /* =================================
 START SERVER
 ================================= */

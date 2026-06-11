@@ -143,81 +143,111 @@ else if (!/^\d+$/.test(formData.phone)) {
     setStep(step - 1);
   };
 
-  const submitDonation = async () => {
-  try {
-    setLoading(true);
-console.log("API_URL =", API_URL);
-console.log(
-  "Request URL =",
-  `${API_URL}/api/paypal/create-order`
-);
-    const response = await fetch(
-      `${API_URL}/api/paypal/create-order`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+ const submitDonation = async () => {
+try {
+setLoading(true);
 
-        body: JSON.stringify({
-          donationType: formData.donationType,
 
-          amount: finalAmount,
+// PESAPAL VISA PAYMENT
+if (formData.paymentMethod === "VISA CARD") {
 
-          monthly: formData.recurring,
-
-          payment: formData.paymentMethod,
-
-          form: {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            comment: formData.message,
-          },
-
-          paymentData: {},
-        }),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        data.message || "Donation failed"
-      );
+  const response = await fetch(
+    `${API_URL}/api/pesapal/create-order`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount: finalAmount,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+      }),
     }
+  );
 
-    if (
-      formData.paymentMethod === "PayPal" &&
-      data.orderID
-    ) {
-      console.log(
-        "PayPal Order ID:",
-        data.orderID
-      );
+  const data = await response.json();
 
- setOrderID(data.orderID);
-return;
+  console.log("PESAPAL RESPONSE:", data);
 
-    }
-
-    setStep(5);
-
-  } catch (error) {
-
-    console.error(error);
-
-    alert(
-      error.message || "Something went wrong"
-    );
-
-  } finally {
-
-    setLoading(false);
-
+  if (data.redirect_url) {
+    window.location.href = data.redirect_url;
+    return;
   }
+
+  throw new Error("Failed to initialize Pesapal payment");
+}
+
+// PAYPAL PAYMENT
+const response = await fetch(
+  `${API_URL}/api/paypal/create-order`,
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+      donationType: formData.donationType,
+      amount: finalAmount,
+      monthly: formData.recurring,
+      payment: formData.paymentMethod,
+
+      form: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        comment: formData.message,
+      },
+
+      paymentData: {},
+    }),
+  }
+);
+
+const data = await response.json();
+
+if (!response.ok) {
+  throw new Error(
+    data.message || "Donation failed"
+  );
+}
+
+if (
+  formData.paymentMethod === "PayPal" &&
+  data.orderID
+) {
+  console.log(
+    "PayPal Order ID:",
+    data.orderID
+  );
+
+  setOrderID(data.orderID);
+  return;
+}
+
+setStep(5);
+
+
+} catch (error) {
+
+console.error(error);
+
+alert(
+  error.message || "Something went wrong"
+);
+
+
+} finally {
+
+setLoading(false);
+
+
+}
 };
+
 
   const finalAmount =
     formData.customAmount !== ""
