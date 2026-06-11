@@ -9,7 +9,6 @@ import paypalLogo from "../assets/image/paypal.png";
 import {
   PayPalButtons
 } from "@paypal/react-paypal-js";
-import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import {
   FaHeart,
   FaHandsHelping,
@@ -34,18 +33,6 @@ const DONATION_TYPES = [
     icon: <FaUsers />,
   },
 ];
-const config = {
-  public_key: import.meta.env.VITE_FLUTTER_PUBLIC_KEY,
-  tx_ref: Date.now().toString(),
-  amount: finalAmount,
-  currency: "UGX",
-  payment_options: "card",
-  customer: {
-    email: formData.email,
-    phonenumber: formData.phone,
-    name: `${formData.firstName} ${formData.lastName}`,
-  },
-};
 
 const PRESET_AMOUNTS = [10000, 25000, 50000, 100000, 250000];
 
