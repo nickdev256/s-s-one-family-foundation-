@@ -44,6 +44,13 @@ export default function DonatePage() {
   const [orderID, setOrderID] =
   useState(null);
 const API_URL = import.meta.env.VITE_API_URL;
+
+console.log(
+  "VITE_API_URL =",
+  import.meta.env.VITE_API_URL
+);
+
+
   const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({});
@@ -211,22 +218,6 @@ return;
 
   }
 };
-if (formData.paymentMethod === "VISA CARD") {
-  handleFlutterPayment({
-    callback: (response) => {
-      console.log(response);
-
-      if (response.status === "successful") {
-        setStep(5);
-      }
-
-      closePaymentModal();
-    },
-    onClose: () => {},
-  });
-
-  return;
-}
 
   const finalAmount =
     formData.customAmount !== ""
