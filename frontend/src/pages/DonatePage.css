@@ -261,7 +261,7 @@ DONATION TYPES
 
   background:#d89b2b;
 
-  display:flex;
+  display:none;
   justify-content:center;
   align-items:center;
 
@@ -1507,15 +1507,19 @@ FLOATING LABELS
 ========================== */
 
 .input-group{
-  position:relative;
-}
 
+position:relative;
+
+width:100%;
+
+}
 .input-group input,
 .input-group textarea{
 
   width:100%;
 
   padding:24px 18px 14px;
+  padding-right:120px;
 
 }
 
@@ -1564,6 +1568,37 @@ FLOATING LABELS
   font-weight:700;
 
   color:#D89B2B;
+
+}
+.input-group input{
+
+width:100%;
+
+height:90px;
+
+padding:0 120px 0 30px;
+
+box-sizing:border-box;
+
+}
+
+.card-preview{
+
+position:absolute;
+
+right:20px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+height:24px;
+
+width:auto;
+
+max-width:90px;
+
+object-fit:contain;
 
 }
 
@@ -1761,23 +1796,25 @@ CARD NUMBER PREVIEW
 
 .card-preview{
 
-  position:absolute;
+position:absolute;
 
-  right:15px;
+right:5px;
 
-  top:50%;
+top:50%;
 
-  transform:translateY(-50%);
+transform:translateY(-50%);
 
-  height:30px;
+height:24px;
 
-  width:auto;
+max-width:90px;
 
-  object-fit:contain;
+width:auto;
 
-  pointer-events:none;
+object-fit:contain;
 
-  border-radius: 10px;
+pointer-events:none;
+
+border-radius:8px;
 
 }
 
@@ -1795,141 +1832,322 @@ CARD NUMBER PREVIEW
 
 }
 
+.checkbox{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+margin-top:25px;
+
+font-size:16px;
+
+font-weight:500;
+
+color:#555;
+
+}
+
+.checkbox input{
+
+width:18px;
+
+height:18px;
+
+margin:0;
+
+cursor:pointer;
+
+accent-color:#3989f8;
+
+}
+
+
+
 
 /* =================================
 MOBILE FIXES
 ================================= */
 
-@media (max-width: 768px){
+@media (max-width:768px){
 
-  /* HERO */
+/* HERO */
 
-  .donate-hero{
-    height:55vh;
-    background-attachment:scroll;
-  }
+.donate-hero{
+  height:45vh;
+  background-attachment:scroll;
+}
 
-  .hero-content{
-    padding:0 20px;
-  }
+.hero-content{
+  padding:0 18px;
+}
 
-  .hero-content h1{
-    font-size:3rem !important;
-    line-height:1.1;
-    letter-spacing:-1px;
-  }
+.hero-content h1{
+  font-size:2.3rem !important;
+  line-height:1.1;
+}
 
-  .hero-top{
-    font-size:3.2rem;
-  }
+.hero-script{
+  font-size:1.7rem;
+  margin-top:8px;
+  margin-bottom:10px;
+}
 
-  .hero-script{
-    font-size:2.2rem;
-    margin-top:10px;
-  }
+.hero-content p{
+  font-size:.95rem;
+  line-height:1.6;
+}
 
-  .hero-content p{
-    font-size:1rem;
-    line-height:1.7;
-  }
+/* TRUST STRIP */
 
-  /* TRUST STRIP */
+.trust-strip{
+  margin:-45px 12px 25px;
+  padding:18px 15px;
 
-  .trust-strip{
-    margin:-60px 15px 30px;
-    padding:25px 20px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:18px;
+}
 
-    display:grid;
-    grid-template-columns:1fr;
-    gap:25px;
+.trust-strip strong{
+  font-size:1.5rem;
+}
 
-    text-align:center;
-  }
+.trust-strip span{
+  font-size:.85rem;
+}
 
-  .trust-strip strong{
-    font-size:2rem;
-  }
+/* INTRO */
 
-  .trust-strip span{
-    font-size:1rem;
-  }
+.impact-intro{
+  padding:0 15px;
+}
 
-  /* IMPACT INTRO */
+.impact-intro h2{
+  font-size:1.8rem;
+  line-height:1.2;
+}
 
-  .impact-intro{
-    padding:0 20px;
-  }
+.impact-intro p{
+  font-size:.95rem;
+  line-height:1.7;
+}
 
-  .impact-intro h2{
-    font-size:2.2rem;
-    line-height:1.2;
-  }
+/* WRAPPER */
 
-  .impact-intro p{
-    font-size:1rem;
-  }
+.donation-wrapper{
+  margin:15px 10px 50px;
+  padding:20px 15px;
+  border-radius:18px;
+}
 
-  /* IMPACT CARDS */
+/* SECTION HEADERS */
 
-  .impact-stats{
-    grid-template-columns:1fr;
-    gap:20px;
-  }
+.section-header h2{
+  font-size:1.8rem;
+}
 
-  .impact-box{
-    padding:35px 20px;
-  }
+.section-header p{
+  font-size:.95rem;
+}
 
-  .impact-box h3{
-    font-size:2.2rem;
-  }
+/* PROGRESS */
 
-  /* DONATION WRAPPER */
+.progress-bar{
+  gap:12px;
+  margin-bottom:25px;
+}
 
-  .donation-wrapper{
-    margin:20px 12px 60px;
-    padding:25px 18px;
-    border-radius:20px;
-  }
+.progress-step{
+  width:45px;
+  height:45px;
+  font-size:.9rem;
+}
 
-  /* PAYMENT LOGOS */
+/* CAUSES */
 
-  .payment-logo{
-    width:120px;
-    height:70px;
-  }
+.cause-grid{
+  grid-template-columns:1fr;
+  gap:18px;
+}
 
-  .paypal-logo{
-    width:120px;
-    height:auto;
-  }
+.cause-card{
+  padding:22px;
+  border-radius:20px;
+}
 
-  /* BUTTONS */
+.cause-icon{
+  font-size:2rem;
+}
 
-  .primary-btn,
-  .secondary-btn{
-    width:100%;
-    min-width:100%;
-    margin-left:0;
-  }
+.cause-card h3{
+  font-size:1.2rem;
+}
 
-  /* CARD DETAILS */
+.cause-card p{
+  font-size:.9rem;
+  line-height:1.6;
+}
 
-  .card-row{
-    grid-template-columns:1fr;
-    gap:15px;
-  }
+/* AMOUNTS */
 
-  .card-input-wrapper{
-    width:100%;
-  }
+.amount-grid{
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
 
-  .card-input{
-    padding-right:100px;
-  }
+.amount-card{
+  height:65px;
+  font-size:1rem;
+}
 
-  .card-preview{
-    width:70px;
-    height:auto;
-  }
+/* FORM */
+
+.form-grid{
+  grid-template-columns:1fr;
+}
+
+@media(max-width:768px){
+
+.phone-group{
+
+display:grid;
+
+grid-template-columns:110px 1fr;
+
+gap:35px;
+
+align-items:center;
+
+}
+
+.phone-group select{
+
+width:125px;
+
+height:80px;
+
+}
+
+}
+
+/* PAYMENT */
+
+.payment-grid{
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  display:grid;
+}
+
+.payment-card{
+  height:85px;
+}
+
+.payment-logo{
+  width:90px;
+  height:50px;
+}
+
+.paypal-logo{
+  width:90px;
+}
+
+.bank-card-logo{
+  width:55px;
+  height:auto;
+}
+
+/* SUMMARY */
+
+.summary-card{
+  padding:20px;
+}
+
+.summary-header h3{
+  font-size:1.2rem;
+}
+
+.summary-row{
+  padding:12px 0;
+}
+
+.summary-row span,
+.summary-row strong{
+  font-size:.9rem;
+}
+
+/* BUTTONS */
+
+.primary-btn,
+.secondary-btn{
+  width:100%;
+  min-width:100%;
+  height:58px;
+  font-size:.9rem;
+  margin-left:0;
+}
+
+/* SUCCESS */
+
+.success-screen{
+  padding:35px 15px;
+}
+
+.success-screen h2{
+  font-size:1.5rem;
+}
+
+.checkbox{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+margin-top:25px;
+
+font-size:16px;
+
+font-weight:500;
+
+color:#555;
+
+}
+
+.checkbox input{
+
+width:18px;
+
+height:18px;
+
+margin:0;
+
+cursor:pointer;
+
+accent-color:#3989f8;
+
+}
+
+
+.input-group input{
+
+height:80px;
+
+padding-right:90px;
+
+}
+
+.card-preview{
+
+height:18px;
+
+max-width:70px;
+
+right:12px;
+
+}
+
 }

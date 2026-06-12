@@ -119,7 +119,7 @@ return ( <section className="donation">
   className="impact-stats"
   ref={statsRef}
 >
-
+ 
   <div>
     <h3>{childrenCount}+</h3>
     <p>Children Supported</p>
