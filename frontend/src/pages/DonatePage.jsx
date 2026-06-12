@@ -158,7 +158,7 @@ if (formData.paymentMethod === "VISA CARD") {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      body: JSON.stringify({ 
         amount: finalAmount,
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -721,26 +721,17 @@ setLoading(false);
 
 
 
-    <div className="input-group">
+<div className="input-group">
+
+  <input type="text" placeholder="" />
 
   <label>Card Number:</label>
 
-  <div className="card-input-wrapper">
-
-   <div className="input-group">
-        <input type="text" placeholder="" />
-        <label>Card Number:</label>
-      </div>
-
-
-
-    <img
-      src={cardLogo}
-      alt="Card"
-      className="card-preview"
-    />
-
-  </div>
+  <img
+    src={cardLogo}
+    alt="Card"
+    className="card-preview"
+  />
 
 </div>
 
