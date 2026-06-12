@@ -177,8 +177,8 @@ duration:1
 >
 
 <h2>
-
-Who We Are
+ 
+Who we are!
 
 </h2>
 
