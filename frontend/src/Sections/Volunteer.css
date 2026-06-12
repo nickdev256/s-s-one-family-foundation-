@@ -71,6 +71,9 @@ text-align:center;
 
 color:white;
 
+max-width:700px;
+margin:auto;
+
 }
 
 
@@ -81,18 +84,23 @@ color:white;
 
 display:inline-flex;
 
+align-items:center;
+justify-content:center;
+
 padding:14px 34px;
+
+height:auto;
+width:auto;
+max-width:none;
 
 border-radius:40px;
 
 background:
-
 rgba(255,255,255,.08);
 
 backdrop-filter:blur(20px);
 
 border:
-
 1px solid rgba(255,255,255,.15);
 
 letter-spacing:4px;
@@ -100,6 +108,8 @@ letter-spacing:4px;
 font-size:.9rem;
 
 margin-bottom:45px;
+
+color:#fff;
 
 }
 
@@ -251,31 +261,72 @@ font-size:1.05rem;
 
 .volunteer{
 
-padding:80px 6%;
+padding:70px 20px;
+min-height:75vh;
 
 }
 
 .volunteer h1{
 
-font-size:2.2rem;
+font-size:1.9rem;
+line-height:1.2;
+letter-spacing:1px;
+
+margin-bottom:20px;
 
 }
 
 .volunteer-line{
 
-width:130px;
+width:90px;
+margin-bottom:25px;
 
 }
 
 .volunteer p{
 
 font-size:.95rem;
+line-height:1.8;
+
+margin-bottom:35px;
+
+max-width:100%;
 
 }
 
 .volunteer button{
 
-width:100%;
+width:180px;
+height:50px;
+
+font-size:.85rem;
+
+letter-spacing:2px;
+
+border-radius:50px;
+
+}
+
+.volunteer-tag{
+
+display:flex;
+
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+height:60px;
+
+font-size:.8rem;
+
+letter-spacing:3px;
+
+max-width:500px;
+
+
+margin:0 auto 30px;
+
 
 }
 

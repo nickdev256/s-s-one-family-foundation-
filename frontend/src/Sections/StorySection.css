@@ -543,9 +543,9 @@ color: #0B2C6A;
 
 @media(max-width:768px){
 
-  .story-section{
-    padding:70px 20px;
-  }
+ .story-section{
+  padding-bottom:120px;
+}
 
   /* SERVICES */
 
@@ -684,23 +684,27 @@ color: #0B2C6A;
 
   /* BUTTONS */
 
-  .story-actions{
-    flex-direction:column;
-    align-items:center;
-    gap:15px;
-    margin-top:35px;
-  }
+ .story-actions{
+  flex-direction:column;
+  align-items:center;
+  gap:15px;
+  margin-top:25px;
+  margin-bottom:40px;
+}
 
   .link-btn{
     font-size:16px;
   }
 
   .discover-btn{
-    width:100%;
-    max-width:260px;
-    height:55px;
-    font-size:15px;
-    border-radius:14px;
-  }
+
+width:220px;
+height:58px;
+
+font-size:1rem;
+
+margin-top:0;
+
+}
 
 }

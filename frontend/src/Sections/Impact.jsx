@@ -19,7 +19,7 @@ const pillars=[
 icon:<FaGraduationCap/>,
 title:'Education',
 text:
-'Learning opportunities, vocational skills and pathways for long-term growth.'
+'Education, vocational training and lifelong learning opportunities.'
 },
 
 {

@@ -11,6 +11,10 @@ return(
 
 <div className="volunteer-content">
 
+    <span className="volunteer-tag">
+GET INVOLVED
+</span>
+
 <h1>
 
 CHANGE A LIFE TODAY
@@ -20,12 +24,8 @@ CHANGE A LIFE TODAY
 <div className="volunteer-line"></div>
 
 <p>
-
-As long as poverty, injustice & inequality persist,
-none of us can truly rest. It doesn’t take much to
-change a life. Get involved today and start making
-the difference.
-
+Join us in creating brighter futures through education,
+healthcare, community development and hope for vulnerable families.
 </p>
 
 <Link

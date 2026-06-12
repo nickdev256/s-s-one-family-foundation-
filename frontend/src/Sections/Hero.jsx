@@ -17,42 +17,42 @@ const galleryImages=[
 
 {
 image:img1,
-title:'Breaking The Cycle Of Poverty',
+title:'Ending Poverty',
 description:
 'Thousands of vulnerable families continue to struggle with hunger, displacement and lack of basic needs.'
 },
 
 {
 image:img2,
-title:'Women Need Support & Protection',
+title:'Empowering Women',
 description:
 'Many mothers and elderly women struggle daily to care for children without stable income or healthcare.'
 },
 
 {
 image:img3,
-title:'Children Deserve A Better Future',
+title:'Educating Children',
 description:
 'Education, protection and nutrition can transform the future of vulnerable children.'
 },
 
 {
 image:img4,
-title:'Education Creates Hope',
+title:'Creating Opportunity',
 description:
 'Children need safe learning environments and opportunities to build a brighter future.'
 },
 
 {
 image:img5,
-title:'Protect Vulnerable Families',
+title:'Supporting Families',
 description:
 'Together we can support struggling mothers and children facing poverty and hardship.'
 },
 
 {
 image:img6,
-title:'Food Relief Restores Hope',
+title:'Restoring Hope',
 description:
 'Nutritious meals and humanitarian support can save lives and restore dignity.'
 }
