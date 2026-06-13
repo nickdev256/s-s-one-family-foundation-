@@ -18,28 +18,34 @@ export const createDonation = async (req, res) => {
     } = req.body;
 
     // SAVE DONATION
-    const { error } = await supabase
-      .from("donations")
-      .insert([
-        {
-          first_name: form.firstName,
-          last_name: form.lastName,
-          email: form.email,
-          comment: form.comment,
+   const { data, error } = await supabase
+  .from("donations")
+  .insert([
+    {
+      first_name: form.firstName,
+      last_name: form.lastName,
+      email: form.email,
+      comment: form.comment,
+      donation_type: donationType,
+      amount: amount,
+      frequency: monthly
+        ? "Monthly"
+        : "One Time",
+      payment_method: payment,
+      status: "pending",
+    },
+  ])
+  .select();
 
-          donation_type: donationType,
+console.log(
+  "DONATION SAVED:",
+  data
+);
 
-          amount: amount,
-
-          frequency: monthly
-            ? "Monthly"
-            : "One Time",
-
-          payment_method: payment,
-
-          status: "pending",
-        },
-      ]);
+console.log(
+  "DONATION ERROR:",
+  error
+);
 
     if (error) {
 

@@ -1,169 +1,230 @@
-
-// controllers/pesapalController.js
-
 import axios from "axios";
+import { supabase } from "../config/supabaseClient.js";
 
 const BASE_URL =
-  "https://pay.pesapal.com/v3";
+"https://pay.pesapal.com/v3";
 
 export const createPesapalOrder =
-  async (req, res) => {
-    try {
+async (req, res) => {
 
-      const {
-        amount,
-        firstName,
-        lastName,
-        email,
-        phone
-      } = req.body;
+try {
 
-      /* Validation */
+  const {
+    amount,
+    firstName,
+    lastName,
+    email,
+    phone
+  } = req.body;
 
-      if (
-        !amount ||
-        !firstName ||
-        !lastName ||
-        !email
-      ) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Missing required fields",
-        });
+  /* VALIDATION */
+
+  if (
+    !amount ||
+    !firstName ||
+    !lastName ||
+    !email
+  ) {
+
+    return res.status(400).json({
+      success: false,
+      message:
+        "Missing required fields"
+    });
+
+  }
+
+  /* SAVE DONATION */
+
+  const {
+    data: donation,
+    error: donationError
+  } = await supabase
+    .from("donations")
+    .insert([
+      {
+        first_name:
+          firstName,
+
+        last_name:
+          lastName,
+
+        email:
+          email,
+
+        amount:
+          amount,
+
+        frequency:
+          "One Time",
+
+        payment_method:
+          "Pesapal",
+
+        status:
+          "pending"
       }
+    ])
+    .select();
 
-      /* =================================
-         AUTH TOKEN
-      ================================= */
+  if (donationError) {
 
-      const authResponse =
-        await axios.post(
-          `${BASE_URL}/api/Auth/RequestToken`,
-          {
-            consumer_key:
-              process.env.PESAPAL_CONSUMER_KEY,
+    console.error(
+      "DONATION SAVE ERROR:",
+      donationError
+    );
 
-            consumer_secret:
-              process.env.PESAPAL_CONSUMER_SECRET,
-          },
-          {
-            headers: {
-              Accept:
-                "application/json",
+    return res.status(500).json({
+      success: false,
+      message:
+        donationError.message
+    });
 
-              "Content-Type":
-                "application/json",
-            },
-          }
-        );
+  }
 
-      const token =
-        authResponse.data.token;
+  console.log(
+    "DONATION SAVED:",
+    donation
+  );
 
-      console.log(
-        "PESAPAL TOKEN:",
-        token
-      );
+  /* AUTH TOKEN */
 
-      /* =================================
-         CREATE ORDER
-      ================================= */
+  const authResponse =
+    await axios.post(
+      `${BASE_URL}/api/Auth/RequestToken`,
+      {
+        consumer_key:
+          process.env.PESAPAL_CONSUMER_KEY,
 
-      const order = {
-        id:
-          `DONATION-${Date.now()}`,
+        consumer_secret:
+          process.env.PESAPAL_CONSUMER_SECRET
+      },
+      {
+        headers: {
+          Accept:
+            "application/json",
 
-        currency: "UGX",
+          "Content-Type":
+            "application/json"
+        }
+      }
+    );
 
-        amount: Number(amount),
+  const token =
+    authResponse.data.token;
 
-        description:
-          "S&S One Family Foundation Donation",
+  console.log(
+    "PESAPAL TOKEN:",
+    token
+  );
 
-        callback_url:
-          "https://ss-one-family-foundation.vercel.app/donation-success",
+  /* CREATE ORDER */
 
-        notification_id:
-          process.env.PESAPAL_IPN_ID,
+  const order = {
 
-        billing_address: {
-          email_address:
-            email,
+    id:
+      `DONATION-${Date.now()}`,
 
-          phone_number:
-            phone || "",
+    currency:
+      "UGX",
 
-          country_code:
-            "UG",
+    amount:
+      Number(amount),
 
-          first_name:
-            firstName,
+    description:
+      "S&S One Family Foundation Donation",
 
-          last_name:
-            lastName,
-        },
-      };
+    callback_url:
+      "https://ss-one-family-foundation.vercel.app/donation-success",
 
-      const orderResponse =
-        await axios.post(
-          `${BASE_URL}/api/Transactions/SubmitOrderRequest`,
-          order,
-          {
-            headers: {
-              Authorization:
-                `Bearer ${token}`,
+    notification_id:
+      process.env.PESAPAL_IPN_ID,
 
-              Accept:
-                "application/json",
+    billing_address: {
 
-              "Content-Type":
-                "application/json",
-            },
-          }
-        );
+      email_address:
+        email,
 
-      console.log(
-        "PESAPAL ORDER:",
-        orderResponse.data
-      );
+      phone_number:
+        phone || "",
 
-      return res.status(200).json({
-        success: true,
+      country_code:
+        "UG",
 
-        orderTrackingId:
-          orderResponse.data
-            .order_tracking_id,
+      first_name:
+        firstName,
 
-        merchantReference:
-          orderResponse.data
-            .merchant_reference,
-
-        redirect_url:
-          orderResponse.data
-            .redirect_url,
-      });
-
-    } catch (err) {
-
-      console.error(
-        "PESAPAL ERROR:",
-        err.response?.data ||
-        err.message
-      );
-
-      return res.status(500).json({
-        success: false,
-
-        message:
-          err.response?.data?.error ||
-          err.message,
-
-        error:
-          err.response?.data ||
-          err.message,
-      });
+      last_name:
+        lastName
 
     }
+
   };
 
+  const orderResponse =
+    await axios.post(
+      `${BASE_URL}/api/Transactions/SubmitOrderRequest`,
+      order,
+      {
+        headers: {
+          Authorization:
+            `Bearer ${token}`,
+
+          Accept:
+            "application/json",
+
+          "Content-Type":
+            "application/json"
+        }
+      }
+    );
+
+  console.log(
+    "PESAPAL ORDER:",
+    orderResponse.data
+  );
+
+  return res.status(200).json({
+
+    success: true,
+
+    orderTrackingId:
+      orderResponse.data
+        .order_tracking_id,
+
+    merchantReference:
+      orderResponse.data
+        .merchant_reference,
+
+    redirect_url:
+      orderResponse.data
+        .redirect_url
+
+  });
+
+} catch (err) {
+
+  console.error(
+    "PESAPAL ERROR:",
+    err.response?.data ||
+    err.message
+  );
+
+  return res.status(500).json({
+
+    success: false,
+
+    message:
+      err.response?.data?.error ||
+      err.message,
+
+    error:
+      err.response?.data ||
+      err.message
+
+  });
+
+}
+
+
+};
