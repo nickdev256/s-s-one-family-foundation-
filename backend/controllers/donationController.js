@@ -162,4 +162,53 @@ export const createDonation = async (req, res) => {
     });
 
   }
+};export const getDonations = async (
+req,
+res
+) => {
+
+try {
+
+
+const {
+  data,
+  error
+} = await supabase
+  .from("donations")
+  .select("*")
+  .order(
+    "created_at",
+    {
+      ascending: false
+    }
+  );
+
+if (error) {
+
+  return res.status(500).json({
+    success: false,
+    message: error.message
+  });
+
+}
+
+return res.status(200).json({
+  success: true,
+  donations: data
+});
+
+
+} catch (error) {
+
+
+console.error(error);
+
+return res.status(500).json({
+  success: false,
+  message: error.message
+});
+
+
+}
+
 };

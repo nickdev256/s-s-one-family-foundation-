@@ -1,434 +1,346 @@
-import "./DonationsAdmin.css"
+import "./DonationsAdmin.css";
 
 import {
-
 FaSearch,
-FaCheck,
-FaTimes,
 FaDonate,
-FaMoneyBillWave
-
-}
-
-from "react-icons/fa"
+FaMoneyBillWave,
+FaSpinner
+} from "react-icons/fa";
 
 import {
+useState,
+useEffect
+} from "react";
 
-useState
+import AdminLayout from "../layout/AdminLayout";
 
-}
+export default function Donations() {
 
-from "react"
+const API_URL =
+import.meta.env.VITE_API_URL;
 
-import AdminLayout from "../layout/AdminLayout"
+const [search, setSearch] =
+useState("");
 
+const [loading, setLoading] =
+useState(true);
 
+const [donations, setDonations] =
+useState([]);
 
-export default function Donations(){
+useEffect(() => {
 
-const [
-
-search,
-setSearch
-
-]=useState("")
-
-
-const [
-
-donations,
-setDonations
-
-]=useState([
-
-{
-
-id:1,
-
-name:"John Doe",
-
-amount:"UGX 250,000",
-
-type:"Monthly",
-
-status:"Pending"
-
-},
-
-{
-
-id:2,
-
-name:"Sarah",
-
-amount:"UGX 1,200,000",
-
-type:"One Time",
-
-status:"Approved"
-
-},
-
-{
-
-id:3,
-
-name:"David",
-
-amount:"UGX 500,000",
-
-type:"Monthly",
-
-status:"Pending"
-
-}
-
-])
+fetchDonations();
 
 
+}, []);
 
-function approve(id){
+async function fetchDonations() {
 
-setDonations(
 
-donations.map(item=>
+try {
 
-item.id===id
+  setLoading(true);
 
-?
+  const response =
+    await fetch(
+      `${API_URL}/api/donations/all`
+    );
 
-{
+  const data =
+    await response.json();
 
-...item,
+  if (data.success) {
 
-status:"Approved"
+    setDonations(
+      data.donations
+    );
 
-}
+  }
 
-:
+} catch (error) {
 
-item
+  console.error(error);
 
-)
+} finally {
 
-)
+  setLoading(false);
 
 }
 
 
-
-function reject(id){
-
-setDonations(
-
-donations.map(item=>
-
-item.id===id
-
-?
-
-{
-
-...item,
-
-status:"Rejected"
-
 }
 
-:
-
-item
-
-)
-
-)
-
-}
+const filtered =
+donations.filter(item =>
 
 
+  `${item.first_name || ""} ${item.last_name || ""}`
+    .toLowerCase()
+    .includes(
+      search.toLowerCase()
+    )
 
-const filtered=
-
-donations.filter(item=>
-
-item.name
-
-.toLowerCase()
-
-.includes(
-
-search.toLowerCase()
-
-)
-
-)
+);
 
 
+const totalReceived =
+donations.reduce(
+(sum, item) =>
+sum + Number(item.amount || 0),
+0
+);
 
-return(
+return (
+
 
 <AdminLayout>
 
-<div className="donations">
+  <div className="donations">
 
+    <div className="page-header">
 
-<div className="page-header">
+      <div>
 
-<div>
+        <h1>
+          Donations
+        </h1>
 
-<h1>
+        <p>
+          Manage donor transactions
+        </p>
 
-Donations
+      </div>
 
-</h1>
+    </div>
 
-<p>
+    <div className="donation-stats">
 
-Manage donor transactions
+      <div className="stat">
 
-</p>
+        <FaDonate />
 
-</div>
+        <div>
 
-</div>
+          <h3>
+            UGX {totalReceived.toLocaleString()}
+          </h3>
 
+          <p>
+            Total Received
+          </p>
 
+        </div>
 
-{/* STATS */}
+      </div>
 
-<div className="donation-stats">
+      <div className="stat">
 
-<div className="stat">
+        <FaMoneyBillWave />
 
-<FaDonate/>
+        <div>
 
-<div>
+          <h3>
+            {donations.length}
+          </h3>
 
-<h3>
+          <p>
+            Total Donations
+          </p>
 
-UGX 1.95M
+        </div>
 
-</h3>
+      </div>
 
-<p>
+    </div>
 
-Total Received
+    <div className="search-box">
 
-</p>
+      <FaSearch />
 
-</div>
+      <input
+        value={search}
+        onChange={(e) =>
+          setSearch(
+            e.target.value
+          )
+        }
+        placeholder="Search donor"
+      />
 
-</div>
+    </div>
 
+    <div className="table-card">
 
+      {loading ? (
 
-<div className="stat">
+        <div
+          style={{
+            padding: "40px",
+            textAlign: "center"
+          }}
+        >
 
-<FaMoneyBillWave/>
+          <FaSpinner
+            className="spin"
+          />
 
-<div>
+          <p>
+            Loading donations...
+          </p>
 
-<h3>
+        </div>
 
-{donations.length}
+      ) : (
 
-</h3>
+        <table className="admin-table">
 
-<p>
+          <thead>
 
-Total Donations
+            <tr>
 
-</p>
+              <th>
+                Donor
+              </th>
 
-</div>
+              <th>
+                Email
+              </th>
 
-</div>
+              <th>
+                Amount
+              </th>
 
-</div>
+              <th>
+                Frequency
+              </th>
 
+              <th>
+                Payment
+              </th>
 
+              <th>
+                Status
+              </th>
 
-{/* SEARCH */}
+              <th>
+                Date
+              </th>
 
-<div className="search-box">
+            </tr>
 
-<FaSearch/>
+          </thead>
 
-<input
+          <tbody>
 
-value={search}
+            {filtered.length === 0 ? (
 
-onChange={(e)=>
+              <tr>
 
-setSearch(
-e.target.value
-)
+                <td
+                  colSpan="7"
+                  style={{
+                    textAlign:
+                      "center"
+                  }}
+                >
 
-}
+                  No donations found
 
-placeholder="Search donor"
+                </td>
 
-/>
+              </tr>
 
-</div>
+            ) : (
 
+              filtered.map(item => (
 
+                <tr
+                  key={item.id}
+                >
 
-{/* TABLE */}
+                  <td>
 
-<div className="table-card">
+                    {item.first_name}
+                    {" "}
+                    {item.last_name}
 
-<table className="admin-table">
+                  </td>
 
-<thead>
+                  <td>
 
-<tr>
+                    {item.email}
 
-<th>
+                  </td>
 
-Donor
+                  <td>
 
-</th>
+                    UGX {
+                      Number(
+                        item.amount
+                      ).toLocaleString()
+                    }
 
-<th>
+                  </td>
 
-Amount
+                  <td>
 
-</th>
+                    {item.frequency}
 
-<th>
+                  </td>
 
-Type
+                  <td>
 
-</th>
+                    {
+                      item.payment_method
+                    }
 
-<th>
+                  </td>
 
-Status
+                  <td>
 
-</th>
+                    <span
+                      className={
+                        item.status
+                          ?.toLowerCase()
+                      }
+                    >
 
-<th>
+                      {item.status}
 
-Actions
+                    </span>
 
-</th>
+                  </td>
 
-</tr>
+                  <td>
 
-</thead>
+                    {
+                      new Date(
+                        item.created_at
+                      ).toLocaleDateString()
+                    }
 
+                  </td>
 
+                </tr>
 
-<tbody>
+              ))
 
-{
+            )}
 
-filtered.map(item=>(
+          </tbody>
 
-<tr
-key={item.id}
->
+        </table>
 
-<td>
+      )}
 
-{item.name}
+    </div>
 
-</td>
-
-<td>
-
-{item.amount}
-
-</td>
-
-<td>
-
-{item.type}
-
-</td>
-
-<td>
-
-<span
-
-className={
-
-item.status
-.toLowerCase()
-
-}
-
->
-
-{item.status}
-
-</span>
-
-</td>
-
-<td>
-
-<div className="actions">
-
-<button
-
-className="approve"
-
-onClick={()=>
-
-approve(
-item.id
-)
-
-}
-
->
-
-<FaCheck/>
-
-</button>
-
-
-
-<button
-
-className="reject"
-
-onClick={()=>
-
-reject(
-item.id
-)
-
-}
-
->
-
-<FaTimes/>
-
-</button>
-
-</div>
-
-</td>
-
-</tr>
-
-))
-
-}
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
+  </div>
 
 </AdminLayout>
 
-)
+
+);
 
 }
