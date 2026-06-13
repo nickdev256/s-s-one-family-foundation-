@@ -1,56 +1,89 @@
 import { supabase } from "../config/supabaseClient.js";
 
-export const getDashboardStats = async (req, res) => {
-  try {
-    const [
-      donationsResult,
-      volunteersResult,
-      partnersResult,
-      contactsResult,
-      activityResult
-    ] = await Promise.all([
-      supabase.from("donations").select("amount"),
-      supabase.from("volunteers").select("id"),
-      supabase.from("partners").select("id"),
-      supabase.from("contacts").select("id"),
-      supabase
-        .from("activity_logs")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(10)
-    ]);
+export const getDashboardStats = async (
+req,
+res
+) => {
 
-    if (donationsResult.error) throw donationsResult.error;
-    if (volunteersResult.error) throw volunteersResult.error;
-    if (partnersResult.error) throw partnersResult.error;
-    if (contactsResult.error) throw contactsResult.error;
-    if (activityResult.error) throw activityResult.error;
+try {
 
-    const totalDonations =
-      donationsResult.data.reduce(
-        (sum, donation) => sum + Number(donation.amount || 0),
-        0
-      );
 
-    res.status(200).json({
-      success: true,
+const {
+  data: donations,
+  error: donationsError
+} = await supabase
+  .from("donations")
+  .select("*");
 
-      stats: {
-        donations: totalDonations,
-        volunteers: volunteersResult.data.length,
-        partners: partnersResult.data.length,
-        messages: contactsResult.data.length
-      },
+if (donationsError) {
+  throw donationsError;
+}
 
-      activity: activityResult.data
-    });
+const totalDonations =
+  donations.reduce(
+    (sum, item) =>
+      sum + Number(item.amount || 0),
+    0
+  );
 
-  } catch (error) {
-    console.error(error);
+const activity =
+  donations
+    .sort(
+      (a, b) =>
+        new Date(b.created_at) -
+        new Date(a.created_at)
+    )
+    .slice(0, 10)
+    .map(item => ({
+      id: item.id,
+      title:
+        `${item.first_name} ${item.last_name} donated UGX ${Number(
+          item.amount
+        ).toLocaleString()}`,
+      created_at:
+        item.created_at
+    }));
 
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
-  }
+return res.status(200).json({
+
+  success: true,
+
+  stats: {
+
+    donations:
+      totalDonations,
+
+    volunteers: 0,
+
+    partners: 0,
+
+    messages: 0
+
+  },
+
+  activity
+
+});
+
+
+} catch (error) {
+
+
+console.error(
+  "Dashboard Error:",
+  error
+);
+
+return res.status(500).json({
+
+  success: false,
+
+  message:
+    error.message
+
+});
+
+
+}
+
 };
