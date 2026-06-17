@@ -23,4 +23,4 @@ ReactDOM.createRoot(
       <App />
     </PayPalScriptProvider>
   </React.StrictMode>
-);
+)
