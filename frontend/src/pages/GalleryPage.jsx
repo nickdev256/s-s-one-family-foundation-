@@ -1,5 +1,7 @@
 import "./GalleryPage.css";
 import { useEffect, useState } from "react";
+import Footer from "../Sections/Footer";
+import { motion } from "framer-motion";
 
 const API_URL =
   "https://s-s-one-family-foundation.onrender.com";
@@ -75,6 +77,10 @@ export default function GalleryPage() {
         );
 
   if (loading) {
+
+
+
+    
     return (
       <section className="gallery-loading">
         <div className="loader"></div>
@@ -85,12 +91,34 @@ export default function GalleryPage() {
     );
   }
 
-  return (
-    <section className="gallery-page">
+return (
+
+<>
+
+<section
+  id="gallery"
+  className="gallery-page"
+>
 
       {/* HERO */}
 
-      <section className="gallery-hero">
+     <motion.section
+className="gallery-hero"
+
+initial={{
+opacity:0,
+y:-80
+}}
+
+animate={{
+opacity:1,
+y:0
+}}
+
+transition={{
+duration:.8
+}}
+>
 
         <div className="hero-content">
 
@@ -114,7 +142,7 @@ export default function GalleryPage() {
 
         </div>
 
-      </section>
+      </motion.section>
 
       {/* FILTERS */}
 
@@ -146,7 +174,27 @@ export default function GalleryPage() {
 
       {/* GALLERY GRID */}
 
-      <div className="gallery-grid">
+     <motion.div
+className="gallery-grid"
+
+initial={{
+opacity:0,
+y:50
+}}
+
+whileInView={{
+opacity:1,
+y:0
+}}
+
+transition={{
+duration:.8
+}}
+
+viewport={{
+once:true
+}}
+>
 
         {filteredGallery.length ===
         0 ? (
@@ -166,8 +214,7 @@ export default function GalleryPage() {
 
         ) : (
 
-          filteredGallery.map(
-            (item) => (
+          filteredGallery.map((item) => (
               <div
                 key={item.id}
                 className="gallery-card"
@@ -224,7 +271,7 @@ export default function GalleryPage() {
 
         )}
 
-      </div>
+      </motion.div>
 
       {/* IMPACT */}
 
@@ -328,7 +375,22 @@ export default function GalleryPage() {
 
             )}
 
-            <div className="media-details">
+            <motion.div
+
+className="media-modal"
+
+initial={{
+opacity:0
+}}
+
+animate={{
+opacity:1
+}}
+
+exit={{
+opacity:0
+}}
+>
 
               <div className="category-badge">
                 {
@@ -347,10 +409,10 @@ export default function GalleryPage() {
                   ? new Date(
                       selectedMedia.created_at
                     ).toLocaleDateString()
-                  : "Recently"}
+                  : "Recently"} 
               </p>
 
-            </div>
+            </motion.div>
 
           </div>
 
@@ -358,6 +420,12 @@ export default function GalleryPage() {
 
       )}
 
-    </section>
-  );
+   </section>
+
+<Footer />
+
+</>
+
+);
+  
 }

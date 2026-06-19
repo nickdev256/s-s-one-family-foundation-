@@ -51,7 +51,10 @@ text:'Healthcare and protection.'
 
 return(
 
-<section className="story-section">
+<section
+  id="who-we-are"
+  className="story-section"
+>
 
 <div className="story-wrapper">
 

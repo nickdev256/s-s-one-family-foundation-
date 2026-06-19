@@ -56,6 +56,8 @@ export default function Donation() {
 
     return () => clearInterval(interval)
 
+    
+
   }, [isInView])
 
   // impacts array continues here...
@@ -85,7 +87,9 @@ impact: "Supports a child for an entire month"
 
 const [selected, setSelected] = useState(0)
 
-return ( <section className="donation">
+return (
+  
+  <section className="donation">
 
 ```
   <div className="donation-overlay"></div>
