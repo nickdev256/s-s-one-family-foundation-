@@ -79,9 +79,17 @@ return()=>clearInterval(slider)
 
 },[])
 
+
+
 return(
 
-<section className="hero">
+<section
+
+id="home"
+
+className="hero"
+
+>
 
 <motion.div
 
@@ -162,5 +170,8 @@ Sponsor
 
 </section>
 
+
+
 )
 }
+

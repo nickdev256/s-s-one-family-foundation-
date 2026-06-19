@@ -259,7 +259,12 @@ onKeyDown={(e) => {
   <Link
     to="/"
     onClick={() => setMobileMenu(false)}
-  >
+  
+      to="home"
+  smooth={true}
+  duration={700}
+  offset={-90}
+>
     HOME
   </Link>
 </div>
@@ -270,7 +275,12 @@ onKeyDown={(e) => {
 
   {/* DESKTOP LINK */}
  {!isMobile && (
-  <Link to="/about">
+  <Link to="/about"
+    to="who-we-are"
+  smooth={true}
+  duration={700}
+  offset={-90}
+>
     WHO WE ARE <FaChevronDown />
   </Link>
 )}
@@ -326,7 +336,11 @@ onKeyDown={(e) => {
 
   {programsOpen && (
     <div className="mobile-submenu">
-      <Link to="/programs">All Programs</Link>
+      <Link to="/programs"   to="programs"
+  smooth={true}
+  duration={700}
+  offset={-90}
+>All Programs</Link>
       <Link to="/programs#education">Education</Link>
       <Link to="/programs#health">Health</Link>
       <Link to="/programs#child">Child Protection</Link>
@@ -387,6 +401,10 @@ onKeyDown={(e) => {
           <Link
   to="/gallery"
   onClick={() => setMobileMenu(false)}
+  to="gallery"
+  smooth={true}
+  duration={700}
+  offset={-90}
 >
   GALLERY
 </Link>
@@ -396,7 +414,11 @@ onKeyDown={(e) => {
   <Link
     to="/contact"
     onClick={() => setMobileMenu(false)}
-  >
+    to="contact"
+  smooth={true}
+  duration={700}
+  offset={-90}
+>
     CONTACT
   </Link>
 </div>
@@ -406,6 +428,10 @@ onKeyDown={(e) => {
   to="/donate"
   className="mobile-donate"
   onClick={() => setMobileMenu(false)}
+  to="donate"
+  smooth={true}
+  duration={700}
+  offset={-90}
 >
   Donate
 </Link>
@@ -430,6 +456,10 @@ onKeyDown={(e) => {
   to="/donate"
   className="donate-btn"
   onClick={() => window.scrollTo(0, 0)}
+  to="donate"
+  smooth={true}
+  duration={700}
+  offset={-90}
 >
   Donate
 </Link>

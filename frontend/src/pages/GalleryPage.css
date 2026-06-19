@@ -1,7 +1,7 @@
 .gallery-page{
 background:#faf8f4;
 overflow:hidden;
-padding-bottom:120px;
+padding-bottom:40px;
 }
 
 /* =========================
@@ -41,7 +41,7 @@ HERO
 ========================= */
 
 .gallery-hero{
-min-height:90vh;
+min-height:100vh;
 
 background:
 linear-gradient(
@@ -87,7 +87,9 @@ letter-spacing:2px;
 font-size:clamp(3rem,7vw,6rem);
 font-weight:900;
 line-height:1.1;
-margin:30px auto;
+margin:22px auto;
+
+max-width:900px;
 }
 
 .gallery-hero p{
@@ -114,10 +116,11 @@ padding:70px 5%;
 
 .gallery-filter button{
 border:none;
+padding:18px 34px;
 
-padding:15px 28px;
+font-size:1rem;
 
-border-radius:50px;
+border-radius:60px;
 
 background:white;
 
@@ -175,15 +178,17 @@ transform:translateY(-8px);
 
 .gallery-card img,
 .gallery-card video{
-width:100%;
-display:block;
 
-min-height:280px;
-max-height:550px;
+height:380px;
+
+width:100%;
 
 object-fit:cover;
 
+display:block;
+
 transition:.7s;
+
 }
 
 .gallery-card:hover img,
@@ -207,18 +212,15 @@ padding:30px;
 
 background:
 linear-gradient(
-transparent,
+transparent 35%,
 rgba(0,0,0,.92)
 );
 
-opacity:0;
+opacity:1;
 
 transition:.4s;
 }
 
-.gallery-card:hover .overlay{
-opacity:1;
-}
 
 .category-badge{
 display:inline-flex;
@@ -294,11 +296,16 @@ margin:120px auto;
 padding:70px;
 
 background:
+
 linear-gradient(
 135deg,
-#ffffff,
-#fdf8ec
+
+#0A2E4D,
+
+#123B63
+
 );
+color:white;
 
 border-radius:35px;
 
@@ -325,7 +332,8 @@ margin-bottom:10px;
 .gallery-impact p{
 font-size:1rem;
 font-weight:600;
-color:#555;
+color:white;
+opacity:.9;
 }
 
 /* =========================
@@ -454,7 +462,13 @@ padding:40px;
 @media(max-width:768px){
 
 .gallery-grid{
-columns:1;
+
+display:grid;
+
+grid-template-columns:1fr;
+
+gap:22px;
+
 }
 
 .gallery-hero h1{
@@ -508,15 +522,27 @@ font-size:1rem;
 @media(max-width:480px){
 
 .gallery-hero{
-padding:40px 15px;
+
+min-height:65vh;
+
+padding:30px 20px;
+
 }
 
 .gallery-hero h1{
-font-size:2.3rem;
+
+font-size:2.6rem;
+
+line-height:1.15;
+
 }
 
 .gallery-hero p{
-font-size:1rem;
+
+font-size:.95rem;
+
+line-height:1.8;
+
 }
 
 .gallery-filter{

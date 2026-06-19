@@ -22,7 +22,9 @@ return(
 
 <section className="contact-hero">
 
-<div className="contact-overlay"></div>
+<div className="contact-overlay">
+    
+</div>
 
 <div className="hero-content">
 
@@ -272,7 +274,7 @@ Submit
 </motion.div>
 
 </section>
-
+</div>
 
 <section className="contact-map">
 
@@ -290,7 +292,7 @@ Submit
   />
 
 </section>
-</div>
+
 
 <Footer />
 </>   

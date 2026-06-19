@@ -1,5 +1,6 @@
 import "./Footer.css"
 import logo from "../assets/image/logo.jpg"
+import { motion } from "framer-motion";
 
 import {
 FaFacebookF,
@@ -24,7 +25,13 @@ return(
 
 {/* LEFT */}
 
-<div className="footer-about">
+<motion.div
+  className="footer-about"
+  initial={{ opacity: 0, x: -80 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+>
 
 <img
   src={logo}
@@ -62,7 +69,16 @@ livelihood support and sustainable development.
 
 </div>
 
-<div className="social-icons">
+<motion.div
+  className="social-icons"
+  initial={{ opacity: 0, scale: 0.8 }}
+  whileInView={{ opacity: 1, scale: 1 }}
+  transition={{
+    duration: 0.6,
+    delay: 0.8
+  }}
+  viewport={{ once: true }}
+>
 
 <a
 href="https://www.facebook.com/"
@@ -106,17 +122,36 @@ rel="noopener noreferrer"
 
 
 
-</div>
-<a href="/donate" className="footer-donate">
+</motion.div>
+<motion.a
+  href="/donate"
+  className="footer-donate"
+  whileHover={{
+    scale: 1.05,
+    y: -3
+  }}
+  whileTap={{
+    scale: 0.95
+  }}
+>
   Donate Now
-</a>
-</div>
+</motion.a>
+</motion.div>
 
 
 
 {/* QUICK LINKS */}
 
-<div className="footer-links">
+<motion.div
+  className="footer-links"
+  initial={{ opacity: 0, y: 60 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{
+    duration: 0.8,
+    delay: 0.2
+  }}
+  viewport={{ once: true }}
+>
 
 <h2>
 
@@ -148,11 +183,20 @@ Volunteer
 Contact
 </a>
 
-</div>
+</motion.div>
 
 {/* PROGRAMS */}
 
-<div className="footer-links">
+<motion.div
+  className="footer-links"
+  initial={{ opacity: 0, y: 60 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{
+    duration: 0.8,
+    delay: 0.4
+  }}
+  viewport={{ once: true }}
+>
 
 <h2>
 
@@ -180,11 +224,20 @@ Health Support
 Youth Empowerment
 </a>
 
-</div>
+</motion.div>
 
 {/* CONTACT */}
 
-<div className="footer-contact">
+<motion.div
+  className="footer-contact"
+  initial={{ opacity: 0, y: 60 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{
+    duration: 0.8,
+    delay: 0.6
+  }}
+  viewport={{ once: true }}
+>
 
 <h2>
 
@@ -244,13 +297,22 @@ Subscribe
 
 </div>
 
-</div>
+</motion.div>
 
 </div>
 
 {/* BOTTOM */}
 
-<div className="footer-bottom">
+<motion.div
+  className="footer-bottom"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  transition={{
+    duration: 1,
+    delay: 0.8
+  }}
+  viewport={{ once: true }}
+>
 
     <div className="footer-bottom-links">
 
@@ -271,7 +333,7 @@ All Rights Reserved.
 
 </p>
 
-</div>
+</motion.div>
 
 </footer>
 

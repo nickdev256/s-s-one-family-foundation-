@@ -156,7 +156,7 @@ to="/programs"
 className="explore-btn"
 >
 
-Explore 
+Explore
 
 </Link>
 

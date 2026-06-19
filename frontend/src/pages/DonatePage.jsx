@@ -6,6 +6,8 @@ import airtelLogo from "../assets/image/airtel-money.png";
 import bankCardLogo from "../assets/image/yy.png";
 import cardLogo from "../assets/image/card-preview.png";
 import paypalLogo from "../assets/image/paypal.png";
+import { motion } from "framer-motion";
+
 import {
   PayPalButtons
 } from "@paypal/react-paypal-js";
@@ -263,7 +265,14 @@ setLoading(false);
     <div className="donate-page">
       {/* HERO */}
 
-      <section id="donate-hero" className="donate-hero">
+     <motion.section
+  id="donate-hero"
+  className="donate-hero"
+  initial={{ opacity: 0, y: -60 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+>
         <div className="overlay" />
 
         <div className="hero-content">
@@ -280,14 +289,20 @@ setLoading(false);
             vulnerable communities.
           </p>
         </div>
-      </section>
+      </motion.section>
 
       {/* MAIN CARD */}
 
      
 
 
-   <div className="trust-strip">
+   <motion.div
+  className="trust-strip"
+  initial={{ opacity: 0, y: 60 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+>
 
   <div>
     <strong>500+</strong>
@@ -304,9 +319,15 @@ setLoading(false);
     <span>Community Impact</span>
   </div>
 
-</div>
+</motion.div>
 
- <div className="impact-intro">
+<motion.div
+  className="impact-intro"
+  initial={{ opacity: 0 }}
+  whileInView={{ opacity: 1 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+>
 
   <h2>Every Gift Creates Lasting Change</h2>
 
@@ -316,9 +337,15 @@ setLoading(false);
     children and families across Uganda.
   </p>
 
-</div>
+</motion.div>
 
-      <div className="donation-wrapper">
+      <motion.div
+  className="donation-wrapper"
+  initial={{ opacity: 0, y: 80 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+>
         {/* PROGRESS */}
 
         <div className="progress-bar">
@@ -340,18 +367,50 @@ setLoading(false);
 
         {step === 1 && (
           <>
-            <div className="section-header">
+            <motion.div
+  className="section-header"
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+  viewport={{ once: true }}
+>
               <h2>Select Donation Cause</h2>
 
               <p>
                 Choose where you would like your
                 donation to make an impact.
               </p>
-            </div>
+            </motion.div>
 
             <div className="cause-grid">
-              {DONATION_TYPES.map((item) => (
-                <button
+
+             {DONATION_TYPES.map((item, index) => (
+
+<motion.div
+  key={item.id}
+  style={{ width: "100%" }}
+
+  initial={{
+    opacity:0,
+    y:50
+  }}
+
+  whileInView={{
+    opacity:1,
+    y:0
+  }}
+
+  transition={{
+    duration:.5,
+    delay:index*0.15
+  }}
+
+  viewport={{
+    once:true
+  }}
+>
+
+<button
                   key={item.id}
                   className={
                     formData.donationType === item.id
@@ -373,6 +432,7 @@ setLoading(false);
 
                   <p>{item.description}</p>
                 </button>
+                </motion.div>
               ))}
             </div>
 
@@ -395,7 +455,14 @@ setLoading(false);
 
             <div className="amount-grid">
               {PRESET_AMOUNTS.map((amount) => (
-                <button
+                <motion.button
+                whileHover={{
+scale:1.06
+}}
+
+whileTap={{
+scale:.95
+}}
                   key={amount}
                   className={
                     formData.amount === amount
@@ -410,7 +477,7 @@ setLoading(false);
                   }
                 >
                   UGX {amount.toLocaleString()}
-                </button>
+                </motion.button>
               ))}
             </div>
 
@@ -614,12 +681,21 @@ setLoading(false);
             </div>
 
             <div className="payment-grid">
-              <button
-                className={
-                  formData.paymentMethod === "MTN"
-                    ? "payment-card active"
-                    : "payment-card"
-                }
+              <motion.button
+  className={
+    formData.paymentMethod === "MTN"
+      ? "payment-card active"
+      : "payment-card"
+  }
+
+  whileHover={{
+    scale:1.05,
+    y:-5
+  }}
+
+  whileTap={{
+    scale:.96
+  }}
                 onClick={() =>
                   updateField(
                     "paymentMethod",
@@ -633,14 +709,23 @@ setLoading(false);
   className="payment-logo"
 />
 
-              </button>
+              </motion.button>
 
-              <button
-                className={
-                  formData.paymentMethod === "AIRTEL"
-                    ? "payment-card active"
-                    : "payment-card"
-                }
+              <motion.button
+  className={
+    formData.paymentMethod === "AIRTEL"
+      ? "payment-card active"
+      : "payment-card"
+  }
+
+  whileHover={{
+    scale:1.05,
+    y:-5
+  }}
+
+  whileTap={{
+    scale:.96
+  }}
                 onClick={() =>
                   updateField(
                     "paymentMethod",
@@ -655,16 +740,25 @@ setLoading(false);
 />
 
 
-              </button>
+              </motion.button>
 
               
 
-              <button
-                className={
-                  formData.paymentMethod === "VISA CARD"
-                    ? "payment-card active"
-                    : "payment-card"
-                }
+              <motion.button
+  className={
+    formData.paymentMethod === "VISA CARD"
+      ? "payment-card active"
+      : "payment-card"
+  }
+
+  whileHover={{
+    scale:1.05,
+    y:-5
+  }}
+
+  whileTap={{
+    scale:.96
+  }}
                 onClick={() => {
   updateField("paymentMethod", "VISA CARD");
   setShowCardForm(!showCardForm);
@@ -677,19 +771,28 @@ setLoading(false);
 />
 
 <span></span>
-              </button>
+              </motion.button>
 
 
              
 
               
 
-              <button
+  <motion.button
   className={
     formData.paymentMethod === "PayPal"
       ? "payment-card active"
       : "payment-card"
   }
+
+  whileHover={{
+    scale:1.05,
+    y:-5
+  }}
+
+  whileTap={{
+    scale:.96
+  }}
   onClick={() => {
     updateField("paymentMethod", "PayPal");
     setShowCardForm(true);
@@ -702,7 +805,7 @@ setLoading(false);
   />
 
   <span></span>
-</button>
+</motion.button>
 
 
 
@@ -854,23 +957,52 @@ setLoading(false);
                 Back
               </button>
 
-              <button
-                className="primary-btn"
-                disabled={loading}
-                onClick={submitDonation}
-              >
+            <motion.button
+
+className="primary-btn"
+
+whileHover={{
+scale:1.04
+}}
+
+whileTap={{
+scale:.97
+}}
+
+disabled={loading}
+
+onClick={submitDonation}
+>
                 {loading
                   ? "Processing..."
                   : "Donate Now"}
-              </button>
+              </motion.button>
             </div>
           </>
         )}
 
         {/* SUCCESS */}
 
-        {step === 5 && (
-          <div className="success-screen">
+       {step === 5 && (
+
+<motion.div
+
+className="success-screen"
+
+initial={{
+opacity:0,
+scale:.8
+}}
+
+animate={{
+opacity:1,
+scale:1
+}}
+
+transition={{
+duration:.6
+}}
+>
             <FaCheckCircle />
 
             <h2>
@@ -881,9 +1013,9 @@ setLoading(false);
               Thank you for supporting our
               mission.
             </p>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
     </div>
     <Footer />
   </>

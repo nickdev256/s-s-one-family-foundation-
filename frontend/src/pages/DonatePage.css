@@ -732,6 +732,16 @@ PASTE AT THE VERY BOTTOM
 
 }
 
+.cause-grid > div{
+    width:100%;
+}
+
+.cause-card{
+    width:100%;
+}
+
+
+
 @media(max-width:768px){
 
   .donation-wrapper{
@@ -818,24 +828,44 @@ PASTE AT THE VERY BOTTOM
 /* CAUSE CARDS */
 
 .cause-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:30px;
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:35px;
+
+align-items:stretch;
+
 }
 
 .cause-card{
 
-  background:white;
+width:100%;
 
-  border:2px solid #edf1f5;
+min-height:260px;
 
-  border-radius:30px;
+display:flex;
 
-  padding:30px;
+flex-direction:column;
 
-  cursor:pointer;
+justify-content:center;
 
-  transition:.35s ease;
+align-items:center;
+
+text-align:center;
+
+background:white;
+
+border:2px solid #edf1f5;
+
+border-radius:30px;
+
+padding:35px;
+
+cursor:pointer;
+
+transition:.35s ease;
 
 }
 
@@ -845,7 +875,7 @@ PASTE AT THE VERY BOTTOM
 
   box-shadow:
   0 20px 50px rgba(0,0,0,.08);
-  min-height:180px;
+  
 
 
 }
