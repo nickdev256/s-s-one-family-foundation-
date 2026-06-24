@@ -201,6 +201,7 @@ OVERLAY
 ========================= */
 
 .overlay{
+
 position:absolute;
 inset:0;
 
@@ -216,9 +217,16 @@ transparent 35%,
 rgba(0,0,0,.92)
 );
 
+opacity:0;
+
+transition:.35s;
+
+}
+
+.gallery-card:hover .overlay{
+
 opacity:1;
 
-transition:.4s;
 }
 
 
@@ -364,6 +372,9 @@ max-height:90vh;
 
 background:white;
 
+display:flex;
+flex-direction:column;
+
 border-radius:30px;
 
 overflow:hidden;
@@ -376,17 +387,34 @@ box-shadow:
 
 .media-modal-content img,
 .media-modal-content video{
+
 width:100%;
-max-height:70vh;
-object-fit:contain;
-background:black;
+
 display:block;
+
+max-height:65vh;
+
+background:#000;
+
+object-fit:contain;
+
+border-bottom:1px solid #eee;
+
 }
 
 .media-details{
-padding:30px;
-}
 
+background:white;
+
+padding:30px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
 .media-details h2{
 font-size:2rem;
 margin-bottom:15px;
@@ -402,6 +430,7 @@ color:#666;
 .close-btn{
 position:absolute;
 top:20px;
+z-index:999;
 right:20px;
 
 width:50px;

@@ -315,43 +315,37 @@ once:true
 
       </section>
 
-      {/* MEDIA VIEWER */}
+            {/* MEDIA VIEWER */}
 
       {selectedMedia && (
 
-        <div
+        <motion.div
           className="media-modal"
-          onClick={() =>
-            setSelectedMedia(
-              null
-            )
-          }
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedMedia(null)}
         >
 
           <div
             className="media-modal-content"
-            onClick={(e) =>
-              e.stopPropagation()
-            }
+            onClick={(e) => e.stopPropagation()}
           >
 
             <button
               className="close-btn"
-              onClick={() =>
-                setSelectedMedia(
-                  null
-                )
-              }
+              onClick={() => setSelectedMedia(null)}
             >
               ✕
             </button>
 
-            {selectedMedia.type ===
-            "video" ? (
+            {selectedMedia.type === "video" ? (
 
               <video
                 controls
                 autoPlay
+                playsInline
+                preload="metadata"
               >
                 <source
                   src={
@@ -359,6 +353,7 @@ once:true
                     selectedMedia.url
                   }
                 />
+                Your browser does not support videos.
               </video>
 
             ) : (
@@ -369,38 +364,26 @@ once:true
                   selectedMedia.url
                 }
                 alt={
-                  selectedMedia.caption
+                  selectedMedia.caption ||
+                  "Gallery Image"
                 }
               />
 
             )}
 
             <motion.div
-
-className="media-modal"
-
-initial={{
-opacity:0
-}}
-
-animate={{
-opacity:1
-}}
-
-exit={{
-opacity:0
-}}
->
+              className="media-details"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: .45 }}
+            >
 
               <div className="category-badge">
-                {
-                  selectedMedia.category
-                }
+                {selectedMedia.category || "Gallery"}
               </div>
 
               <h2>
-                {selectedMedia.caption ||
-                  "Gallery Media"}
+                {selectedMedia.caption || "Gallery Media"}
               </h2>
 
               <p>
@@ -409,23 +392,23 @@ opacity:0
                   ? new Date(
                       selectedMedia.created_at
                     ).toLocaleDateString()
-                  : "Recently"} 
+                  : "Recently"}
               </p>
 
             </motion.div>
 
           </div>
 
-        </div>
+        </motion.div>
 
       )}
 
-   </section>
+    </section>
 
-<Footer />
+    <Footer />
 
-</>
+  </>
 
 );
-  
+
 }
